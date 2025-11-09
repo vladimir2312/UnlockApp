@@ -2,6 +2,7 @@
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Microsoft.Extensions.Hosting;
+using Telegram.Bot.Types.ReplyMarkups;
 
 public class BotWorker : BackgroundService
 {
@@ -27,17 +28,25 @@ public class BotWorker : BackgroundService
 
     private async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
     {
-        if (update.Type == UpdateType.Message && update.Message?.Text != null)
+        if (update.Type == UpdateType.Message && update.Message.Text == "/start")
         {
-            if (update.Message.Text.ToLower() == "/start")
+            var webAppUrl = "https://https://unlockapp-11212.onrender.com/gift"; // сюда вставь ссылку на твоё WebApp
+
+            var inlineKeyboard = new InlineKeyboardMarkup(new[]
             {
-                await bot.SendMessage(
-                    update.Message.Chat.Id,
-                    "Привет! Нажми кнопку ниже, чтобы открыть подарок 🎁",
-                    cancellationToken: token
-                );
-            }
+        new[]
+        {
+            InlineKeyboardButton.WithWebApp("Открыть подарок 🎁", new WebAppInfo(webAppUrl))
         }
+    });
+
+            await bot.SendTextMessageAsync(
+                chatId: update.Message.Chat.Id,
+                text: "Привет! Нажми кнопку ниже, чтобы открыть подарок 🎁",
+                replyMarkup: inlineKeyboard
+            );
+        }
+
     }
 
     private Task HandleErrorAsync(ITelegramBotClient bot, Exception exception, CancellationToken token)
