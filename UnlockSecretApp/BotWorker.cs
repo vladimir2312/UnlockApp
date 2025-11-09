@@ -30,7 +30,7 @@ public class BotWorker : BackgroundService
     {
         if (update.Type == UpdateType.Message && update.Message.Text == "/start")
         {
-            var webAppUrl = "https://unlockapp-11212.onrender.com"; // сюда вставь ссылку на твоё WebApp
+            var webAppUrl = "https://unlockapp-11212.onrender.com/"; // сюда вставь ссылку на твоё WebApp
 
             var inlineKeyboard = new InlineKeyboardMarkup(new[]
             {

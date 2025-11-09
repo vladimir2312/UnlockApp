@@ -33,5 +33,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages(); // важно, чтобы Index.cshtml работал
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.Remove("X-Frame-Options"); // Telegram не покажет страницу, если это стоит
+    await next();
+});
 
 app.Run();
