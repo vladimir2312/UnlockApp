@@ -1,17 +1,17 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Настройка Kestrel до Build
+// Используем порт Render
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(5000); // слушаем все интерфейсы
+    options.ListenAnyIP(int.Parse(port));
 });
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -20,9 +20,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapControllerRoute(
@@ -30,3 +28,4 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
