@@ -1,60 +1,34 @@
-﻿using Telegram.Bot;
-using Telegram.Bot.Polling;
-using Telegram.Bot.Types;
-using Telegram.Bot.Types.Enums;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Токен бота
-string token = "8431829253:AAGNLz7LW9Yy7fQ8Qi6ctP2LoDsz9L9oyA0";
-var botClient = new TelegramBotClient(token);
+// Добавляем фонового бота
+builder.Services.AddHostedService<BotWorker>();
+
+// Добавляем контроллеры и Razor Pages
+builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+// Настройка портов для Render
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+app.Urls.Add($"http://*:{port}");
 
 // Для проверки, что приложение запущено
 app.MapGet("/", () => "Bot is running!");
 
-// Запуск бота в фоне
-using var cts = new CancellationTokenSource();
-botClient.StartReceiving(
-    updateHandler: HandleUpdateAsync,
-    errorHandler: HandleErrorAsync,
-    cancellationToken: cts.Token
-);
-
-Console.WriteLine("Bot started");
-
-// --- Методы для обработки сообщений ---
-async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
-{
-    if (update.Type == UpdateType.Message && update.Message!.Text != null)
-    {
-        if (update.Message.Text.ToLower() == "/start")
-        {
-            // В новой версии SendMessage вместо SendTextMessageAsync
-            await bot.SendMessage(
-                chatId: update.Message.Chat.Id,
-                text: "Привет! Нажми кнопку ниже, чтобы открыть подарок 🎁",
-                cancellationToken: token
-            );
-        }
-    }
-}
-
-Task HandleErrorAsync(ITelegramBotClient bot, Exception exception, CancellationToken token)
-{
-    Console.WriteLine(exception.Message);
-    return Task.CompletedTask;
-}
-
-// Настройка маршрутов и HTTPS
+// Настройка маршрутов
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Можно закомментировать для Render
+// app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthorization();
