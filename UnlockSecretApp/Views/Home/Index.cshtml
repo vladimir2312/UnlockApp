@@ -4,240 +4,191 @@
     ViewData["Title"] = "Наши числа 💞";
 }
 
-<style>
-    /* Стили — без keyframes, только плавные transition */
-    html, body {
-        height: 100%;
-        margin: 0;
-        font-family: 'Segoe UI', sans-serif;
-    }
+<div class="container">
+    <h2 class="title">Введи наши числа 💫</h2>
 
+    <div id="inputs" class="code-container">
+        <input maxlength="2" class="code-input" id="c1" />
+        <input maxlength="2" class="code-input" id="c2" />
+        <input maxlength="2" class="code-input" id="c3" />
+        <input maxlength="2" class="code-input" id="c4" />
+    </div>
+
+    <button id="submitBtn" class="hidden">Продолжить</button>
+
+    <div id="message" class="hidden"></div>
+</div>
+
+@section Scripts {
+    <script>
+        const inputs = document.querySelectorAll('.code-input');
+        const submitBtn = document.getElementById('submitBtn');
+        const message = document.getElementById('message');
+
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value.length === 2 && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+                checkAllFilled();
+            });
+        });
+
+        function checkAllFilled() {
+            const allFilled = Array.from(inputs).every(i => i.value.length === 2);
+            if (allFilled) submitBtn.classList.remove('hidden');
+            else submitBtn.classList.add('hidden');
+        }
+
+        submitBtn.addEventListener('click', () => {
+            const codeValues = Array.from(inputs).map(i => i.value).join('-');
+            const correctCode = "12-07-05-23";
+            if (codeValues === correctCode) startMessageSequence();
+            else alert("Хм... что-то не так 😅");
+        });
+
+        function startMessageSequence() {
+            document.getElementById('inputs').classList.add('fade-out');
+            submitBtn.classList.add('fade-out');
+            setTimeout(() => {
+                document.getElementById('inputs').style.display = 'none';
+                submitBtn.style.display = 'none';
+                showTypingText("На самом деле это не совсем рандомные числа, и сейчас ты поймёшь почему...");
+            }, 1000);
+        }
+
+        function showTypingText(text) {
+            message.classList.remove('hidden');
+            let i = 0;
+            const speed = 50;
+            message.innerHTML = "";
+            (function typeWriter() {
+                if (i < text.length) {
+                    message.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, speed);
+                } else {
+                    setTimeout(() => showMoments(), 1500);
+                }
+            })();
+        }
+
+        function showMoments() {
+            const texts = [
+                "12 — день, когда мы впервые встретились 💕",
+                "07 — дата, когда ты улыбнулась так, что я всё понял 😌",
+                "05 — число, ставшее символом наших прогулок 🌙",
+                "23 — то, что всегда будет значить 'мы' 💫"
+            ];
+
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < texts.length) {
+                    const p = document.createElement('p');
+                    p.textContent = texts[i];
+                    p.classList.add('moment');
+                    message.appendChild(p);
+                    i++;
+                } else clearInterval(interval);
+            }, 2000);
+        }
+    </script>
+}
+
+<style>
     body {
+        font-family: 'Segoe UI', sans-serif;
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
+        height: 100vh;
         background: linear-gradient(135deg, #ffe0e9, #ffd6f6);
         overflow: hidden;
+        margin: 0;
     }
 
     .container {
         text-align: center;
-        padding: 24px;
-        width: 100%;
-        max-width: 420px;
-        box-sizing: border-box;
+        transition: all 0.8s ease;
     }
 
     .title {
         color: #5a274e;
-        margin-bottom: 18px;
-        font-size: 1.4rem;
+        margin-bottom: 25px;
     }
 
     .code-container {
         display: flex;
         justify-content: center;
         gap: 12px;
-        margin-bottom: 16px;
-        transition: opacity 0.6s ease, transform 0.6s ease;
+        margin-bottom: 20px;
     }
 
     .code-input {
         font-size: 1.5rem;
-        width: 56px;
-        height: 56px;
+        width: 50px;
         text-align: center;
         border: none;
         border-radius: 10px;
-        padding: 6px;
+        padding: 10px;
         background: #fff0f6;
-        box-shadow: 0 0 8px rgba(255,192,203,0.45);
+        box-shadow: 0 0 8px rgba(255, 192, 203, 0.5);
         color: #5a274e;
-        outline: none;
-        transition: box-shadow 0.18s ease, transform 0.18s ease;
     }
 
-        .code-input:focus {
-            box-shadow: 0 8px 24px rgba(255,192,203,0.45);
-            transform: translateY(-2px);
-        }
-
     button {
-        padding: 10px 22px;
+        padding: 10px 20px;
         border: none;
-        border-radius: 14px;
-        background: #ff85a1;
+        border-radius: 15px;
+        background-color: #ff85a1;
         color: white;
         font-size: 1rem;
         cursor: pointer;
-        transition: transform 0.12s ease, box-shadow 0.12s ease;
+        transition: 0.3s;
     }
 
         button:hover {
-            transform: translateY(-2px);
-        }
-
-        button.error {
-            box-shadow: 0 0 0 6px rgba(255,100,100,0.12);
+            background-color: #ff6387;
         }
 
     .hidden {
         display: none;
     }
 
-    /* Плавный "исчез" контейнера */
     .fade-out {
         opacity: 0;
-        transform: scale(0.97);
+        transform: scale(0.95);
+        transition: all 0.8s ease;
     }
 
-    /* Сообщения */
     #message {
-        margin-top: 20px;
-        font-size: 1.05rem;
+        margin-top: 25px;
+        font-size: 1.2rem;
         color: #5a274e;
         line-height: 1.6;
-        max-width: 360px;
+        max-width: 350px;
         margin-left: auto;
         margin-right: auto;
         white-space: pre-wrap;
     }
 
-    /* Эффект появления каждой строки без keyframes */
     .moment {
-        margin-top: 12px;
+        margin-top: 10px;
         opacity: 0;
-        transform: translateY(10px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
+        animation: fadeIn 600ms ease forwards;
     }
 
-        .moment.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    @@keyframes fadeIn {
+        from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
 </style>
 
-<div class="container">
-    <h2 class="title">Введи наши числа 💫</h2>
-
-    <div id="inputs" class="code-container">
-        <input type="text" inputmode="numeric" pattern="\d*" maxlength="2" class="code-input" id="c1" />
-        <input type="text" inputmode="numeric" pattern="\d*" maxlength="2" class="code-input" id="c2" />
-        <input type="text" inputmode="numeric" pattern="\d*" maxlength="2" class="code-input" id="c3" />
-        <input type="text" inputmode="numeric" pattern="\d*" maxlength="2" class="code-input" id="c4" />
-    </div>
-
-    <button id="submitBtn" class="hidden">Продолжить</button>
-
-    <div id="message" class="hidden" aria-live="polite"></div>
-</div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const inputs = Array.from(document.querySelectorAll('.code-input'));
-            const submitBtn = document.getElementById('submitBtn');
-            const message = document.getElementById('message');
-            const inputsWrap = document.getElementById('inputs');
-
-            // фокус на первое поле
-            inputs[0]?.focus();
-
-            // ввод: только цифры, авто-переход, paste-распаковка
-            inputs.forEach((input, idx) => {
-                input.addEventListener('input', () => {
-                    input.value = input.value.replace(/\D/g, '').slice(0,2);
-                    if (input.value.length === 2 && idx < inputs.length - 1) {
-                        inputs[idx + 1].focus();
-                    }
-                    checkAllFilled();
-                });
-
-                input.addEventListener('keydown', (e) => {
-                    if (e.key === 'Backspace' && input.value.length === 0 && idx > 0) {
-                        inputs[idx - 1].focus();
-                    }
-                });
-
-                input.addEventListener('paste', (e) => {
-                    e.preventDefault();
-                    const paste = (e.clipboardData || window.clipboardData).getData('text');
-                    const digits = paste.replace(/\D/g, '');
-                    if (!digits) return;
-                    let cur = idx;
-                    for (let i = 0; i < digits.length && cur < inputs.length; i += 2, cur++) {
-                        inputs[cur].value = digits.slice(i, i + 2);
-                    }
-                    checkAllFilled();
-                });
-            });
-
-            function checkAllFilled() {
-                const allFilled = inputs.every(i => i.value.length === 2);
-                if (allFilled) submitBtn.classList.remove('hidden');
-                else submitBtn.classList.add('hidden');
-            }
-
-            submitBtn.addEventListener('click', () => {
-                const codeValues = inputs.map(i => i.value.padStart(2, '0')).join('-');
-                // TODO: отправить на бэкенд (POST /check-code), сейчас заглушка:
-                const correctCode = "12-07-05-23"; // заменить на реальную проверку
-                if (codeValues === correctCode) {
-                    startMessageSequence();
-                } else {
-                    // простая визуальная подсказка ошибки (без keyframes)
-                    submitBtn.classList.add('error');
-                    setTimeout(() => submitBtn.classList.remove('error'), 600);
-                }
-            });
-
-            function startMessageSequence() {
-                // плавно скрываем поля и кнопку
-                inputsWrap.classList.add('fade-out');
-                submitBtn.classList.add('fade-out');
-
-                setTimeout(() => {
-                    inputsWrap.style.display = 'none';
-                    submitBtn.style.display = 'none';
-                    showTypingText("На самом деле это не совсем рандомные числа, и сейчас ты поймёшь почему...");
-                }, 600);
-            }
-
-            function showTypingText(text) {
-                message.classList.remove('hidden');
-                message.textContent = '';
-                let i = 0;
-                const speed = 45;
-                (function typeWriter() {
-                    if (i < text.length) {
-                        message.textContent += text.charAt(i);
-                        i++;
-                        setTimeout(typeWriter, speed);
-                    } else {
-                        setTimeout(showMoments, 800);
-                    }
-                })();
-            }
-
-            function showMoments() {
-                const texts = [
-                    "12 — день, когда мы впервые встретились 💕",
-                    "07 — дата, когда ты улыбнулась так, что я всё понял 😌",
-                    "05 — число, ставшее символом наших прогулок 🌙",
-                    "23 — то, что всегда будет значить 'мы' 💫"
-                ];
-
-                texts.forEach((t, idx) => {
-                    setTimeout(() => {
-                        const p = document.createElement('p');
-                        p.className = 'moment';
-                        p.textContent = t;
-                        message.appendChild(p);
-                        // Добавляем класс видимости через requestAnimationFrame для плавного перехода
-                        requestAnimationFrame(() => p.classList.add('visible'));
-                    }, idx * 700); // задержка между строчками
-                });
-            }
-        });
-    </script>
-}
