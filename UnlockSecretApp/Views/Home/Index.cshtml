@@ -40,6 +40,11 @@ const details = document.getElementById('details');
 // Фокус на первый инпут
 inputs[0].focus();
 
+// Проверка введённого кода
+function isCodeCorrect() {
+  return inputs.map(i => i.value).join('') === correctCode.join('');
+}
+
 // Обработчик ввода
 inputs.forEach((input, index) => {
   input.addEventListener('input', () => {
@@ -85,37 +90,43 @@ function showOverlay() {
   });
 }
 
-// Китёнок с удержанием (заполнение снизу вверх)
+// Китёнок с удержанием
 const kitten = document.getElementById('kitten');
 const kittenFill = document.getElementById('kittenFill');
-let holdInterval;
-let fillHeight = 0;
+let holdTimeout;
+let fillWidth = 0;
+
+kitten.addEventListener('mousedown', startHold);
+kitten.addEventListener('touchstart', startHold);
+
+document.addEventListener('mouseup', cancelHold);
+document.addEventListener('touchend', cancelHold);
 
 function startHold(e) {
   e.preventDefault();
-  fillHeight = 0;
-  kittenFill.style.height = '0%';
-  holdInterval = setInterval(() => {
-    fillHeight += 2; // скорость заполнения
-    if (fillHeight >= 100) {
-      fillHeight = 100;
-      clearInterval(holdInterval);
+  if (!isCodeCorrect()) {
+    alert("Введите правильный код перед удержанием!");
+    return;
+  }
+  fillWidth = 0;
+  kittenFill.style.width = '0%';
+  holdTimeout = setInterval(() => {
+    fillWidth += 2; // скорость заполнения
+    if (fillWidth >= 100) {
+      fillWidth = 100;
+      clearInterval(holdTimeout);
       showOverlay();
     }
-    kittenFill.style.height = fillHeight + '%';
+    kittenFill.style.width = fillWidth + '%';
   }, 50);
 }
 
 function cancelHold() {
-  clearInterval(holdInterval);
-  kittenFill.style.height = '0%';
+  clearInterval(holdTimeout);
+  kittenFill.style.width = '0%';
 }
-
-kitten.addEventListener('mousedown', startHold);
-kitten.addEventListener('touchstart', startHold);
-document.addEventListener('mouseup', cancelHold);
-document.addEventListener('touchend', cancelHold);
 </script>
+
 
 </body>
 </html>
