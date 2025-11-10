@@ -1,223 +1,152 @@
-﻿/* /* Подключение шрифта Poppins через Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+﻿<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+  /* Общие стили */
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+  html, body { height: 100%; }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
+  body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(135deg, #f8e8ff, #d3eaff);
-    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(145deg, #fdf6f0, #e0f7fa);
+    color: #222;
     overflow: hidden;
-}
+  }
 
-.container {
-    background: rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(14px);
-    border-radius: 2vw;
-    padding: 5vh 5vw;
+  #container {
+    position: relative;
+    width: 95%;
+    max-width: 420px;
+    padding: 3rem 2rem;
+    border-radius: 25px;
+    background: rgba(255,255,255,0.25);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
     text-align: center;
-    box-shadow: 0 2vw 5vw rgba(0,0,0,0.08);
-    max-width: 400px;
-    width: 90%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    animation: fadeIn 1s ease forwards;
-    position: relative;
-    z-index: 10;
-}
+    gap: 2rem;
+    transition: transform 0.3s ease;
+  }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: scale(0.95);
-    }
+  #container:hover {
+    transform: scale(1.02);
+  }
 
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-h1 {
-    color: #333;
-    margin: 0 0 4vh 0;
+  h1 {
+    font-size: 1.8rem;
     font-weight: 600;
-    font-size: clamp(1.5rem, 5vw, 2rem);
-    letter-spacing: 0.5px;
-    animation: softFade 1.5s ease forwards;
-}
+    color: #222;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
 
-.code-inputs {
+  .inputs {
     display: flex;
     justify-content: center;
-    flex-direction: column;
-    gap: 2vh;
-    margin-bottom: 3vh;
-}
+    gap: 12px;
+  }
 
-.code {
-    width: 80px;
+  input {
+    width: 60px;
     height: 60px;
-    font-size: clamp(16px, 5vw, 24px);
+    border-radius: 15px;
+    border: 2px solid rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.3);
     text-align: center;
-    border: 2px solid rgba(100,100,100,0.3);
-    border-radius: 1.2vw;
-    background: rgba(255,255,255,0.6);
-    color: #333;
-    box-shadow: 0 0.5vw 2vw rgba(0,0,0,0.05);
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #222;
     transition: all 0.3s ease;
-    backdrop-filter: blur(6px);
-}
+  }
 
-    .code:focus {
-        outline: none;
-        border-color: #9c7fff;
-        background: rgba(255,255,255,0.9);
-        box-shadow: 0 0 20px rgba(156,127,255,0.3);
-        transform: scale(1.08);
-    }
+  input::placeholder {
+    color: rgba(34,34,34,0.4);
+  }
 
-#message {
-    margin-top: 2vh;
-    color: #444;
-    font-size: clamp(14px, 4vw, 18px);
-    font-weight: 500;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-}
+  input:focus {
+    outline: none;
+    border-color: #4fc3f7;
+    background: rgba(255,255,255,0.5);
+    box-shadow: 0 0 15px rgba(79,195,247,0.4);
+    transform: scale(1.05);
+  }
 
-.background-overlay {
-    position: fixed;
+  #kitten {
+    position: relative;
+    width: 120px;
+    height: 60px;
+    margin: 0 auto;
+    border-radius: 30px;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #kitten:hover {
+    transform: scale(1.1);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+  }
+
+  #kittenFill {
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #ffe0f0, #a0d4ff);
+    width: 0%;
+    background: linear-gradient(90deg, #4fc3f7, #81d4fa);
+    border-radius: 30px;
+    transition: width 0.2s ease;
+  }
+
+  #message {
+    font-size: 1rem;
+    color: #555;
+    min-height: 1.5rem;
+  }
+
+  #overlay {
+    display: none;
+    position: fixed;
+    inset:0;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(25px);
+    color: #222;
+    padding: 2rem;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    color: #333;
-    font-size: clamp(18px, 4vw, 24px);
     text-align: center;
-    padding: 2rem;
+  }
+
+  #intro, #details {
     opacity: 0;
-    transition: opacity 1s ease;
-    z-index: 5;
-}
-
-.typewriter {
-    display: inline-block;
-    border-right: 2px solid #666;
+    color: #222;
     white-space: pre-line;
-    overflow: hidden;
-    animation: blink 0.8s steps(1) infinite;
-}
+  }
 
-@keyframes softFade {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
+  #intro {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+  #details {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    max-width: 400px;
+  }
 
-.container:hover {
-    transform: scale(1.02);
-    box-shadow: 0 3vw 6vw rgba(0,0,0,0.08);
-}
+  /* Анимации */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px);}
+    to { opacity: 1; transform: translateY(0);}
+  }
 
-/* Анимация мигания курсора */
-@keyframes blink {
-    0%, 50%, 100% {
-        border-color: #666;
-    }
-
-    25%, 75% {
-        border-color: transparent;
-    }
-}
-
-/* Адаптив */
-@media (max-width: 480px) {
-    .container {
-        padding: 4vh 4vw;
-        border-radius: 4vw;
-        box-shadow: 0 1vw 3vw rgba(0,0,0,0.1);
-    }
-
-    .code {
-        width: 15vw;
-        height: 15vw;
-        font-size: 5vw;
-    }
-
-    h1 {
-        font-size: 6vw;
-    }
-
-    .background-overlay {
-        font-size: 4.5vw;
-        padding: 1.5rem;
-    }
-    /* Общие стили для контейнера */
-    .drag-container {
-        width: 120px;
-        height: 120px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: grab;
-        position: relative;
-        margin-top: 3vh;
-    }
-
-    /* Стили для котёнка */
-    .kitten {
-        font-size: 3rem;
-        position: relative;
-        user-select: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* Слой наполнения */
-    .kitten-fill {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 0%; /* можно менять через JS для анимации */
-        background: rgba(156, 127, 255, 0.3);
-        border-radius: 50%;
-        transition: height 0.3s linear;
-        z-index: -1;
-    }
-
-        /* Пример CSS-анимации «наполнения» */
-        .kitten-fill.fill {
-            height: 100%;
-        }
-
-    /* Адаптив */
-    @media (max-width: 480px) {
-        .drag-container {
-            width: 90px;
-            height: 90px;
-        }
-
-        .kitten {
-            font-size: 2.2rem;
-        }
-    }
-}
+  .fade-in { animation: fadeIn 1s forwards; }
+</style>
