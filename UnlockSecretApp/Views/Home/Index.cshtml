@@ -104,10 +104,6 @@ document.addEventListener('touchend', cancelHold);
 
 function startHold(e) {
   e.preventDefault();
-  if (!isCodeCorrect()) {
-    alert("Введите правильный код перед удержанием!");
-    return;
-  }
   fillWidth = 0;
   kittenFill.style.width = '0%';
   holdTimeout = setInterval(() => {
@@ -115,7 +111,17 @@ function startHold(e) {
     if (fillWidth >= 100) {
       fillWidth = 100;
       clearInterval(holdTimeout);
-      showOverlay();
+
+      if (isCodeCorrect()) {
+        showOverlay();
+      } else {
+        // код неверный — сброс с анимацией
+        kittenFill.style.transition = 'width 0.3s ease';
+        kittenFill.style.width = '0%';
+        setTimeout(() => {
+          kittenFill.style.transition = '';
+        }, 300);
+      }
     }
     kittenFill.style.width = fillWidth + '%';
   }, 50);
@@ -126,6 +132,7 @@ function cancelHold() {
   kittenFill.style.width = '0%';
 }
 </script>
+
 
 
 </body>
