@@ -1,5 +1,4 @@
-﻿@page
-@{
+﻿@{
     ViewData["Title"] = "Наши числа 💞";
 }
 
@@ -26,6 +25,7 @@
         const submitBtn = document.getElementById('submitBtn');
         const message = document.getElementById('message');
 
+        // --- Инпуты ---
         inputs.forEach((input, index) => {
             input.addEventListener('input', () => {
                 if (input.value.length === 2 && index < inputs.length - 1) {
@@ -37,10 +37,17 @@
 
         function checkAllFilled() {
             const allFilled = Array.from(inputs).every(i => i.value.length === 2);
-            if (allFilled) submitBtn.classList.remove('hidden');
-            else submitBtn.classList.add('hidden');
+            if (allFilled) {
+                submitBtn.classList.remove('hidden');
+                submitBtn.style.opacity = 1;
+                submitBtn.style.pointerEvents = 'auto';
+            } else {
+                submitBtn.style.opacity = 0;
+                submitBtn.style.pointerEvents = 'none';
+            }
         }
 
+        // --- Проверка кода ---
         submitBtn.addEventListener('click', () => {
             const codeValues = Array.from(inputs).map(i => i.value).join('-');
             const correctCode = "12-07-05-23";
@@ -48,16 +55,18 @@
             else alert("Хм... что-то не так 😅");
         });
 
+        // --- Плавное исчезновение и начало сообщения ---
         function startMessageSequence() {
             document.getElementById('inputs').classList.add('fade-out');
             submitBtn.classList.add('fade-out');
             setTimeout(() => {
-                document.getElementById('inputs').style.display = 'none';
-                submitBtn.style.display = 'none';
+                document.getElementById('inputs').classList.add('hidden');
+                submitBtn.classList.add('hidden');
                 showTypingText("На самом деле это не совсем рандомные числа, и сейчас ты поймёшь почему...");
             }, 1000);
         }
 
+        // --- Печатающийся текст ---
         function showTypingText(text) {
             message.classList.remove('hidden');
             let i = 0;
@@ -74,6 +83,7 @@
             })();
         }
 
+        // --- Показ моментов ---
         function showMoments() {
             const texts = [
                 "12 — день, когда мы впервые встретились 💕",
@@ -87,7 +97,7 @@
                 if (i < texts.length) {
                     const p = document.createElement('p');
                     p.textContent = texts[i];
-                    p.classList.add('moment');
+                    p.classList.add('moment', 'fade-in');
                     message.appendChild(p);
                     i++;
                 } else clearInterval(interval);
@@ -95,3 +105,4 @@
         }
     </script>
 }
+

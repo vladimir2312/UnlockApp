@@ -30,7 +30,11 @@ public class HomeController : Controller
     private const string SecretCode = "1234"; // твой 4-значный код
 
     [HttpGet]
-    public IActionResult Index() => View();
+    public IActionResult Index()
+    {
+        ViewBag.Message = "Привет, мир!";
+        return View();
+    }
 
     [HttpPost]
     public IActionResult CheckCode(string code)
