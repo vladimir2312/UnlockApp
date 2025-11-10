@@ -3,137 +3,113 @@
 <head>
 <meta charset="UTF-8">
 <title>Кодовое окно</title>
-<link rel="stylesheet" href="~/css/main.css" />
 </head>
 <body>
 
-<div class="container" id="container">
+<div id="container">
     <h1>Введите дату</h1>
-    <div class="code-inputs">
-        <input type="text" maxlength="2" class="code" id="c1">
-        <input type="text" maxlength="2" class="code" id="c2">
-        <input type="text" maxlength="2" class="code" id="c3">
-        <input type="text" maxlength="2" class="code" id="c4">
+    <div>
+        <input type="text" maxlength="2" id="c1">
+        <input type="text" maxlength="2" id="c2">
+        <input type="text" maxlength="2" id="c3">
+        <input type="text" maxlength="2" id="c4">
     </div>
-    <div class="drag-container">
-        <div class="kitten" id="kitten">
-            <div class="kitten-fill" id="kittenFill"></div>
+    <div style="margin-top: 20px;">
+        <div id="kitten" style="width: 100px; height: 50px; background: #ccc; position: relative; cursor: pointer;">
+            <div id="kittenFill" style="width: 0%; height: 100%; background: #4fc3f7; position: absolute; top: 0; left: 0;"></div>
             🐳
         </div>
     </div>
     <div id="message"></div>
 </div>
 
-<div class="background-overlay" id="overlay">
-    <div class="typewriter" id="intro"></div>
-    <div id="details" style="margin-top: 2rem; font-size: clamp(16px, 3vw, 20px);"></div>
+<div id="overlay" style="display: none; position: fixed; inset:0; background: rgba(0,0,0,0.8); color:#fff; padding: 2rem;">
+    <div id="intro" style="opacity: 0; font-size: 1.5rem;"></div>
+    <div id="details" style="margin-top: 2rem; font-size: 1.2rem;"></div>
 </div>
 
 <script>
 const correctCode = ["12","25","07","99"];
-const inputs = Array.from(document.querySelectorAll('.code'));
+const inputs = [c1, c2, c3, c4];
 const container = document.getElementById('container');
 const overlay = document.getElementById('overlay');
 const intro = document.getElementById('intro');
 const details = document.getElementById('details');
 
-// Фокус на первый инпут
 inputs[0].focus();
 
-// Проверка введённого кода
+// Переход по инпутам
+inputs.forEach((input, i) => {
+  input.addEventListener('input', () => {
+    if (input.value.length === 2 && i < inputs.length-1) inputs[i+1].focus();
+  });
+});
+
+// Проверка кода
 function isCodeCorrect() {
   return inputs.map(i => i.value).join('') === correctCode.join('');
 }
 
-// Обработчик ввода
-inputs.forEach((input, index) => {
-  input.addEventListener('input', () => {
-    if (input.value.length === 2 && index < inputs.length - 1) {
-      inputs[index + 1].focus();
-    }
-    if (input.value.length === 0 && index > 0) {
-      inputs[index - 1].focus();
-    }
-  });
-});
-
-// Функция эффектной печати текста
-function typeWriter(element, text, delay = 50, callback = null) {
-  let i = 0;
-  element.style.opacity = 1;
-  element.textContent = "";
-  (function typing() {
-    if (i < text.length) {
-      element.textContent += text.charAt(i);
-      i++;
-      setTimeout(typing, delay);
-    } else if (callback) {
-      callback();
-    }
+// Эффект печати
+function typeWriter(el, text, delay = 50, cb=null) {
+  let i=0;
+  el.style.opacity = 1;
+  el.textContent = "";
+  (function t(){
+    if(i<text.length){el.textContent += text[i]; i++; setTimeout(t, delay);}
+    else if(cb) cb();
   })();
 }
 
 // Показ overlay
-function showOverlay() {
-  container.classList.add('hidden');
-  overlay.classList.add('show');
-
-  typeWriter(intro, "Это не совсем обычные числа и вот почему...", 50, () => {
-    typeWriter(
-      details,
-      "14 — день, когда мы познакомились 💫\n" +
-      "25 — твой любимый номер 💖\n" +
-      "07 — месяц нашего первого свидания 🌸\n" +
-      "99 — просто навсегда ♾️",
-      45
-    );
+function showOverlay(){
+  container.style.display = 'none';
+  overlay.style.display = 'block';
+  typeWriter(intro, "Это не совсем обычные числа и вот почему...",50,()=>{
+    typeWriter(details,
+      "14 — день, когда мы познакомились 💫\n"+
+      "25 — твой любимый номер 💖\n"+
+      "07 — месяц нашего первого свидания 🌸\n"+
+      "99 — просто навсегда ♾️",45);
   });
 }
 
-// Китёнок с удержанием
+// Китёнок
 const kitten = document.getElementById('kitten');
 const kittenFill = document.getElementById('kittenFill');
-let holdTimeout;
-let fillWidth = 0;
+let holdInterval, fill=0;
+
+function startHold(e){
+  e.preventDefault();
+  fill = 0;
+  kittenFill.style.width = '0%';
+  holdInterval = setInterval(()=>{
+    fill += 2;
+    if(fill>100) fill=100;
+    kittenFill.style.width = fill+'%';
+    if(fill>=100){
+      clearInterval(holdInterval);
+      if(isCodeCorrect()){
+        showOverlay();
+      } else {
+        kittenFill.style.transition='width 0.3s';
+        kittenFill.style.width='0%';
+        setTimeout(()=>{kittenFill.style.transition='';},300);
+      }
+    }
+  },50);
+}
+
+function cancelHold(){
+  clearInterval(holdInterval);
+  kittenFill.style.width='0%';
+}
 
 kitten.addEventListener('mousedown', startHold);
 kitten.addEventListener('touchstart', startHold);
-
 document.addEventListener('mouseup', cancelHold);
 document.addEventListener('touchend', cancelHold);
-
-function startHold(e) {
-  e.preventDefault();
-  fillWidth = 0;
-  kittenFill.style.width = '0%';
-  holdTimeout = setInterval(() => {
-    fillWidth += 2; // скорость заполнения
-    if (fillWidth >= 100) {
-      fillWidth = 100;
-      clearInterval(holdTimeout);
-
-      if (isCodeCorrect()) {
-        showOverlay();
-      } else {
-        // код неверный — сброс с анимацией
-        kittenFill.style.transition = 'width 0.3s ease';
-        kittenFill.style.width = '0%';
-        setTimeout(() => {
-          kittenFill.style.transition = '';
-        }, 300);
-      }
-    }
-    kittenFill.style.width = fillWidth + '%';
-  }, 50);
-}
-
-function cancelHold() {
-  clearInterval(holdTimeout);
-  kittenFill.style.width = '0%';
-}
 </script>
-
-
 
 </body>
 </html>
