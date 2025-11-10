@@ -1,117 +1,121 @@
-﻿
-
-<link rel="stylesheet" href="~/css/main.css" />
-
-<
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сюрприз для тебя</title>
-
+<meta charset="UTF-8">
+<title>Кодовое окно</title>
+<link rel="stylesheet" href="~/css/main.css" />
 </head>
 <body>
-    <div class="parallax-layer layer1"></div>
-    <div class="parallax-layer layer2"></div>
-    <canvas id="hearts"></canvas>
 
-    <div class="container">
-        <h1>💞!</h1>
-
-        <svg class="heart-svg" viewBox="0 0 32 29.6">
-            <path fill="#ff6ec7" d="M23.6,0c-2.7,0-5,1.8-6,4.3C16.4,1.8,14.1,0,11.4,0C7,0,3.4,3.6,3.4,8.1c0,4.5,8.6,10.3,13,15.5
-      c4.4-5.2,13-11,13-15.5C28.6,3.6,25,0,20.6,0H23.6z" />
-        </svg>
-
-        <div class="code-inputs">
-            <input type="text" maxlength="2" id="d1" placeholder="дд">
-            <input type="text" maxlength="2" id="d2" placeholder="мм">
-            <input type="text" maxlength="2" id="d3" placeholder="дд">
-            <input type="text" maxlength="2" id="d4" placeholder="мм">
-        </div>
-
-        <button class="btn" id="openBtn">Открыть</button>
-        <div class="message" id="message"></div>
+<div class="container" id="container">
+    <h1>Введите дату</h1>
+    <div class="code-inputs">
+        <input type="text" maxlength="2" class="code" id="c1">
+        <input type="text" maxlength="2" class="code" id="c2">
+        <input type="text" maxlength="2" class="code" id="c3">
+        <input type="text" maxlength="2" class="code" id="c4">
     </div>
+    <div class="drag-container">
+        <div class="kitten" id="kitten">
+            <div class="kitten-fill" id="kittenFill"></div>
+            🐳
+        </div>
+    </div>
+    <div id="message"></div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <script>
-        // ======= JS =======
+<div class="background-overlay" id="overlay">
+    <div class="typewriter" id="intro"></div>
+    <div id="details" style="margin-top: 2rem; font-size: clamp(16px, 3vw, 20px);"></div>
+</div>
 
-        // Canvas сердечки
-        const canvas = document.getElementById('hearts');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+<script>
+const correctCode = ["12","25","07","99"];
+const inputs = Array.from(document.querySelectorAll('.code'));
+const container = document.getElementById('container');
+const overlay = document.getElementById('overlay');
+const intro = document.getElementById('intro');
+const details = document.getElementById('details');
 
-        const hearts = [];
-        function random(min,max){ return Math.random()*(max-min)+min; }
-        class Heart {
-          constructor() {
-            this.x=random(0,canvas.width);
-            this.y=random(0,canvas.height);
-            this.size=random(10,20);
-            this.speed=random(1,3);
-            this.opacity=random(0.5,1);
-          }
-          draw(){
-            ctx.fillStyle=`rgba(255,110,199,${this.opacity})`;
-            ctx.beginPath();
-            ctx.moveTo(this.x,this.y);
-            ctx.bezierCurveTo(this.x,this.y-this.size/2,this.x-this.size,this.y-this.size/2,this.x-this.size,this.y);
-            ctx.bezierCurveTo(this.x-this.size,this.y+this.size/2,this.x,this.y+this.size/1.5,this.x,this.y+this.size);
-            ctx.bezierCurveTo(this.x,this.y+this.size/1.5,this.x+this.size,this.y+this.size/2,this.x+this.size,this.y);
-            ctx.bezierCurveTo(this.x+this.size,this.y-this.size/2,this.x,this.y-this.size/2,this.x,this.y);
-            ctx.fill();
-          }
-          update(){
-            this.y-=this.speed;
-            if(this.y<-20)this.y=canvas.height+20;
-            this.draw();
-          }
-        }
-        for(let i=0;i<30;i++)hearts.push(new Heart());
-        function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); hearts.forEach(h=>h.update()); requestAnimationFrame(animate);}
-        animate();
-        window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
+// Фокус на первый инпут
+inputs[0].focus();
 
-        // Parallax
-        const layers=document.querySelectorAll('.parallax-layer');
-        document.addEventListener('mousemove',e=>{
-          const x=e.clientX/window.innerWidth;
-          const y=e.clientY/window.innerHeight;
-          layers[0].style.transform=`translate(${x*50}px, ${y*50}px)`;
-          layers[1].style.transform=`translate(${x*100}px, ${y*100}px)`;
-        });
+// Обработчик ввода
+inputs.forEach((input, index) => {
+  input.addEventListener('input', () => {
+    if (input.value.length === 2 && index < inputs.length - 1) {
+      inputs[index + 1].focus();
+    }
+    if (input.value.length === 0 && index > 0) {
+      inputs[index - 1].focus();
+    }
+  });
+});
 
-        // ======= Логика кода =======
-        const code = "0105"; // пример правильной даты
-        const openBtn = document.getElementById('openBtn');
-        const message = document.getElementById('message');
+// Функция эффектной печати текста
+function typeWriter(element, text, delay = 50, callback = null) {
+  let i = 0;
+  element.style.opacity = 1;
+  element.textContent = "";
+  (function typing() {
+    if (i < text.length) {
+      element.textContent += text.charAt(i);
+      i++;
+      setTimeout(typing, delay);
+    } else if (callback) {
+      callback();
+    }
+  })();
+}
 
-        openBtn.addEventListener('click',()=>{
-          const inputCode = document.getElementById('d1').value+
-                            document.getElementById('d2').value+
-                            document.getElementById('d3').value+
-                            document.getElementById('d4').value;
-          if(inputCode === code){
-            confetti({ particleCount: 150, spread: 100, origin: { y:0.6 } });
-            typeMessage("Поздравляю! 🎉\nТы ввела правильную дату!\nСчастья, улыбок и любви 💖");
-          }else{
-            typeMessage("Неверная комбинация 😢\nПопробуй ещё раз...");
-          }
-        });
+// Показ overlay
+function showOverlay() {
+  container.classList.add('hidden');
+  overlay.classList.add('show');
 
-        function typeMessage(text){
-          message.textContent="";
-          let i=0;
-          const interval = setInterval(()=>{
-            message.textContent+=text[i];
-            i++;
-            if(i>=text.length)clearInterval(interval);
-          },50);
-        }
-    </script>
+  typeWriter(intro, "Это не совсем обычные числа и вот почему...", 50, () => {
+    typeWriter(
+      details,
+      "14 — день, когда мы познакомились 💫\n" +
+      "25 — твой любимый номер 💖\n" +
+      "07 — месяц нашего первого свидания 🌸\n" +
+      "99 — просто навсегда ♾️",
+      45
+    );
+  });
+}
+
+// Китёнок с удержанием (заполнение снизу вверх)
+const kitten = document.getElementById('kitten');
+const kittenFill = document.getElementById('kittenFill');
+let holdInterval;
+let fillHeight = 0;
+
+function startHold(e) {
+  e.preventDefault();
+  fillHeight = 0;
+  kittenFill.style.height = '0%';
+  holdInterval = setInterval(() => {
+    fillHeight += 2; // скорость заполнения
+    if (fillHeight >= 100) {
+      fillHeight = 100;
+      clearInterval(holdInterval);
+      showOverlay();
+    }
+    kittenFill.style.height = fillHeight + '%';
+  }, 50);
+}
+
+function cancelHold() {
+  clearInterval(holdInterval);
+  kittenFill.style.height = '0%';
+}
+
+kitten.addEventListener('mousedown', startHold);
+kitten.addEventListener('touchstart', startHold);
+document.addEventListener('mouseup', cancelHold);
+document.addEventListener('touchend', cancelHold);
+</script>
+
 </body>
 </html>
