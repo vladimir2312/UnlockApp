@@ -1,5 +1,5 @@
-﻿/* Полный CSS — замените ваш файл на этот или объедините */
-/* Общие сбросы */
+﻿/* === TELEGRAM MINI APP STYLES === */
+/* Сброс и базовая типографика */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -9,19 +9,16 @@
 
 html, body {
     height: 100dvh;
-}
-
-body {
+    min-height: 100dvh;
     background: linear-gradient(160deg, #f7fbff 0%, #fef7fb 50%, #f3f9ff 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
     overflow: hidden;
     color: #122;
 }
 
-/* Фоны-«боблы» для глубины */
+/* --- Фоновые облака (облегчённые) --- */
 .page-bg {
     position: fixed;
     inset: 0;
@@ -32,183 +29,141 @@ body {
 .blobs {
     position: absolute;
     inset: 0;
-    overflow: hidden;
 }
 
 .blob {
     position: absolute;
-    filter: blur(36px) saturate(120%);
-    opacity: 0.95;
-    transform-origin: center;
+    opacity: 0.6;
+    border-radius: 50%;
+    filter: blur(20px);
+    transform: scale(1);
+    animation: blobFloat 10s ease-in-out infinite;
 }
 
     .blob.b1 {
-        width: 520px;
-        height: 520px;
-        background: linear-gradient(45deg,#cff7ff55,#d7f6ff66);
-        border-radius: 50%;
-        top: -8%;
-        left: -12%;
-        animation: drift 12s ease-in-out infinite;
+        width: 400px;
+        height: 400px;
+        background: #cff7ff77;
+        top: -10%;
+        left: -10%;
     }
 
     .blob.b2 {
-        width: 420px;
-        height: 420px;
-        background: linear-gradient(45deg,#ffdce755,#ffe7f677);
-        border-radius: 50%;
-        bottom: -10%;
-        right: -6%;
-        animation: drift 15s ease-in-out infinite reverse;
+        width: 320px;
+        height: 320px;
+        background: #ffe7f677;
+        bottom: -8%;
+        right: -8%;
     }
 
     .blob.b3 {
-        width: 280px;
-        height: 280px;
-        background: linear-gradient(45deg,#e6f9ff66,#fff5e866);
-        border-radius: 50%;
-        top: 18%;
-        right: 18%;
-        animation: drift 18s ease-in-out infinite;
+        width: 220px;
+        height: 220px;
+        background: #fff5e877;
+        top: 25%;
+        right: 15%;
     }
 
-@keyframes drift {
-    0% {
-        transform: translateY(0) scale(1);
+@keyframes blobFloat {
+    0%,100% {
+        transform: translateY(0);
     }
 
     50% {
-        transform: translateY(18px) scale(1.06) rotate(6deg);
-    }
-
-    100% {
-        transform: translateY(0) scale(1);
+        transform: translateY(12px);
     }
 }
 
-/* Контейнер */
+/* --- Основной контейнер --- */
 #container.glass {
+    position: relative;
     z-index: 2;
     width: 92%;
-    max-width: 440px;
-    padding: 2.4rem 2.2rem;
+    max-width: 420px;
+    padding: 2rem;
     border-radius: 20px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.42), rgba(255,255,255,0.16));
-    box-shadow: 0 8px 30px rgba(12,20,30,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
-    backdrop-filter: blur(12px) saturate(120%);
+    background: rgba(255,255,255,0.55);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 1.6rem;
-    transition: transform .35s cubic-bezier(.2,.9,.3,1), opacity .35s ease;
-    border: 1px solid rgba(255,255,255,0.35);
+    gap: 1.4rem;
+    transition: opacity .3s ease, transform .3s ease;
 }
 
-/* Заголовок */
+/* --- Заголовок --- */
 .title {
     font-weight: 700;
-    font-size: 1.35rem;
-    color: #123;
-    letter-spacing: -0.2px;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.04);
+    font-size: 1.3rem;
+    color: #122;
 }
 
-/* Поля ввода */
+/* --- Поля кода --- */
 .inputs {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-top: 4px;
+    gap: 10px;
 }
 
 input.code {
-    width: 64px;
-    height: 64px;
-    border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.5);
-    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.18));
-    box-shadow: 0 6px 18px rgba(17,24,39,0.06);
-    font-size: 1.6rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    border: 1px solid rgba(180,180,200,0.4);
+    background: rgba(255,255,255,0.6);
+    font-size: 1.5rem;
     font-weight: 700;
     text-align: center;
-    color: #083;
-    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    color: #074;
 }
-
-    input.code::placeholder {
-        color: rgba(8,8,8,0.18);
-    }
 
     input.code:focus {
         outline: none;
-        transform: translateY(-4px) scale(1.02);
         border-color: rgba(100,200,255,0.9);
-        box-shadow: 0 10px 30px rgba(79,195,247,0.12);
+        background: rgba(255,255,255,0.8);
     }
 
-/* Китёнок (кнопка удержания) */
+/* --- Китёнок (кнопка удержания) --- */
 #kitten {
-    position: relative;
     width: 150px;
-    height: 72px;
+    height: 70px;
     margin: 0.6rem auto;
     border-radius: 36px;
-    overflow: hidden;
-    cursor: pointer;
-    background: linear-gradient(90deg, rgba(255,255,255,0.22), rgba(255,255,255,0.12));
+    background: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 30px rgba(12,20,30,0.07);
-    transition: transform .24s cubic-bezier(.2,.9,.3,1), box-shadow .24s ease;
-    border: 1px solid rgba(255,255,255,0.35);
+    position: relative;
+    transition: transform .25s ease;
 }
 
-    #kitten:hover {
-        transform: translateY(-6px) scale(1.02);
-        box-shadow: 0 18px 40px rgba(12,20,30,0.12);
-    }
-
     #kitten .kitten-inner {
-        z-index: 3;
-        font-size: 2.4rem;
-        pointer-events: none;
-        transform: translateY(0);
-        transition: transform .25s ease;
-    }
-
-    #kitten .face {
+        font-size: 2.2rem;
         color: #ff9bb3;
+        pointer-events: none;
     }
 
 /* Заполнение при удержании */
 #kittenFill.fill {
     position: absolute;
     inset: 0;
-    left: 0;
     width: 0%;
-    background: linear-gradient(90deg, rgba(127,219,255,0.28), rgba(255,200,235,0.22));
-    mix-blend-mode: screen;
-    z-index: 2;
+    background: linear-gradient(90deg, rgba(150,220,255,0.25), rgba(255,200,235,0.25));
+    border-radius: inherit;
     transition: width 0.2s linear;
 }
 
-/* Надпись под китёнком */
+/* Подпись */
 #message {
-    font-size: 0.98rem;
-    color: rgba(10,20,30,0.7);
+    font-size: 0.95rem;
+    color: rgba(10,20,30,0.75);
     min-height: 1.2rem;
-    transition: opacity .2s ease;
 }
 
-/* Плавный fade-out-scale при переходе к загрузке */
-.fade-out-scale {
-    opacity: 0;
-    transform: scale(.92) translateY(-6px);
-    pointer-events: none;
-}
-
-/* Overlay (loading + congrats) */
+/* --- Экраны (loading + congrats) --- */
 .overlay {
     position: fixed;
     inset: 0;
@@ -216,31 +171,30 @@ input.code {
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    backdrop-filter: blur(6px) saturate(120%);
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: none; /* отключён для Telegram */
 }
 
     .overlay.hidden {
         display: none;
     }
 
+/* --- Загрузка --- */
 .loader-card {
-    padding: 1.6rem 2rem;
+    padding: 1.5rem 2rem;
     border-radius: 14px;
-    box-shadow: 0 20px 40px rgba(10,20,30,0.14);
+    background: rgba(255,255,255,0.75);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     display: flex;
     flex-direction: column;
-    gap: 12px;
     align-items: center;
-    width: 260px;
+    gap: 10px;
 }
 
-/* Spinner */
 .spinner-svg {
-    width: 72px;
-    height: 72px;
-    transform-origin: center;
-    animation: spin 1.6s linear infinite;
+    width: 60px;
+    height: 60px;
+    animation: spin 1.4s linear infinite;
 }
 
     .spinner-svg .path {
@@ -256,25 +210,19 @@ input.code {
     }
 }
 
-.loading-text {
-    font-weight: 600;
-    color: #123;
-    letter-spacing: 0.6px;
-}
-
-/* Congratulations card */
+/* --- Экран поздравления --- */
 .congrats-card {
-    width: min(92%, 780px);
-    max-width: 620px;
-    padding: 2rem 2.2rem;
+    width: min(92%, 640px);
+    padding: 2rem;
     border-radius: 18px;
+    background: rgba(255,255,255,0.65);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 12px;
     align-items: center;
-    box-shadow: 0 24px 60px rgba(6,12,30,0.18);
-    border: 1px solid rgba(255,255,255,0.32);
+    gap: 1rem;
 }
 
 .congrats-title {
@@ -287,126 +235,37 @@ input.code {
     font-size: 1.05rem;
     color: #203;
     line-height: 1.5;
-    max-width: 600px;
 }
 
 .highlight {
-    display: inline-block;
-    margin: 0 .28rem;
     font-weight: 800;
     padding: .08rem .45rem;
     border-radius: .5rem;
     background: linear-gradient(90deg,#ffdce7,#e6f9ff);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
 }
 
-    /* Pop animation для чисел */
-    .highlight.pop {
-        transform: scale(1);
-        animation: pop .42s cubic-bezier(.2,.9,.3,1);
-    }
-
-@keyframes pop {
-    0% {
-        transform: scale(.6);
-        opacity: 0;
-    }
-
-    60% {
-        transform: scale(1.08);
-        opacity: 1;
-    }
-
-    100% {
-        transform: scale(1);
-    }
-}
-
-/* Кнопка */
+/* --- Кнопка --- */
 .btn {
-    margin-top: 8px;
+    margin-top: 10px;
     padding: .7rem 1.1rem;
     border-radius: 12px;
     background: linear-gradient(180deg,#fff 0%,#f7f7ff 100%);
-    border: 1px solid rgba(130,150,255,0.08);
-    box-shadow: 0 8px 30px rgba(16,20,40,0.06);
+    border: 1px solid rgba(130,150,255,0.1);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
     font-weight: 700;
-    cursor: pointer;
 }
 
-/* Мелкие адаптивы */
-@media (max-width:420px) {
-    #kitten {
-        width: 140px;
-        height: 64px;
-    }
-
-    input.code {
-        width: 54px;
-        height: 54px;
-        font-size: 1.45rem;
-    }
-
-}
-/* Экран чисел */
-.numbers-card {
-    width: min(90%, 620px);
-    padding: 2rem;
-    border-radius: 20px;
-    text-align: left;
-    font-family: 'Courier New', monospace;
-    white-space: pre-wrap;
-    color: #142;
-    font-size: 1.1rem;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
-    backdrop-filter: blur(10px) saturate(120%);
-    background: linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.15));
-    border: 1px solid rgba(255,255,255,0.4);
-    position: relative;
-    overflow: hidden;
-    animation: fadeInScale 0.8s ease forwards;
-}
-
-.numbers-text {
-    margin: 0;
-    opacity: 0;
-    animation: fadeIn 1s ease forwards;
-    animation-delay: 0.4s;
-}
-
-.numbers-loader {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-/* Убираем display при скрытии */
-.hidden {
-    display: none;
-}
-
-/* Повторяем spinner из загрузочного экрана */
-.numbers-loader .spinner {
-    width: 60px;
-    height: 60px;
-    border: 5px solid rgba(150, 200, 255, 0.3);
-    border-top-color: rgba(150, 200, 255, 0.9);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
+/* --- Текст печати --- */
 .typed-text {
     font-family: 'Courier New', monospace;
     white-space: pre-wrap;
     text-align: left;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     color: #1b1b1b;
     line-height: 1.6;
-    min-height: 220px;
+    min-height: 200px;
 }
 
-/* Отдельный курсор — аккуратный и узкий */
 #typedCursor {
     display: inline-block;
     width: 3px;
@@ -423,3 +282,16 @@ input.code {
     }
 }
 
+/* --- Мобильная адаптация --- */
+@media (max-width:420px) {
+    input.code {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+
+    #kitten {
+        width: 130px;
+        height: 60px;
+    }
+}
