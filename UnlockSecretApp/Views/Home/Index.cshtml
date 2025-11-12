@@ -1,116 +1,238 @@
-﻿<!DOCTYPE html>
+﻿
+@* Поместите этот код в вашу Razor-страницу (главная). *@
+@{
+    Layout = null;
+}
+<!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<title>Кодовое окно</title>
-<link rel="stylesheet" href="~/css/main.css" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>MiniApp — Ввод кода</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/main.css" />
 </head>
 <body>
-
-<div id="container">
-    <h1>Введите дату</h1>
-    <div>
-        <input type="text" maxlength="2" id="c1">
-        <input type="text" maxlength="2" id="c2">
-        <input type="text" maxlength="2" id="c3">
-        <input type="text" maxlength="2" id="c4">
-    </div>
-    <div style="margin-top: 20px;">
-        <div id="kitten" style="width: 100px; height: 50px; background: #ccc; position: relative; cursor: pointer;">
-            <div id="kittenFill" style="width: 0%; height: 100%; background: #4fc3f7; position: absolute; top: 0; left: 0;"></div>
-            🐳
+    <div class="page-bg">
+        <div class="blobs">
+            <div class="blob b1"></div>
+            <div class="blob b2"></div>
+            <div class="blob b3"></div>
         </div>
     </div>
-    <div id="message"></div>
-</div>
 
-<div id="overlay" style="display: none; position: fixed; inset:0; background: rgba(0,0,0,0.8); color:#fff; padding: 2rem;">
-    <div id="intro" style="opacity: 0; font-size: 1.5rem;"></div>
-    <div id="details" style="margin-top: 2rem; font-size: 1.2rem;"></div>
-</div>
+    <main id="container" class="glass">
+        <h1 class="title">Введи секретный 4-значный код</h1>
 
-<script>
-const correctCode = ["12","25","07","99"];
-const inputs = [c1, c2, c3, c4];
-const container = document.getElementById('container');
-const overlay = document.getElementById('overlay');
-const intro = document.getElementById('intro');
-const details = document.getElementById('details');
+        <div class="inputs" aria-label="Код">
+            <input inputmode="numeric" pattern="[0-9]*" maxlength="1" class="code" />
+            <input inputmode="numeric" pattern="[0-9]*" maxlength="1" class="code" />
+            <input inputmode="numeric" pattern="[0-9]*" maxlength="1" class="code" />
+            <input inputmode="numeric" pattern="[0-9]*" maxlength="1" class="code" />
+        </div>
 
-inputs[0].focus();
+        <div id="kitten" title="Удерживай, чтобы открыть">
+            <div id="kittenFill" class="fill"></div>
+            <div class="kitten-inner">🐳</div>
 
-// Переход по инпутам
-inputs.forEach((input, i) => {
-  input.addEventListener('input', () => {
-    if (input.value.length === 2 && i < inputs.length-1) inputs[i+1].focus();
-  });
-});
 
-// Проверка кода
-function isCodeCorrect() {
-  return inputs.map(i => i.value).join('') === correctCode.join('');
-}
+        </div>
 
-// Эффект печати
-function typeWriter(el, text, delay = 50, cb=null) {
-  let i=0;
-  el.style.opacity = 1;
-  el.textContent = "";
-  (function t(){
-    if(i<text.length){el.textContent += text[i]; i++; setTimeout(t, delay);}
-    else if(cb) cb();
-  })();
-}
+        <div id="message">Удерживай китёнка, чтобы увидеть сюрприз</div>
+    </main>
 
-// Показ overlay
-function showOverlay(){
-  container.style.display = 'none';
-  overlay.style.display = 'block';
-  typeWriter(intro, "Это не совсем обычные числа и вот почему...",50,()=>{
-    typeWriter(details,
-      "14 — день, когда мы познакомились 💫\n"+
-      "25 — твой любимый номер 💖\n"+
-      "07 — месяц нашего первого свидания 🌸\n"+
-      "99 — просто навсегда ♾️",45);
-  });
-}
+    <!-- Overlay загрузки -->
+    <div id="loaderOverlay" class="overlay hidden">
+        <div class="loader-card glass">
+            <div class="spinner" aria-hidden="true">
+                <svg viewBox="0 0 50 50" class="spinner-svg">
+                    <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
+                </svg>
+            </div>
+            <div class="loading-text">Loading...</div>
+        </div>
+    </div>
 
-// Китёнок
-const kitten = document.getElementById('kitten');
-const kittenFill = document.getElementById('kittenFill');
-let holdInterval, fill=0;
+    <!-- Экран поздравления (появляется после загрузки) -->
+    <div id="congrats" class="overlay hidden">
+        <div class="congrats-card glass">
+            <h2 id="congratsTitle" class="congrats-title">С днём рождения, милaя!</h2>
+            <pre id="typedText"><span id="typedCursor"></span></pre>
 
-function startHold(e){
-  e.preventDefault();
-  fill = 0;
-  kittenFill.style.width = '0%';
-  holdInterval = setInterval(()=>{
-    fill += 2;
-    if(fill>100) fill=100;
-    kittenFill.style.width = fill+'%';
-    if(fill>=100){
-      clearInterval(holdInterval);
-      if(isCodeCorrect()){
-        showOverlay();
-      } else {
-        kittenFill.style.transition='width 0.3s';
-        kittenFill.style.width='0%';
-        setTimeout(()=>{kittenFill.style.transition='';},300);
-      }
-    }
-  },50);
-}
+            <div id="loadingAfterText" class="numbers-loader hidden">
+                <div class="spinner"></div>
+                <div class="loading-text">Loading...</div>
+            </div>
+   
+        </div>
+    </div>
 
-function cancelHold(){
-  clearInterval(holdInterval);
-  kittenFill.style.width='0%';
-}
+   
 
-kitten.addEventListener('mousedown', startHold);
-kitten.addEventListener('touchstart', startHold);
-document.addEventListener('mouseup', cancelHold);
-document.addEventListener('touchend', cancelHold);
-</script>
+
+    <script>
+        /* Логика: фокус перемещается между полями, удержание китёнка запускает заполнение,
+           по завершении — показываем загрузку 2.5с, затем экран поздравления. */
+        (() => {
+          const inputs = Array.from(document.querySelectorAll('.code'));
+          inputs.forEach((inp, i) => {
+            inp.addEventListener('input', e => {
+              const v = e.target.value.replace(/\D/g,'').slice(0,1);
+              e.target.value = v;
+              if (v && i < inputs.length - 1) inputs[i+1].focus();
+            });
+            inp.addEventListener('keydown', e => {
+              if (e.key === 'Backspace' && !e.target.value && i > 0) {
+                inputs[i-1].focus();
+              }
+              if (e.key === 'ArrowLeft' && i>0) inputs[i-1].focus();
+              if (e.key === 'ArrowRight' && i<inputs.length-1) inputs[i+1].focus();
+            });
+          });
+
+          const kitten = document.getElementById('kitten');
+          const fill = document.getElementById('kittenFill');
+          const message = document.getElementById('message');
+          const loader = document.getElementById('loaderOverlay');
+          const congrats = document.getElementById('congrats');
+          const againBtn = document.getElementById('againBtn');
+
+          let holdTimer = null;
+          let progress = 0;
+          let progressInterval = null;
+          const HOLD_DURATION = 1800; // ms для заполнения
+
+          function startHold() {
+            clearInterval(progressInterval);
+            progress = 0;
+            fill.style.width = '0%';
+            fill.style.transition = `width ${HOLD_DURATION}ms linear`;
+            // start visual by setting width to 100% (using transition)
+            requestAnimationFrame(() => {
+              fill.style.width = '100%';
+            });
+            holdTimer = setTimeout(() => {
+              // completed hold
+              onCompleteHold();
+            }, HOLD_DURATION);
+            message.textContent = 'Держи...';
+            kitten.classList.add('holding');
+          }
+          function cancelHold() {
+            clearTimeout(holdTimer);
+            fill.style.transition = 'width 250ms ease';
+            fill.style.width = '0%';
+            message.textContent = 'Удерживай китёнка, чтобы увидеть сюрприз';
+            kitten.classList.remove('holding');
+          }
+
+          // для мыши/тача
+          kitten.addEventListener('pointerdown', e => {
+            e.preventDefault();
+            startHold();
+            kitten.setPointerCapture && kitten.setPointerCapture(e.pointerId);
+          });
+          kitten.addEventListener('pointerup', e => {
+            cancelHold();
+          });
+          kitten.addEventListener('pointerleave', e => {
+            cancelHold();
+          });
+
+          // клавиша Enter имитирует удержание (короткое)
+          document.addEventListener('keydown', e => {
+            if (e.key === 'Enter') {
+              startHold();
+              setTimeout(() => cancelHold(), HOLD_DURATION + 50);
+            }
+          });
+
+          function onCompleteHold() {
+            // плавный hide main -> показать loader -> через 2.5s показать congrats
+            const main = document.getElementById('container');
+            main.classList.add('fade-out-scale');
+            setTimeout(() => {
+              showLoaderThenCongrats();
+            }, 350);
+          }
+
+          function showLoaderThenCongrats() {
+            loader.classList.remove('hidden');
+            // имитируем загрузку 2.5-3s
+            setTimeout(() => {
+              loader.classList.add('hidden');
+              showCongrats();
+            }, 2500);
+          }
+
+                        function showCongrats() {
+            const congrats = document.getElementById('congrats');
+            const textElem = document.getElementById('typedText');
+            const cursor = document.getElementById('typedCursor');
+            const loader = document.getElementById('loadingAfterText');
+
+            congrats.classList.remove('hidden');
+            loader.classList.add('hidden');
+
+            // создаем текстовый узел отдельно, курсор останется вне текста
+            const textNode = document.createTextNode('');
+            textElem.innerHTML = '';
+            textElem.appendChild(textNode);
+            textElem.appendChild(cursor);
+
+            const message =
+        `Это не совсем обычные числа и вот почему...
+
+        14 — день, когда мы познакомились 💫
+        25 — твой любимый номер 💖
+        07 — месяц нашего первого свидания 🌸
+        99 — просто навсегда ♾️`;
+
+            let i = 0;
+
+            function type() {
+                if (i < message.length) {
+                    textNode.data += message.charAt(i); // добавляем символ к текстовому узлу
+                    i++;
+                    setTimeout(type, 45);
+                } else {
+                    setTimeout(() => {
+                        loader.classList.remove('hidden');
+                        setTimeout(() => {
+                            loader.classList.add('hidden');
+                            alert('➡ Здесь будет переход на финальный экран поздравления 💖');
+                        }, 3000);
+                    }, 800);
+                }
+            }
+
+            type();
+        }
+
+          againBtn.addEventListener('click', () => {
+            // сбросим всё в исходное состояние
+            congrats.classList.add('hidden');
+            document.getElementById('container').classList.remove('fade-out-scale');
+            inputs.forEach(i => i.value = '');
+            inputs[0].focus();
+            message.textContent = 'Удерживай китёнка, чтобы увидеть сюрприз';
+          });
+
+          // автофокус на первое поле
+          inputs[0].focus();
+        })();
+                // На кнопку "Ещё раз" теперь добавим переход на numbersScreen
+        againBtn.addEventListener('click', () => {
+          congrats.classList.add('hidden');
+          document.getElementById('numbersScreen').classList.remove('hidden');
+          startTypingNumbers();
+        });
+
+        // Функция "печатает" текст построчно
+       
+
+    </script>
 
 </body>
 </html>
+
