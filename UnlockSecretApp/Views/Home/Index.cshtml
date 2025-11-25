@@ -9,14 +9,28 @@
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>💖 MiniApp — Ввод кода</title>
 
-    <!-- Оптимизация для Telegram WebView -->
     <meta name="theme-color" content="#ffffff">
     <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <meta name="telegram-enable-debug" content="true">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/main.css" />
-
+    <style>
+        .overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            z-index: 100;
+            transition: opacity 0.5s ease;
+        }
+        .overlay.hidden { display: none; }
+        .congrats-card { padding: 2rem; text-align: center; border-radius: 2rem; }
+        .btn-next { margin-top: 1.5rem; padding: 0.5rem 1rem; border-radius: 1rem; background: #fff; cursor: pointer; }
+    </style>
 </head>
 
 <body>
@@ -38,7 +52,7 @@
         <div id="message">Удерживай китёнка, чтобы увидеть сюрприз</div>
     </main>
 
-    <!-- Overlay загрузки -->
+    <!-- Загрузка -->
     <div id="loaderOverlay" class="overlay hidden">
         <div class="loader-card glass">
             <div class="spinner">
@@ -50,102 +64,136 @@
         </div>
     </div>
 
-    <!-- Экран поздравления -->
-    <div id="congrats" class="overlay hidden">
+    <!-- Страница 1: Поздравление с датами -->
+    <div id="page1" class="overlay hidden">
         <div class="congrats-card glass">
             <h2 class="congrats-title">С днём рождения, милая! 💖</h2>
             <pre id="typedText"><span id="typedCursor"></span></pre>
+            <button class="btn-next" id="next1">Далее ➡️</button>
+        </div>
+    </div>
+
+    <!-- Страница 2: Пустая с сюрпризом -->
+    <div id="page2" class="overlay hidden">
+        <div class="congrats-card glass">
+            <h2>🌸 Продолжение сюрприза!</h2>
+            <p>Здесь можно добавить новый текст или картинку.</p>
+            <button class="btn-next" id="next2">Далее ➡️</button>
+        </div>
+    </div>
+
+    <!-- Страница 3: Ещё один сюрприз -->
+    <div id="page3" class="overlay hidden">
+        <div class="congrats-card glass">
+            <h2>💫 Маленький бонус</h2>
+            <p>Можно добавить анимацию, сердечки, gif или картинку.</p>
+            <button class="btn-next" id="next3">Далее ➡️</button>
+        </div>
+    </div>
+
+    <!-- Страница 4: Финальная страница -->
+    <div id="page4" class="overlay hidden">
+        <div class="congrats-card glass">
+            <h2>💖 Финал сюрприза</h2>
+            <p>Последнее послание или интерактивный элемент.</p>
         </div>
     </div>
 
     <script>
-                (() => {
-                    const inputs = [...document.querySelectorAll('.code')];
-                    const kitten = document.getElementById('kitten');
-                    const fill = document.getElementById('kittenFill');
-                    const loader = document.getElementById('loaderOverlay');
-                    const congrats = document.getElementById('congrats');
-                    const message = document.getElementById('message');
+        (() => {
+            const inputs = [...document.querySelectorAll('.code')];
+            const kitten = document.getElementById('kitten');
+            const fill = document.getElementById('kittenFill');
+            const loader = document.getElementById('loaderOverlay');
+            const message = document.getElementById('message');
 
-                    const HOLD_DURATION = 1500;
-                    let holdTimer;
+            const HOLD_DURATION = 1500;
+            let holdTimer;
 
-                    inputs.forEach((inp, i) => {
-                        inp.addEventListener('input', e => {
-                            e.target.value = e.target.value.replace(/\D/g, '').slice(0, 1);
-                            if (e.target.value && i < inputs.length - 1)
-                                inputs[i + 1].focus();
-                        });
-                    });
+            inputs.forEach((inp, i) => {
+                inp.addEventListener('input', e => {
+                    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 1);
+                    if (e.target.value && i < inputs.length - 1)
+                        inputs[i + 1].focus();
+                });
+            });
 
-                    function startHold() {
-                        fill.style.width = '100%';
-                        fill.style.transition = `width ${HOLD_DURATION}ms linear`;
-                        kitten.classList.add('holding');
-                        message.textContent = 'Держи...';
+            function startHold() {
+                fill.style.width = '100%';
+                fill.style.transition = `width ${HOLD_DURATION}ms linear`;
+                kitten.classList.add('holding');
+                message.textContent = 'Держи...';
+                holdTimer = setTimeout(() => onCompleteHold(), HOLD_DURATION);
+            }
 
-                        holdTimer = setTimeout(() => onCompleteHold(), HOLD_DURATION);
-                    }
+            function cancelHold() {
+                clearTimeout(holdTimer);
+                fill.style.transition = 'width 250ms ease';
+                fill.style.width = '0%';
+                kitten.classList.remove('holding');
+                message.textContent = 'Удерживай китёнка, чтобы увидеть сюрприз';
+            }
 
-                    function cancelHold() {
-                        clearTimeout(holdTimer);
-                        fill.style.transition = 'width 250ms ease';
-                        fill.style.width = '0%';
-                        kitten.classList.remove('holding');
-                        message.textContent = 'Удерживай китёнка, чтобы увидеть сюрприз';
-                    }
+            kitten.addEventListener('pointerdown', e => { e.preventDefault(); startHold(); });
+            kitten.addEventListener('pointerup', cancelHold);
+            kitten.addEventListener('pointerleave', cancelHold);
 
-                    kitten.addEventListener('pointerdown', e => {
-                        e.preventDefault();
-                        startHold();
-                    });
+            function onCompleteHold() {
+                document.getElementById('container').classList.add('fade-out-scale');
+                setTimeout(() => {
+                    loader.classList.remove('hidden');
+                    setTimeout(() => {
+                        loader.classList.add('hidden');
+                        showPage1();
+                    }, 2200);
+                }, 300);
+            }
 
-                    kitten.addEventListener('pointerup', cancelHold);
-                    kitten.addEventListener('pointerleave', cancelHold);
+            function showPage1() {
+                const page = document.getElementById('page1');
+                page.classList.remove('hidden');
+                const textElem = document.getElementById('typedText');
+                const cursor = document.getElementById('typedCursor');
+                const textNode = document.createTextNode('');
+                textElem.innerHTML = '';
+                textElem.appendChild(textNode);
+                textElem.appendChild(cursor);
 
-                    function onCompleteHold() {
-                        document.getElementById('container').classList.add('fade-out-scale');
-                        setTimeout(() => {
-                            loader.classList.remove('hidden');
-                            setTimeout(() => {
-                                loader.classList.add('hidden');
-                                showCongrats();
-                            }, 2200);
-                        }, 300);
-                    }
-
-                    function showCongrats() {
-                        congrats.classList.remove('hidden');
-                        const textElem = document.getElementById('typedText');
-                        const cursor = document.getElementById('typedCursor');
-                        const textNode = document.createTextNode('');
-                        textElem.innerHTML = '';
-                        textElem.appendChild(textNode);
-                        textElem.appendChild(cursor);
-
-                        const message = `Это не просто числа... 🌸
+                const messageText = `Это не просто числа... 🌸
 
         14 — день, когда мы познакомились 💫
         25 — твой любимый номер 💖
         07 — месяц первого свидания 🌷
         99 — просто навсегда ♾️`;
 
-                        let i = 0;
-                        function type() {
-                            if (i < message.length) {
-                                textNode.data += message.charAt(i);
-                                i++;
-                                setTimeout(type, 45);
-                            } else {
-                                cursor.style.display = 'none';
-                            }
-                        }
-                        type();
-                    }
+                let i = 0;
+                function type() {
+                    if (i < messageText.length) {
+                        textNode.data += messageText.charAt(i);
+                        i++;
+                        setTimeout(type, 45);
+                    } else { cursor.style.display = 'none'; }
+                }
+                type();
+            }
 
-                    inputs[0].focus();
-                })();
+            document.getElementById('next1').addEventListener('click', () => {
+                document.getElementById('page1').classList.add('hidden');
+                document.getElementById('page2').classList.remove('hidden');
+            });
+
+            document.getElementById('next2').addEventListener('click', () => {
+                document.getElementById('page2').classList.add('hidden');
+                document.getElementById('page3').classList.remove('hidden');
+            });
+
+            document.getElementById('next3').addEventListener('click', () => {
+                document.getElementById('page3').classList.add('hidden');
+                document.getElementById('page4').classList.remove('hidden');
+            });
+
+            inputs[0].focus();
+        })();
     </script>
 </body>
 </html>
-
