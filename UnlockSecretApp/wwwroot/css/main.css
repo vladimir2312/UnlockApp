@@ -1,10 +1,14 @@
-﻿/* === TELEGRAM MINI APP STYLES === */
+﻿/* === TELEGRAM MINI APP STYLES (обновлено) === */
+
+/* Подключаем красивый рукописный шрифт через Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
+
 /* Сброс и базовая типографика */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Dancing Script', cursive, 'Segoe UI', system-ui, -apple-system, sans-serif;
 }
 
 html, body {
@@ -15,7 +19,7 @@ html, body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    color: #122;
+    color: #5a2b6d; /* нежный фиолетово-розовый цвет текста */
 }
 
 /* --- Фоновые облака (облегчённые) --- */
@@ -95,8 +99,8 @@ html, body {
 /* --- Заголовок --- */
 .title {
     font-weight: 700;
-    font-size: 1.3rem;
-    color: #122;
+    font-size: 2rem; /* чуть больше для праздничного эффекта */
+    color: #a64ca6; /* нежный фиолетово-розовый */
 }
 
 /* --- Поля кода --- */
@@ -111,17 +115,17 @@ input.code {
     height: 60px;
     border-radius: 12px;
     border: 1px solid rgba(180,180,200,0.4);
-    background: rgba(255,255,255,0.6);
+    background: rgba(255,240,250,0.7); /* мягкий сиренево-розовый */
     font-size: 1.5rem;
     font-weight: 700;
     text-align: center;
-    color: #074;
+    color: #5a2b6d; /* текст совпадает с заголовком */
 }
 
     input.code:focus {
         outline: none;
-        border-color: rgba(100,200,255,0.9);
-        background: rgba(255,255,255,0.8);
+        border-color: rgba(200,150,255,0.9);
+        background: rgba(255,245,255,0.85);
     }
 
 /* --- Китёнок (кнопка удержания) --- */
@@ -151,7 +155,7 @@ input.code {
     position: absolute;
     inset: 0;
     width: 0%;
-    background: linear-gradient(90deg, rgba(150,220,255,0.25), rgba(255,200,235,0.25));
+    background: linear-gradient(90deg, rgba(255,200,235,0.25), rgba(200,180,255,0.25));
     border-radius: inherit;
     transition: width 0.2s linear;
 }
@@ -159,58 +163,11 @@ input.code {
 /* Подпись */
 #message {
     font-size: 0.95rem;
-    color: rgba(10,20,30,0.75);
+    color: rgba(90,40,100,0.75);
     min-height: 1.2rem;
 }
 
-/* --- Экраны (loading + congrats) --- */
-.overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 30;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,0.7);
-    backdrop-filter: none; /* отключён для Telegram */
-}
-
-    .overlay.hidden {
-        display: none;
-    }
-
-/* --- Загрузка --- */
-.loader-card {
-    padding: 1.5rem 2rem;
-    border-radius: 14px;
-    background: rgba(255,255,255,0.75);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.spinner-svg {
-    width: 60px;
-    height: 60px;
-    animation: spin 1.4s linear infinite;
-}
-
-    .spinner-svg .path {
-        stroke: rgba(90,170,255,0.88);
-        stroke-linecap: round;
-        stroke-dasharray: 90;
-        stroke-dashoffset: 60;
-    }
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* --- Экран поздравления --- */
+/* --- Экраны поздравлений --- */
 .congrats-card {
     width: min(92%, 640px);
     padding: 2rem;
@@ -226,42 +183,37 @@ input.code {
 }
 
 .congrats-title {
-    font-size: 1.6rem;
+    font-size: 2rem;
     font-weight: 800;
-    color: #142;
+    color: #a64ca6;
+    font-family: 'Dancing Script', cursive;
 }
 
 .congrats-body {
     font-size: 1.05rem;
-    color: #203;
+    color: #5a2b6d;
     line-height: 1.5;
 }
 
-.highlight {
-    font-weight: 800;
-    padding: .08rem .45rem;
-    border-radius: .5rem;
-    background: linear-gradient(90deg,#ffdce7,#e6f9ff);
-}
-
-/* --- Кнопка --- */
+/* Кнопка */
 .btn {
     margin-top: 10px;
     padding: .7rem 1.1rem;
     border-radius: 12px;
-    background: linear-gradient(180deg,#fff 0%,#f7f7ff 100%);
-    border: 1px solid rgba(130,150,255,0.1);
+    background: linear-gradient(180deg,#fff0ff 0%,#f7f0ff 100%);
+    border: 1px solid rgba(200,150,255,0.2);
     box-shadow: 0 6px 18px rgba(0,0,0,0.06);
     font-weight: 700;
+    color: #5a2b6d;
 }
 
-/* --- Текст печати --- */
+/* Текст печати */
 .typed-text {
-    font-family: 'Courier New', monospace;
+    font-family: 'Dancing Script', cursive;
     white-space: pre-wrap;
     text-align: left;
-    font-size: 1.1rem;
-    color: #1b1b1b;
+    font-size: 1.2rem;
+    color: #5a2b6d;
     line-height: 1.6;
     min-height: 200px;
 }
@@ -270,19 +222,13 @@ input.code {
     display: inline-block;
     width: 3px;
     height: 1.2em;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(90,40,100,0.7);
     margin-left: 2px;
     animation: blinkCursor 0.8s step-end infinite;
     vertical-align: bottom;
 }
 
-@keyframes blinkCursor {
-    50% {
-        opacity: 0;
-    }
-}
-
-/* --- Мобильная адаптация --- */
+/* Мобильная адаптация */
 @media (max-width:420px) {
     input.code {
         width: 50px;
