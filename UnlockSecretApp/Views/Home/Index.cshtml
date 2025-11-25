@@ -21,25 +21,17 @@
             font-family: sans-serif;
         }
 
-        #container {
-            position: relative;
-            min-height: 100vh;
-            padding: 2rem;
-            text-align: center;
-            overflow: hidden;
-        }
-
-        /* Фоновое изображение */
+        /* Фон на весь экран */
         .background {
-            position: absolute;
+            position: fixed;
             inset: 0;
             background: url('/images/background.jpg') center/cover no-repeat;
             filter: blur(10px) brightness(0.7);
             z-index: 0;
         }
 
-        /* Элементы поверх фона */
-        #container > *:not(.background) {
+        /* Все остальные элементы поверх фона */
+        #container, .overlay {
             position: relative;
             z-index: 1;
         }
@@ -52,7 +44,6 @@
             align-items: center;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
-            z-index: 100;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -147,10 +138,11 @@
 </head>
 
 <body>
-    <main id="container">
-        <!-- Фон -->
-        <div class="background"></div>
+    <!-- Фон на весь экран -->
+    <div class="background"></div>
 
+    <!-- Главный экран -->
+    <main id="container">
         <h1 class="title">Введи секретный 4-значный код</h1>
 
         <div class="inputs" aria-label="Код">
@@ -175,7 +167,7 @@
         </div>
     </div>
 
-    <!-- Поздравления -->
+    <!-- Поздравительные страницы -->
     <div id="page1" class="overlay hidden">
         <div class="congrats-card glass">
             <h2 class="congrats-title">С днём рождения, милая! 💖</h2>
@@ -287,3 +279,4 @@
     </script>
 </body>
 </html>
+
