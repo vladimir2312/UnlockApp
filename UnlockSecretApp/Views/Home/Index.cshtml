@@ -138,16 +138,21 @@
             kitten.addEventListener('pointerup', cancelHold);
             kitten.addEventListener('pointerleave', cancelHold);
 
-            function onCompleteHold() {
-                document.getElementById('container').classList.add('fade-out-scale');
+                    function onCompleteHold() {
+            // Снимаем фокус и скрываем клавиатуру
+            inputs.forEach(inp => inp.blur());
+            setTimeout(() => window.scrollTo(0, 0), 50);
+
+            document.getElementById('container').classList.add('fade-out-scale');
+            setTimeout(() => {
+                loader.classList.remove('hidden');
                 setTimeout(() => {
-                    loader.classList.remove('hidden');
-                    setTimeout(() => {
-                        loader.classList.add('hidden');
-                        showPage1();
-                    }, 2200);
-                }, 300);
-            }
+                    loader.classList.add('hidden');
+                    showPage1();
+                }, 2200);
+            }, 300);
+        }
+
 
             function showPage1() {
                 const page = document.getElementById('page1');
