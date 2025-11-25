@@ -16,6 +16,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/main.css" />
     <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+        }
+
         .overlay {
             position: fixed;
             inset: 0;
@@ -25,11 +30,98 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(15px);
             z-index: 100;
-            transition: opacity 0.5s ease;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            transform: scale(0.95);
         }
-        .overlay.hidden { display: none; }
-        .congrats-card { padding: 2rem; text-align: center; border-radius: 2rem; }
-        .btn-next { margin-top: 1.5rem; padding: 0.5rem 1rem; border-radius: 1rem; background: #fff; cursor: pointer; }
+
+            .overlay.show {
+                opacity: 1;
+                pointer-events: all;
+                transform: scale(1);
+            }
+
+            .overlay.hidden {
+                display: none;
+            }
+
+        .congrats-card {
+            padding: 2rem;
+            text-align: center;
+            border-radius: 2rem;
+        }
+
+        .btn-next {
+            margin-top: 1.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            background: #fff;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+            .btn-next:hover {
+                transform: scale(1.05);
+            }
+
+        #container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .inputs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .code {
+            width: 3rem;
+            font-size: 2rem;
+            text-align: center;
+            border-radius: 0.5rem;
+            border: 2px solid #fff;
+            background: rgba(255,255,255,0.2);
+            color: #000;
+        }
+
+        #kitten {
+            margin: 2rem auto;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            z-index: 0;
+            transition: width 1.5s linear;
+        }
+
+        .kitten-inner {
+            font-size: 2.5rem;
+            z-index: 1;
+        }
+
+        .fade-out-scale {
+            opacity: 0;
+            transform: scale(0.95);
+            transition: all 0.5s ease;
+        }
     </style>
 </head>
 
@@ -38,10 +130,10 @@
         <h1 class="title">Введи секретный 4-значный код</h1>
 
         <div class="inputs" aria-label="Код">
-            <input inputmode="numeric" maxlength="1" class="code" />
-            <input inputmode="numeric" maxlength="1" class="code" />
-            <input inputmode="numeric" maxlength="1" class="code" />
-            <input inputmode="numeric" maxlength="1" class="code" />
+            <input inputmode="numeric" maxlength="2" class="code" value="00" />
+            <input inputmode="numeric" maxlength="2" class="code" value="00" />
+            <input inputmode="numeric" maxlength="2" class="code" value="00" />
+            <input inputmode="numeric" maxlength="2" class="code" value="00" />
         </div>
 
         <div id="kitten" title="Удерживай, чтобы открыть">
@@ -52,19 +144,14 @@
         <div id="message">Удерживай китёнка, чтобы увидеть сюрприз</div>
     </main>
 
-    <!-- Загрузка -->
+    <!-- Loader -->
     <div id="loaderOverlay" class="overlay hidden">
-        <div class="loader-card glass">
-            <div class="spinner">
-                <svg viewBox="0 0 50 50" class="spinner-svg">
-                    <circle class="path" cx="25" cy="25" r="20" fill="none" stroke-width="4"></circle>
-                </svg>
-            </div>
+        <div class="congrats-card glass">
             <div class="loading-text">Loading...</div>
         </div>
     </div>
 
-    <!-- Страница 1: Поздравление с датами -->
+    <!-- Страницы поздравления -->
     <div id="page1" class="overlay hidden">
         <div class="congrats-card glass">
             <h2 class="congrats-title">С днём рождения, милая! 💖</h2>
@@ -73,7 +160,6 @@
         </div>
     </div>
 
-    <!-- Страница 2: Пустая с сюрпризом -->
     <div id="page2" class="overlay hidden">
         <div class="congrats-card glass">
             <h2>🌸 Продолжение сюрприза!</h2>
@@ -82,7 +168,6 @@
         </div>
     </div>
 
-    <!-- Страница 3: Ещё один сюрприз -->
     <div id="page3" class="overlay hidden">
         <div class="congrats-card glass">
             <h2>💫 Маленький бонус</h2>
@@ -91,7 +176,6 @@
         </div>
     </div>
 
-    <!-- Страница 4: Финальная страница -->
     <div id="page4" class="overlay hidden">
         <div class="congrats-card glass">
             <h2>💖 Финал сюрприза</h2>
@@ -108,94 +192,71 @@
             const message = document.getElementById('message');
 
             const HOLD_DURATION = 1500;
+            const correctCode = ['00','00','00','00']; // правильный код
             let holdTimer;
 
             inputs.forEach((inp, i) => {
+                inp.addEventListener('focus', () => { if(inp.value==='00') inp.value=''; });
+                inp.addEventListener('blur', () => { if(inp.value==='') inp.value='00'; });
                 inp.addEventListener('input', e => {
-                    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 1);
-                    if (e.target.value && i < inputs.length - 1)
-                        inputs[i + 1].focus();
+                    e.target.value = e.target.value.replace(/\D/g,'').slice(0,2);
+                    if(e.target.value.length===2 && i<inputs.length-1) inputs[i+1].focus();
                 });
             });
 
-            function startHold() {
-                fill.style.width = '100%';
-                fill.style.transition = `width ${HOLD_DURATION}ms linear`;
+            function startHold(){
+                fill.style.width='100%';
+                fill.style.transition=`width ${HOLD_DURATION}ms linear`;
                 kitten.classList.add('holding');
-                message.textContent = 'Держи...';
-                holdTimer = setTimeout(() => onCompleteHold(), HOLD_DURATION);
+                message.textContent='Держи...';
+                holdTimer=setTimeout(onCompleteHold,HOLD_DURATION);
             }
 
-            function cancelHold() {
+            function cancelHold(){
                 clearTimeout(holdTimer);
-                fill.style.transition = 'width 250ms ease';
-                fill.style.width = '0%';
+                fill.style.transition='width 250ms ease';
+                fill.style.width='0%';
                 kitten.classList.remove('holding');
-                message.textContent = 'Удерживай китёнка, чтобы увидеть сюрприз';
+                message.textContent='Удерживай китёнка, чтобы увидеть сюрприз';
             }
 
-            kitten.addEventListener('pointerdown', e => { e.preventDefault(); startHold(); });
+            kitten.addEventListener('pointerdown', e=>{e.preventDefault(); startHold();});
             kitten.addEventListener('pointerup', cancelHold);
             kitten.addEventListener('pointerleave', cancelHold);
 
-                    function onCompleteHold() {
-            // Снимаем фокус и скрываем клавиатуру
-            inputs.forEach(inp => inp.blur());
-            setTimeout(() => window.scrollTo(0, 0), 50);
-
-            document.getElementById('container').classList.add('fade-out-scale');
-            setTimeout(() => {
-                loader.classList.remove('hidden');
-                setTimeout(() => {
-                    loader.classList.add('hidden');
-                    showPage1();
-                }, 2200);
-            }, 300);
-        }
-
-
-            function showPage1() {
-                const page = document.getElementById('page1');
-                page.classList.remove('hidden');
-                const textElem = document.getElementById('typedText');
-                const cursor = document.getElementById('typedCursor');
-                const textNode = document.createTextNode('');
-                textElem.innerHTML = '';
-                textElem.appendChild(textNode);
-                textElem.appendChild(cursor);
-
-                const messageText = `Это не просто числа... 🌸
-
-        14 — день, когда мы познакомились 💫
-        25 — твой любимый номер 💖
-        07 — месяц первого свидания 🌷
-        99 — просто навсегда ♾️`;
-
-                let i = 0;
-                function type() {
-                    if (i < messageText.length) {
-                        textNode.data += messageText.charAt(i);
-                        i++;
-                        setTimeout(type, 45);
-                    } else { cursor.style.display = 'none'; }
+            function onCompleteHold(){
+                const userCode = inputs.map(inp=>inp.value.padStart(2,'0'));
+                if(!userCode.every((val,i)=>val===correctCode[i])){
+                    message.textContent='Неверный код! Попробуй ещё 🌸';
+                    cancelHold();
+                    return;
                 }
-                type();
+
+                inputs.forEach(inp=>inp.blur());
+                setTimeout(()=>window.scrollTo(0,0),50);
+
+                document.getElementById('container').classList.add('fade-out-scale');
+                setTimeout(()=>{
+                    loader.classList.remove('hidden');
+                    setTimeout(()=>{
+                        loader.classList.add('hidden');
+                        showPage('page1');
+                    },2200);
+                },300);
             }
 
-            document.getElementById('next1').addEventListener('click', () => {
-                document.getElementById('page1').classList.add('hidden');
-                document.getElementById('page2').classList.remove('hidden');
-            });
+            function showPage(pageId){
+                const pages=['page1','page2','page3','page4'];
+                pages.forEach(id=>{
+                    const el=document.getElementById(id);
+                    if(id===pageId){ el.classList.remove('hidden'); setTimeout(()=>el.classList.add('show'),50); }
+                    else{ el.classList.remove('show'); setTimeout(()=>el.classList.add('hidden'),500); }
+                });
+            }
 
-            document.getElementById('next2').addEventListener('click', () => {
-                document.getElementById('page2').classList.add('hidden');
-                document.getElementById('page3').classList.remove('hidden');
-            });
-
-            document.getElementById('next3').addEventListener('click', () => {
-                document.getElementById('page3').classList.add('hidden');
-                document.getElementById('page4').classList.remove('hidden');
-            });
+            document.getElementById('next1').addEventListener('click',()=>showPage('page2'));
+            document.getElementById('next2').addEventListener('click',()=>showPage('page3'));
+            document.getElementById('next3').addEventListener('click',()=>showPage('page4'));
 
             inputs[0].focus();
         })();
