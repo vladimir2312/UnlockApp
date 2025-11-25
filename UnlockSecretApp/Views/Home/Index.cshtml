@@ -21,6 +21,29 @@
             font-family: sans-serif;
         }
 
+        #container {
+            position: relative;
+            min-height: 100vh;
+            padding: 2rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        /* Фоновое изображение */
+        .background {
+            position: absolute;
+            inset: 0;
+            background: url('/images/background.jpg') center/cover no-repeat;
+            filter: blur(10px) brightness(0.7);
+            z-index: 0;
+        }
+
+        /* Элементы поверх фона */
+        #container > *:not(.background) {
+            position: relative;
+            z-index: 1;
+        }
+
         .overlay {
             position: fixed;
             inset: 0;
@@ -65,11 +88,6 @@
                 transform: scale(1.05);
             }
 
-        #container {
-            text-align: center;
-            padding: 2rem;
-        }
-
         .inputs {
             display: flex;
             justify-content: center;
@@ -82,9 +100,11 @@
             font-size: 2rem;
             text-align: center;
             border-radius: 0.5rem;
-            border: 2px solid #fff;
+            border: 2px solid rgba(255,255,255,0.3);
             background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(10px);
             color: #000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         #kitten {
@@ -98,6 +118,7 @@
             align-items: center;
             cursor: pointer;
             position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         .fill {
@@ -126,7 +147,10 @@
 </head>
 
 <body>
-    <main id="container" class="glass">
+    <main id="container">
+        <!-- Фон -->
+        <div class="background"></div>
+
         <h1 class="title">Введи секретный 4-значный код</h1>
 
         <div class="inputs" aria-label="Код">
@@ -151,7 +175,7 @@
         </div>
     </div>
 
-    <!-- Страницы поздравления -->
+    <!-- Поздравления -->
     <div id="page1" class="overlay hidden">
         <div class="congrats-card glass">
             <h2 class="congrats-title">С днём рождения, милая! 💖</h2>
@@ -192,14 +216,14 @@
             const message = document.getElementById('message');
 
             const HOLD_DURATION = 1500;
-            const correctCode = ['00','00','00','00']; // правильный код
+            const correctCode = ['00','00','00','00'];
             let holdTimer;
 
             inputs.forEach((inp, i) => {
-                inp.addEventListener('focus', () => { if(inp.value==='00') inp.value=''; });
-                inp.addEventListener('blur', () => { if(inp.value==='') inp.value='00'; });
-                inp.addEventListener('input', e => {
-                    e.target.value = e.target.value.replace(/\D/g,'').slice(0,2);
+                inp.addEventListener('focus', ()=>{ if(inp.value==='00') inp.value=''; });
+                inp.addEventListener('blur', ()=>{ if(inp.value==='') inp.value='00'; });
+                inp.addEventListener('input', e=>{
+                    e.target.value=e.target.value.replace(/\D/g,'').slice(0,2);
                     if(e.target.value.length===2 && i<inputs.length-1) inputs[i+1].focus();
                 });
             });
@@ -225,7 +249,7 @@
             kitten.addEventListener('pointerleave', cancelHold);
 
             function onCompleteHold(){
-                const userCode = inputs.map(inp=>inp.value.padStart(2,'0'));
+                const userCode=inputs.map(inp=>inp.value.padStart(2,'0'));
                 if(!userCode.every((val,i)=>val===correctCode[i])){
                     message.textContent='Неверный код! Попробуй ещё 🌸';
                     cancelHold();
