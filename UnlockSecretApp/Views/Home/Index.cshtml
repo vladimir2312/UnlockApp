@@ -13,18 +13,33 @@
     <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <meta name="telegram-enable-debug" content="true">
 
-    <!-- Подключаем красивый шрифт -->
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="/css/main.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/main.css" />
     <style>
-        /* Общие стили */
-        body {
+        /* === MINI APP STYLES === */
+
+        /* Подключаем красивый рукописный шрифт через Google Fonts */
+       
+        /* --- Сброс и базовая типографика --- */
+        * {
+            box-sizing: border-box;
             margin: 0;
-            font-family: 'Dancing Script', cursive, sans-serif;
+            padding: 0;
+            font-family: 'Pacifico', cursive, 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
-        /* Фон на весь экран */
+        html, body {
+            height: 100dvh;
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(160deg, #f7fbff 0%, #fef7fb 50%, #f3f9ff 100%);
+            color: #7c2a8d; /* яркий фиолетово-розовый для текста */
+        }
+
+        /* --- Фон на весь экран --- */
         .background {
             position: fixed;
             inset: 0;
@@ -33,122 +48,21 @@
             z-index: 0;
         }
 
-        /* Все элементы поверх фона */
+        /* --- Элементы поверх фона --- */
         #container, .overlay {
             position: relative;
             z-index: 1;
         }
 
-            /* Стеклянные окна */
-            #container.glass, .congrats-card {
-                background: rgba(255,255,255,0.5);
-                backdrop-filter: blur(15px);
-                border-radius: 1.5rem;
-                padding: 2rem;
-                text-align: center;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            }
-
-        /* Заголовки */
-        .title {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #ffdde7; /* нежный цвет */
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
-        }
-
-        .congrats-title {
-            font-size: 1.8rem;
-            color: #ffd1e7;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-
-        /* Поля ввода кода */
-        .inputs {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-
-        input.code {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            border: 1px solid rgba(255,255,255,0.4);
-            background: rgba(255,255,255,0.4);
-            font-size: 1.6rem;
-            font-weight: 700;
-            text-align: center;
-            color: #5a2b6d; /* нежный фиолетовый */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-            input.code:focus {
-                outline: none;
-                border-color: rgba(255,200,235,0.8);
-                background: rgba(255,255,255,0.7);
-            }
-
-        /* Китёнок */
-        #kitten {
-            width: 120px;
-            height: 60px;
-            margin: 1rem auto;
-            border-radius: 36px;
-            background: rgba(255,255,255,0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            position: relative;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
-        }
-
-            #kitten .kitten-inner {
-                font-size: 2rem;
-            }
-
-        #kittenFill.fill {
-            position: absolute;
-            inset: 0;
-            width: 0%;
-            background: linear-gradient(90deg, rgba(255,200,235,0.4), rgba(150,220,255,0.4));
-            border-radius: inherit;
-            transition: width 1.5s linear;
-        }
-
-        #message {
-            font-size: 1rem;
-            color: #ffe1f0;
-            min-height: 1.2rem;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
-        }
-
-        /* Кнопка далее */
-        .btn-next {
-            margin-top: 1.5rem;
-            padding: 0.6rem 1.2rem;
-            border-radius: 1rem;
-            background: linear-gradient(180deg, #ffd1e7 0%, #ffe7f7 100%);
-            border: none;
-            cursor: pointer;
-            font-weight: 700;
-            color: #5a2b6d;
-            transition: transform 0.2s ease;
-        }
-
-            .btn-next:hover {
-                transform: scale(1.05);
-            }
-
-        /* Overlay */
+        /* --- Overlay --- */
         .overlay {
             position: fixed;
             inset: 0;
             display: flex;
             justify-content: center;
             align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -165,19 +79,136 @@
                 display: none;
             }
 
-        /* Мобильная адаптация */
-        @media (max-width:420px) {
-            input .code
-
-        {
-            width: 50px;
-            height: 50px;
-            font-size: 1.3rem;
+        /* --- Основной контейнер --- */
+        #container {
+            position: relative;
+            width: 92%;
+            max-width: 420px;
+            padding: 2rem;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.55);
+            border: 1px solid rgba(255,255,255,0.35);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
 
+        /* --- Заголовок --- */
+        .title {
+            font-size: 2.2rem;
+            color: #7c2a8d; /* контрастный цвет */
+        }
+
+        /* --- Поля кода --- */
+        .inputs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        input.code {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            border: 1px solid rgba(180,180,200,0.4);
+            background: rgba(255,245,255,0.8);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            color: #7c2a8d;
+        }
+
+            input.code:focus {
+                outline: none;
+                border-color: rgba(200,120,255,0.9);
+                background: rgba(255,240,250,0.9);
+            }
+
+        /* --- Китёнок --- */
         #kitten {
-            width: 110px;
-            height: 50px;
+            width: 150px;
+            height: 70px;
+            margin: 0.6rem auto;
+            border-radius: 36px;
+            background: rgba(255,255,255,0.35);
+            border: 1px solid rgba(255,255,255,0.35);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: transform .25s ease;
+            cursor: pointer;
+        }
+
+            #kitten .kitten-inner {
+                font-size: 2.2rem;
+                color: #ff6fa3; /* розовый цвет */
+                pointer-events: none;
+            }
+
+        #kittenFill.fill {
+            position: absolute;
+            inset: 0;
+            width: 0%;
+            background: linear-gradient(90deg, rgba(255,200,235,0.3), rgba(200,180,255,0.3));
+            border-radius: inherit;
+            transition: width 0.2s linear;
+        }
+
+        /* Подпись под китёнком */
+        #message {
+            font-size: 1rem;
+            color: rgba(124,42,141,0.8);
+            min-height: 1.2rem;
+        }
+
+        /* --- Экраны поздравлений --- */
+        .congrats-card {
+            width: min(92%, 640px);
+            padding: 2rem;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.65);
+            border: 1px solid rgba(255,255,255,0.35);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .congrats-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #7c2a8d;
+        }
+
+        /* Кнопки */
+        .btn, .btn-next {
+            margin-top: 10px;
+            padding: 0.7rem 1.2rem;
+            border-radius: 12px;
+            background: linear-gradient(180deg,#ffe0f0 0%,#fff0ff 100%);
+            border: 1px solid rgba(200,120,255,0.2);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            font-weight: 700;
+            color: #7c2a8d;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+            .btn-next:hover {
+                transform: scale(1.05);
+            }
+
+        
+
+        #kitten {
+            width: 130px;
+            height: 60px;
         }
 
         }
@@ -185,11 +216,11 @@
 </head>
 
 <body>
-    <!-- Фон -->
+    <!-- Фон на весь экран -->
     <div class="background"></div>
 
     <!-- Главный экран -->
-    <main id="container" class="glass">
+    <main id="container">
         <h1 class="title">Введи секретный 4-значный код</h1>
 
         <div class="inputs" aria-label="Код">
@@ -217,7 +248,7 @@
     <!-- Поздравительные страницы -->
     <div id="page1" class="overlay hidden">
         <div class="congrats-card glass">
-            <h2 class="congrats-title">С днём рождения, милая! 💖</h2>
+            <h2 class="congrats-title">С днём рождения 💖</h2>
             <pre id="typedText"><span id="typedCursor"></span></pre>
             <button class="btn-next" id="next1">Далее ➡️</button>
         </div>
@@ -225,24 +256,24 @@
 
     <div id="page2" class="overlay hidden">
         <div class="congrats-card glass">
-            <h2>🌸 Продолжение сюрприза!</h2>
-            <p>Здесь можно добавить новый текст или картинку.</p>
+            <h2>🌸 Продолжение!</h2>
+            <p></p>
             <button class="btn-next" id="next2">Далее ➡️</button>
         </div>
     </div>
 
     <div id="page3" class="overlay hidden">
         <div class="congrats-card glass">
-            <h2>💫 Маленький бонус</h2>
-            <p>Можно добавить анимацию, сердечки, gif или картинку.</p>
+            <h2>Продолжение</h2>
+            <p></p>
             <button class="btn-next" id="next3">Далее ➡️</button>
         </div>
     </div>
 
     <div id="page4" class="overlay hidden">
         <div class="congrats-card glass">
-            <h2>💖 Финал сюрприза</h2>
-            <p>Последнее послание или интерактивный элемент.</p>
+            <h2>Продолжение</h2>
+            <p></p>
         </div>
     </div>
 
@@ -326,5 +357,4 @@
     </script>
 </body>
 </html>
-
 
