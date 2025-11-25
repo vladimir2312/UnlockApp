@@ -13,12 +13,15 @@
     <meta http-equiv="ScreenOrientation" content="autoRotate:disabled">
     <meta name="telegram-enable-debug" content="true">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/css/main.css" />
+    <!-- Подключаем красивый шрифт -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/main.css" />
     <style>
+        /* Общие стили */
         body {
             margin: 0;
-            font-family: sans-serif;
+            font-family: 'Dancing Script', cursive, sans-serif;
         }
 
         /* Фон на весь экран */
@@ -26,24 +29,126 @@
             position: fixed;
             inset: 0;
             background: url('/images/background.jpg') center/cover no-repeat;
-            filter: blur(10px) brightness(0.7);
+            filter: blur(12px) brightness(0.7);
             z-index: 0;
         }
 
-        /* Все остальные элементы поверх фона */
+        /* Все элементы поверх фона */
         #container, .overlay {
             position: relative;
             z-index: 1;
         }
 
+            /* Стеклянные окна */
+            #container.glass, .congrats-card {
+                background: rgba(255,255,255,0.5);
+                backdrop-filter: blur(15px);
+                border-radius: 1.5rem;
+                padding: 2rem;
+                text-align: center;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            }
+
+        /* Заголовки */
+        .title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffdde7; /* нежный цвет */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .congrats-title {
+            font-size: 1.8rem;
+            color: #ffd1e7;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Поля ввода кода */
+        .inputs {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        input.code {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.4);
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-align: center;
+            color: #5a2b6d; /* нежный фиолетовый */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+            input.code:focus {
+                outline: none;
+                border-color: rgba(255,200,235,0.8);
+                background: rgba(255,255,255,0.7);
+            }
+
+        /* Китёнок */
+        #kitten {
+            width: 120px;
+            height: 60px;
+            margin: 1rem auto;
+            border-radius: 36px;
+            background: rgba(255,255,255,0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            position: relative;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+            #kitten .kitten-inner {
+                font-size: 2rem;
+            }
+
+        #kittenFill.fill {
+            position: absolute;
+            inset: 0;
+            width: 0%;
+            background: linear-gradient(90deg, rgba(255,200,235,0.4), rgba(150,220,255,0.4));
+            border-radius: inherit;
+            transition: width 1.5s linear;
+        }
+
+        #message {
+            font-size: 1rem;
+            color: #ffe1f0;
+            min-height: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Кнопка далее */
+        .btn-next {
+            margin-top: 1.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 1rem;
+            background: linear-gradient(180deg, #ffd1e7 0%, #ffe7f7 100%);
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            color: #5a2b6d;
+            transition: transform 0.2s ease;
+        }
+
+            .btn-next:hover {
+                transform: scale(1.05);
+            }
+
+        /* Overlay */
         .overlay {
             position: fixed;
             inset: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -60,89 +165,31 @@
                 display: none;
             }
 
-        .congrats-card {
-            padding: 2rem;
-            text-align: center;
-            border-radius: 2rem;
-        }
+        /* Мобильная адаптация */
+        @media (max-width:420px) {
+            input .code
 
-        .btn-next {
-            margin-top: 1.5rem;
-            padding: 0.5rem 1rem;
-            border-radius: 1rem;
-            background: #fff;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-            .btn-next:hover {
-                transform: scale(1.05);
-            }
-
-        .inputs {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-
-        .code {
-            width: 3rem;
-            font-size: 2rem;
-            text-align: center;
-            border-radius: 0.5rem;
-            border: 2px solid rgba(255,255,255,0.3);
-            background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(10px);
-            color: #000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        {
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
         }
 
         #kitten {
-            margin: 2rem auto;
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            position: relative;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            width: 110px;
+            height: 50px;
         }
 
-        .fill {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            width: 0%;
-            background: rgba(255,255,255,0.4);
-            border-radius: 50%;
-            z-index: 0;
-            transition: width 1.5s linear;
-        }
-
-        .kitten-inner {
-            font-size: 2.5rem;
-            z-index: 1;
-        }
-
-        .fade-out-scale {
-            opacity: 0;
-            transform: scale(0.95);
-            transition: all 0.5s ease;
         }
     </style>
 </head>
 
 <body>
-    <!-- Фон на весь экран -->
+    <!-- Фон -->
     <div class="background"></div>
 
     <!-- Главный экран -->
-    <main id="container">
+    <main id="container" class="glass">
         <h1 class="title">Введи секретный 4-значный код</h1>
 
         <div class="inputs" aria-label="Код">
@@ -279,4 +326,5 @@
     </script>
 </body>
 </html>
+
 
