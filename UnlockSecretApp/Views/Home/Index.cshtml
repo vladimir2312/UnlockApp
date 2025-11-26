@@ -226,9 +226,12 @@
         </div>
 
         <div id="kitten" title="Свайпни вправо">
-            <div id="glowTrail"></div>
-            <div id="kittenFill" class="fill"></div>
+            <div class="swipe-bar"></div>
             <div class="kitten-inner">🐳</div>
+            <div class="arrow"></div>
+            <!-- Эффекты -->
+            <div class="sparkle-effect"></div>
+            <div class="glow-effect"></div>
         </div>
 
 
@@ -273,19 +276,24 @@
 
     <script>
                      +
-
-        (() => {
+                (() => {
             const inputs = [...document.querySelectorAll('.code')];
             const kitten = document.getElementById('kitten');
             const swipeBar = kitten.querySelector('.swipe-bar');
             const kittenInner = kitten.querySelector('.kitten-inner');
+            const sparkleEffect = kitten.querySelector('.sparkle-effect');
+            const glowEffect = kitten.querySelector('.glow-effect');
             const message = document.getElementById('message');
             const correctCode = ['00','00','00','00'];
+
+            // Добавляем пульсацию когда готов к свайпу
+            kitten.classList.add('ready-pulse');
 
             // ----------- INPUT CODE HANDLING -------------
             inputs.forEach((inp, i) => {
                 inp.addEventListener('focus', () => {
                     if (inp.value === '00') inp.value = '';
+                    createParticles(inp);
                 });
 
                 inp.addEventListener('blur', () => {
@@ -295,14 +303,27 @@
                 inp.addEventListener('input', e => {
                     e.target.value = e.target.value.replace(/\D/g, '').slice(0, 2);
 
-                    if (e.target.value.length === 2 && i < inputs.length - 1)
+                    if (e.target.value.length === 2 && i < inputs.length - 1) {
                         inputs[i + 1].focus();
+                        createParticles(inputs[i + 1]);
+                    }
+
+                    // Эффект при вводе
+                    if (e.target.value.length > 0) {
+                        e.target.style.transform = 'scale(1.1)';
+                        setTimeout(() => e.target.style.transform = 'scale(1)', 200);
+                    }
+                });
+
+                // Backspace handling
+                inp.addEventListener('keydown', e => {
+                    if (e.key === 'Backspace' && e.target.value === '' && i > 0) {
+                        inputs[i - 1].focus();
+                    }
                 });
             });
 
-
-            // ----------- SWIPE + BOUNCE ANIMATION -------------
-
+            // ----------- SWIPE HANDLING -------------
             let startX = 0;
             let isSwiping = false;
 
@@ -310,94 +331,157 @@
                 startX = e.clientX;
                 isSwiping = true;
                 kitten.setPointerCapture(e.pointerId);
+                kitten.style.cursor = 'grabbing';
+                kitten.classList.remove('ready-pulse');
+
+                // Эффект при начале свайпа
+                createWave(e.clientX, e.clientY);
             });
 
-                   kitten.addEventListener('pointermove', e => {
-            if (!isSwiping) return;
+            kitten.addEventListener('pointermove', e => {
+                if (!isSwiping || startX === 0) return;
 
-            const dx = Math.max(0, e.clientX - startX);
-            const progress = Math.min(dx / 1.5, 150);
+                const dx = Math.max(0, e.clientX - startX);
+                const progress = Math.min(100, dx / 1.5);
 
-            // заполнение полосы
-            swipeBar.style.width = progress * 0.7 + '%';
+                // заполнение полосы
+                swipeBar.style.width = progress + '%';
 
-            // движение китёнка
-            kittenInner.style.left = progress + 'px';
+                // движение китёнка
+                kittenInner.style.left = Math.min(dx / 1.5, 120) + 'px';
 
-            // glow-хвост
-            const glow = document.getElementById('glowTrail');
-            glow.style.width = progress + 20 + 'px';
-            glow.style.opacity = progress > 10 ? 1 : 0;
-        });
+                // эффект свечения
+                glowEffect.style.width = progress + '%';
+                sparkleEffect.style.opacity = progress / 100;
 
+                // вибрация при сильном свайпе
+                if (progress > 70 && progress < 85) {
+                    createParticlesAroundKitten();
+                }
+            });
 
             kitten.addEventListener('pointerup', e => {
                 if (!isSwiping) return;
-                isSwiping = false;
 
                 const dx = e.clientX - startX;
 
-                // --- УСПЕШНЫЙ СВАЙП ---
                 if (dx > 100) {
                     const userCode = inputs.map(inp => inp.value.padStart(2, '0'));
 
                     if (!userCode.every((v, i) => v === correctCode[i])) {
                         wrongCodeAnimation();
-                        return;
+                    } else {
+                        correctCodeAnimation();
                     }
-
-                    correctSwipeBounce();
-                    return;
+                } else {
+                    // Не дотянул - плавный возврат
+                    resetSwipeWithAnimation();
                 }
 
-                // если недотянул — откат назад
-                resetSwipe();
+                kitten.style.cursor = 'pointer';
+                isSwiping = false;
+                startX = 0;
             });
 
             // ----------- ANIMATIONS -----------
 
-            function correctSwipeBounce() {
-                // bounce-animation
-                kittenInner.animate([
-                    { transform: `translateY(-50%) translateX(150px)` },
-                    { transform: `translateY(-60%) translateX(150px)` },
-                    { transform: `translateY(-50%) translateX(150px)` }
-                ], {
-                    duration: 450,
-                    easing: "cubic-bezier(.34,1.56,.64,1)" // bounce
-                });
+            function createParticles(element) {
+                const rect = element.getBoundingClientRect();
+                for (let i = 0; i < 5; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = rect.left + rect.width / 2 + 'px';
+                    particle.style.top = rect.top + rect.height / 2 + 'px';
+                    particle.style.setProperty('--tx', (Math.random() - 0.5) * 100 + 'px');
+                    particle.style.setProperty('--ty', (Math.random() - 0.5) * 100 + 'px');
+                    particle.style.background = i % 2 === 0 ? '#ff69b4' : '#9370db';
+                    document.body.appendChild(particle);
 
-                swipeBar.animate([
-                    { width: "70%" },
-                    { width: "72%" },
-                    { width: "70%" }
-                ], { duration: 300, easing: "ease-out" });
-
-                setTimeout(() => {
-                    inputs.forEach(inp => inp.blur());
-                    document.getElementById('container').classList.add('fade-out-scale');
-                    setTimeout(() => showPage('page1'), 300);
-                }, 300);
+                    setTimeout(() => particle.remove(), 1000);
+                }
             }
 
+            function createParticlesAroundKitten() {
+                const rect = kitten.getBoundingClientRect();
+                for (let i = 0; i < 3; i++) {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = rect.right - 20 + 'px';
+                    particle.style.top = rect.top + Math.random() * rect.height + 'px';
+                    particle.style.setProperty('--tx', (Math.random() * 50 + 20) + 'px');
+                    particle.style.setProperty('--ty', (Math.random() - 0.5) * 50 + 'px');
+                    particle.style.background = '#ff69b4';
+                    document.body.appendChild(particle);
+
+                    setTimeout(() => particle.remove(), 1000);
+                }
+            }
+
+            function createWave(x, y) {
+                const wave = document.createElement('div');
+                wave.className = 'wave';
+                wave.style.left = x + 'px';
+                wave.style.top = y + 'px';
+                document.body.appendChild(wave);
+
+                setTimeout(() => wave.remove(), 600);
+            }
+
+            function correctCodeAnimation() {
+                message.textContent = 'Ура! Правильно! 💖';
+
+                // Эффект успеха
+                kitten.classList.add('success-glow');
+                createParticlesAroundKitten();
+
+                // Множественные частицы
+                for (let i = 0; i < 15; i++) {
+                    setTimeout(() => createParticlesAroundKitten(), i * 100);
+                }
+
+                inputs.forEach(inp => inp.blur());
+
+                setTimeout(() => {
+                    document.getElementById('container').classList.add('fade-out-scale');
+                    setTimeout(() => showPage('page1'), 500);
+                }, 1000);
+            }
 
             function wrongCodeAnimation() {
                 message.textContent = 'Неверный код! Попробуй ещё 🌸';
 
-                // shake_animation
-                kitten.animate([
-                    { transform: 'translateX(0)' },
-                    { transform: 'translateX(-6px)' },
-                    { transform: 'translateX(6px)' },
-                    { transform: 'translateX(0)' }
-                ], { duration: 250, easing: "ease-in-out" });
+                // Анимация ошибки
+                kitten.classList.add('shake');
+                setTimeout(() => kitten.classList.remove('shake'), 500);
 
-                resetSwipe();
+                resetSwipeWithAnimation();
+            }
+
+            function resetSwipeWithAnimation() {
+                swipeBar.style.transition = 'width 0.3s ease';
+                kittenInner.style.transition = 'left 0.3s ease';
+                glowEffect.style.transition = 'width 0.3s ease';
+                sparkleEffect.style.transition = 'opacity 0.3s ease';
+
+                swipeBar.style.width = '0%';
+                kittenInner.style.left = '10px';
+                glowEffect.style.width = '0%';
+                sparkleEffect.style.opacity = '0';
+
+                setTimeout(() => {
+                    swipeBar.style.transition = '';
+                    kittenInner.style.transition = '';
+                    glowEffect.style.transition = '';
+                    sparkleEffect.style.transition = '';
+                    kitten.classList.add('ready-pulse');
+                }, 300);
             }
 
             function resetSwipe() {
-                swipeBar.style.width = "0%";
-                kittenInner.style.left = "10px";
+                swipeBar.style.width = '0%';
+                kittenInner.style.left = '10px';
+                glowEffect.style.width = '0%';
+                sparkleEffect.style.opacity = '0';
             }
 
             // ----------- PAGE HANDLING -----------
@@ -417,14 +501,12 @@
                 });
             }
 
-            document.getElementById("next1").onclick = () => showPage("page2");
-            document.getElementById("next2").onclick = () => showPage("page3");
-            document.getElementById("next3").onclick = () => showPage("page4");
+            document.getElementById("next1").addEventListener('click', () => showPage("page2"));
+            document.getElementById("next2").addEventListener('click', () => showPage("page3"));
+            document.getElementById("next3").addEventListener('click', () => showPage("page4"));
 
             // auto-focus first input
             inputs[0].focus();
-    
-
 
         })();
     </script>
