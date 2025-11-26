@@ -256,6 +256,7 @@
     <div id="page2" class="overlay hidden">
         <div class="congrats-card glass">
             <h2>💫 То, что делает тебя особенной</h2>
+            <div class="scroll-indicator">⬇️ Листай вниз</div>
             <div id="page2Content" class="qualities-thoughts-container"></div>
             <button class="btn-next" id="next2" style="display: none;">Узнать больше 🌸</button>
         </div>
@@ -285,22 +286,7 @@
             const glowEffect = kitten.querySelector('.glow-effect');
             const message = document.getElementById('message');
             const correctCode = ['00','00','00','00'];
-                           const futureLetterContent = `Сегодня, в твой день рождения...
-
-        Дорогая [Её имя],
-
-        В этот особенный день я хочу загадать наши общие мечты:
-
-        🌟 Я мечтаю о том дне, когда мы...
-
-        🌅 Представляю, как мы...
-
-        🎯 Обязательно осуществим...
-
-        С любовью,
-        Твой [Твоё имя]`;
-
-        function showPage3WithAnimation() {
+                              function showPage3WithAnimation() {
             const page3 = document.getElementById('page3');
             const letterContainer = document.getElementById('futureLetter');
             const nextButton = document.getElementById('next3');
@@ -309,39 +295,83 @@
             setTimeout(() => page3.classList.add('show'), 50);
 
             nextButton.style.display = 'none';
-            letterContainer.innerHTML = '';
 
-            // Эффект печатания письма
-            typeWriter(futureLetterContent, letterContainer, 30, () => {
-                setTimeout(() => {
-                    nextButton.style.display = 'block';
-                    nextButton.style.animation = 'fadeIn 0.5s ease';
-                }, 500);
-            });
+            // Очищаем и устанавливаем базовую структуру
+            letterContainer.innerHTML = `
+                <div class="letter-date">Сегодня, в твой день рождения...</div>
+                <div class="letter-content">
+                    <p class="letter-line-1"></p>
+                    <p class="letter-line-2"></p>
+                    <div class="dreams-container"></div>
+                    <p class="letter-signature"></p>
+                </div>
+            `;
+
+            const dreams = [
+                "🌟 Я мечтаю о том дне, когда мы...",
+                "🌅 Представляю, как мы...",
+                "🎯 Обязательно осуществим..."
+            ];
+
+            // Последовательная печать
+            setTimeout(() => {
+                typeWriter("Дорогая [Её имя],", document.querySelector('.letter-line-1'), 40, () => {
+                    setTimeout(() => {
+                        typeWriter("В этот особенный день я хочу загадать наши общие мечты:", document.querySelector('.letter-line-2'), 40, () => {
+                            // Печатаем мечты по очереди
+                            printDreamsSequentially(dreams, 0, () => {
+                                setTimeout(() => {
+                                    typeWriter("С любовью,<br>Твой [Твоё имя]", document.querySelector('.letter-signature'), 40, () => {
+                                        setTimeout(() => {
+                                            nextButton.style.display = 'block';
+                                            nextButton.style.animation = 'fadeIn 0.5s ease';
+                                        }, 1000);
+                                    });
+                                }, 500);
+                            });
+                        });
+                    }, 500);
+                });
+            }, 1000);
         }
 
-        // Обновляем обработчик
-        document.getElementById("next2").addEventListener('click', () => showPage3WithAnimation());
-                    const page2Content = [
-                   {
-            emoji: "😊",
-            title: "Твоя улыбка",
-            description: "Когда ты улыбаешься, все проблемы отступают на второй план. Твоя улыбка настолько уникальна, что я готов повторять это снова и снова.",
-            thought: "Иногда я ловлю себя на мысли, что твоя улыбка стала для меня как маленький праздник среди обыденности."
-        },
-                   {
-            emoji: "💫",
-            title: "Та самая искорка",
-            description: "В моём мире было много всего, но не было искры. Ты стала той самой искоркой, что зажгла во мне огонь, о котором я даже не мечтал.",
-            thought: "Иногда я просто смотрю на тебя и понимаю - вот оно. То самое чувство, ради которого стоит просыпаться каждый день. Ты превратила существование в жизнь."
-        },
+        function printDreamsSequentially(dreams, index, callback) {
+            if (index >= dreams.length) {
+                callback();
+                return;
+            }
+
+            const dreamsContainer = document.querySelector('.dreams-container');
+            const dreamElement = document.createElement('div');
+            dreamElement.className = 'dream-item';
+            dreamsContainer.appendChild(dreamElement);
+
+            typeWriter(dreams[index], dreamElement, 40, () => {
+                setTimeout(() => {
+                    printDreamsSequentially(dreams, index + 1, callback);
+                }, 800);
+            });
+        }
+        document.getElementById("next1").addEventListener('click', () => showPage2WithAnimation());
+                                  const page2Content = [
+            {
+                emoji: "😊",
+                title: "Твоя улыбка",
+                description: "Когда ты улыбаешься, все проблемы отступают. Твоя улыбка уникальна.",
+                thought: "Твоя улыбка стала для меня праздником среди обыденности."
+            },
             {
                 emoji: "💫",
-                title: "Твоя забота",
-                description: "Ты чувствуешь, когда тяжело, и всегда находишь нужные слова. Твоя поддержка значит для меня больше, чем ты можешь представить.",
-                thought: "В трудные моменты твои слова становятся тем якорем, который не дает мне утонуть. Спасибо, что ты всегда рядом."
+                title: "Моя искорка",
+                description: "Ты зажгла во мне огонь, о котором я даже не мечтал.",
+                thought: "Ты превратила моё существование в настоящую жизнь."
             },
-          
+            {
+                emoji: "🤗",
+                title: "Твоя забота",
+                description: "Ты всегда чувствуешь, когда мне тяжело, и находишь нужные слова.",
+                thought: "Твоя поддержка - мой якорь в трудные моменты."
+            }
         ];
 
         function showPage2WithAnimation() {
@@ -372,23 +402,20 @@
 
                     contentContainer.appendChild(qualityItem);
 
-                    // Анимация появления
                     setTimeout(() => {
                         qualityItem.classList.add('visible');
                     }, 100);
 
                 }, delay);
 
-                delay += 1000; // Задержка 1 секунда между элементами
+                delay += 800; // Уменьшенная задержка
             });
 
-            // Показываем кнопку после загрузки всего контента
             setTimeout(() => {
                 nextButton.style.display = 'block';
                 nextButton.style.animation = 'fadeIn 0.5s ease';
             }, delay + 500);
         }
-
         // Обновляем обработчик
         document.getElementById("next1").addEventListener('click', () => showPage2WithAnimation());
                     // Функция для эффекта печатания текста
