@@ -323,29 +323,7 @@
 
             let delay = 0;
 
-            page2Content.forEach((item, index) => {
-                setTimeout(() => {
-                    const qualityItem = document.createElement('div');
-                    qualityItem.className = 'quality-thought-item';
-                    qualityItem.innerHTML = `
-                        <div class="quality-header">
-                            <span class="quality-emoji">${item.emoji}</span>
-                            <div class="quality-title">${item.title}</div>
-                        </div>
-                        <div class="quality-description">${item.description}</div>
-                        <div class="personal-thought">${item.thought}</div>
-                    `;
-
-                    contentContainer.appendChild(qualityItem);
-
-                    setTimeout(() => {
-                        qualityItem.classList.add('visible');
-                    }, 100);
-
-                }, delay);
-
-                delay += 800;
-            });
+          
 
             // Добавляем обработчик скролла для кнопки
             const checkScroll = () => {
