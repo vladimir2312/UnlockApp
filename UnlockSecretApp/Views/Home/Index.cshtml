@@ -275,8 +275,7 @@
     </div>
 
     <script>
-                     +
-                (() => {
+                      (() => {
             const inputs = [...document.querySelectorAll('.code')];
             const kitten = document.getElementById('kitten');
             const swipeBar = kitten.querySelector('.swipe-bar');
@@ -304,21 +303,22 @@
                     e.target.value = e.target.value.replace(/\D/g, '').slice(0, 2);
 
                     if (e.target.value.length === 2 && i < inputs.length - 1) {
-                        inputs[i + 1].focus();
-                        createParticles(inputs[i + 1]);
+                        setTimeout(() => inputs[i + 1].focus(), 10);
                     }
 
-                    // Эффект при вводе
+                    // Эффект при вводе (без сдвига)
                     if (e.target.value.length > 0) {
                         e.target.style.transform = 'scale(1.1)';
-                        setTimeout(() => e.target.style.transform = 'scale(1)', 200);
+                        setTimeout(() => {
+                            if (e.target) e.target.style.transform = 'scale(1)';
+                        }, 150);
                     }
                 });
 
                 // Backspace handling
                 inp.addEventListener('keydown', e => {
                     if (e.key === 'Backspace' && e.target.value === '' && i > 0) {
-                        inputs[i - 1].focus();
+                        setTimeout(() => inputs[i - 1].focus(), 10);
                     }
                 });
             });
@@ -326,6 +326,36 @@
             // ----------- SWIPE HANDLING -------------
             let startX = 0;
             let isSwiping = false;
+            let animationFrameId = null;
+
+            const handleSwipeMove = (e) => {
+                if (!isSwiping || startX === 0) return;
+
+                const dx = Math.max(0, e.clientX - startX);
+                const progress = Math.min(100, dx / 1.5);
+
+                // Используем requestAnimationFrame для плавности
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                }
+
+                animationFrameId = requestAnimationFrame(() => {
+                    // заполнение полосы
+                    swipeBar.style.width = progress + '%';
+
+                    // движение китёнка
+                    kittenInner.style.left = Math.min(dx / 1.5, 120) + 'px';
+
+                    // эффект свечения
+                    glowEffect.style.width = progress + '%';
+                    sparkleEffect.style.opacity = Math.min(progress / 100, 0.7);
+
+                    // вибрация при сильном свайпе
+                    if (progress > 70 && progress % 20 < 5) {
+                        createParticlesAroundKitten();
+                    }
+                });
+            };
 
             kitten.addEventListener('pointerdown', e => {
                 startX = e.clientX;
@@ -336,32 +366,21 @@
 
                 // Эффект при начале свайпа
                 createWave(e.clientX, e.clientY);
+
+                // Добавляем обработчик движения
+                kitten.addEventListener('pointermove', handleSwipeMove);
             });
 
-            kitten.addEventListener('pointermove', e => {
-                if (!isSwiping || startX === 0) return;
-
-                const dx = Math.max(0, e.clientX - startX);
-                const progress = Math.min(100, dx / 1.5);
-
-                // заполнение полосы
-                swipeBar.style.width = progress + '%';
-
-                // движение китёнка
-                kittenInner.style.left = Math.min(dx / 1.5, 120) + 'px';
-
-                // эффект свечения
-                glowEffect.style.width = progress + '%';
-                sparkleEffect.style.opacity = progress / 100;
-
-                // вибрация при сильном свайпе
-                if (progress > 70 && progress < 85) {
-                    createParticlesAroundKitten();
-                }
-            });
-
-            kitten.addEventListener('pointerup', e => {
+            kitten.addEventListener('pointerup', (e) => {
                 if (!isSwiping) return;
+
+                // Убираем обработчик движения
+                kitten.removeEventListener('pointermove', handleSwipeMove);
+
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                }
 
                 const dx = e.clientX - startX;
 
@@ -378,42 +397,65 @@
                     resetSwipeWithAnimation();
                 }
 
-                kitten.style.cursor = 'pointer';
                 isSwiping = false;
                 startX = 0;
+            });
+
+            // Обработчик отмены свайпа (например, выход за пределы)
+            kitten.addEventListener('pointercancel', () => {
+                if (isSwiping) {
+                    kitten.removeEventListener('pointermove', handleSwipeMove);
+                    if (animationFrameId) {
+                        cancelAnimationFrame(animationFrameId);
+                        animationFrameId = null;
+                    }
+                    resetSwipeWithAnimation();
+                    isSwiping = false;
+                    startX = 0;
+                }
             });
 
             // ----------- ANIMATIONS -----------
 
             function createParticles(element) {
                 const rect = element.getBoundingClientRect();
-                for (let i = 0; i < 5; i++) {
-                    const particle = document.createElement('div');
-                    particle.className = 'particle';
-                    particle.style.left = rect.left + rect.width / 2 + 'px';
-                    particle.style.top = rect.top + rect.height / 2 + 'px';
-                    particle.style.setProperty('--tx', (Math.random() - 0.5) * 100 + 'px');
-                    particle.style.setProperty('--ty', (Math.random() - 0.5) * 100 + 'px');
-                    particle.style.background = i % 2 === 0 ? '#ff69b4' : '#9370db';
-                    document.body.appendChild(particle);
+                for (let i = 0; i < 3; i++) { // Меньше частиц для производительности
+                    setTimeout(() => {
+                        const particle = document.createElement('div');
+                        particle.className = 'particle';
+                        particle.style.left = rect.left + rect.width / 2 + 'px';
+                        particle.style.top = rect.top + rect.height / 2 + 'px';
+                        particle.style.setProperty('--tx', (Math.random() - 0.5) * 40 + 'px');
+                        particle.style.setProperty('--ty', (Math.random() - 0.5) * 40 + 'px');
+                        particle.style.background = i % 2 === 0 ? '#ff69b4' : '#9370db';
+                        document.body.appendChild(particle);
 
-                    setTimeout(() => particle.remove(), 1000);
+                        setTimeout(() => {
+                            if (particle.parentNode) {
+                                particle.parentNode.removeChild(particle);
+                            }
+                        }, 800);
+                    }, i * 100);
                 }
             }
 
             function createParticlesAroundKitten() {
                 const rect = kitten.getBoundingClientRect();
-                for (let i = 0; i < 3; i++) {
+                for (let i = 0; i < 2; i++) { // Меньше частиц
                     const particle = document.createElement('div');
                     particle.className = 'particle';
                     particle.style.left = rect.right - 20 + 'px';
                     particle.style.top = rect.top + Math.random() * rect.height + 'px';
-                    particle.style.setProperty('--tx', (Math.random() * 50 + 20) + 'px');
-                    particle.style.setProperty('--ty', (Math.random() - 0.5) * 50 + 'px');
+                    particle.style.setProperty('--tx', (Math.random() * 30 + 10) + 'px');
+                    particle.style.setProperty('--ty', (Math.random() - 0.5) * 30 + 'px');
                     particle.style.background = '#ff69b4';
                     document.body.appendChild(particle);
 
-                    setTimeout(() => particle.remove(), 1000);
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.parentNode.removeChild(particle);
+                        }
+                    }, 800);
                 }
             }
 
@@ -424,7 +466,11 @@
                 wave.style.top = y + 'px';
                 document.body.appendChild(wave);
 
-                setTimeout(() => wave.remove(), 600);
+                setTimeout(() => {
+                    if (wave.parentNode) {
+                        wave.parentNode.removeChild(wave);
+                    }
+                }, 400);
             }
 
             function correctCodeAnimation() {
@@ -432,19 +478,13 @@
 
                 // Эффект успеха
                 kitten.classList.add('success-glow');
-                createParticlesAroundKitten();
-
-                // Множественные частицы
-                for (let i = 0; i < 15; i++) {
-                    setTimeout(() => createParticlesAroundKitten(), i * 100);
-                }
 
                 inputs.forEach(inp => inp.blur());
 
                 setTimeout(() => {
                     document.getElementById('container').classList.add('fade-out-scale');
                     setTimeout(() => showPage('page1'), 500);
-                }, 1000);
+                }, 800);
             }
 
             function wrongCodeAnimation() {
@@ -458,10 +498,11 @@
             }
 
             function resetSwipeWithAnimation() {
-                swipeBar.style.transition = 'width 0.3s ease';
-                kittenInner.style.transition = 'left 0.3s ease';
-                glowEffect.style.transition = 'width 0.3s ease';
-                sparkleEffect.style.transition = 'opacity 0.3s ease';
+                // Плавный возврат с транзишенами
+                swipeBar.style.transition = 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                kittenInner.style.transition = 'left 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                glowEffect.style.transition = 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                sparkleEffect.style.transition = 'opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
 
                 swipeBar.style.width = '0%';
                 kittenInner.style.left = '10px';
@@ -473,15 +514,9 @@
                     kittenInner.style.transition = '';
                     glowEffect.style.transition = '';
                     sparkleEffect.style.transition = '';
+                    kitten.style.cursor = 'pointer';
                     kitten.classList.add('ready-pulse');
                 }, 300);
-            }
-
-            function resetSwipe() {
-                swipeBar.style.width = '0%';
-                kittenInner.style.left = '10px';
-                glowEffect.style.width = '0%';
-                sparkleEffect.style.opacity = '0';
             }
 
             // ----------- PAGE HANDLING -----------
@@ -506,7 +541,7 @@
             document.getElementById("next3").addEventListener('click', () => showPage("page4"));
 
             // auto-focus first input
-            inputs[0].focus();
+            setTimeout(() => inputs[0].focus(), 100);
 
         })();
     </script>

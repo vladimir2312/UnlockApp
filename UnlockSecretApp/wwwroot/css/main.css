@@ -315,3 +315,224 @@ input.code:focus { outline:none; border-color:#c97be6; background: rgba(255,245,
     animation: waveEffect 0.6s ease-out;
     pointer-events: none;
 }
+/* Фиксируем позиционирование для inputs */
+.inputs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center; /* Добавляем выравнивание */
+}
+
+input.code {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    border: 1px solid rgba(180,180,200,0.4);
+    background: rgba(255,245,255,0.8);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-align: center;
+    color: #7c2a8d;
+    transition: all 0.2s ease; /* Плавный переход */
+    display: flex; /* Добавляем */
+    align-items: center; /* Центрируем по вертикали */
+    justify-content: center; /* Центрируем по горизонтали */
+    line-height: 1; /* Убираем лишние отступы */
+    transform: scale(1); /* Начальное состояние */
+}
+
+    input.code:focus {
+        outline: none;
+        border-color: rgba(200,120,255,0.9);
+        background: rgba(255,240,250,0.9);
+        transform: scale(1.05); /* Легкое увеличение вместо сдвига */
+    }
+
+/* Эффекты для свайпа */
+.sparkle-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0;
+    border-radius: 36px;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.glow-effect {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    width: 0;
+    height: 80%;
+    background: linear-gradient(90deg, rgba(255,105,180,0.3) 0%, rgba(147,112,219,0.2) 50%, transparent 100%);
+    border-radius: 20px;
+    filter: blur(5px);
+    pointer-events: none;
+    transition: width 0.2s ease; /* Более плавный переход */
+}
+
+/* Плавные переходы для китёнка */
+#kitten .kitten-inner {
+    font-size: 2.2rem;
+    color: #ff6fa3;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: left 0.15s ease-out; /* Плавнее движение */
+}
+
+#kitten .swipe-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, rgba(255,200,235,0.4), rgba(200,180,255,0.4));
+    border-radius: 36px;
+    transition: width 0.15s ease; /* Плавнее заполнение */
+}
+
+/* Эффект успешного свайпа */
+@keyframes successGlow {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255,105,180,0.4);
+    }
+
+    70% {
+        box-shadow: 0 0 0 15px rgba(255,105,180,0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255,105,180,0);
+    }
+}
+
+.success-glow {
+    animation: successGlow 1s ease;
+}
+
+/* Эффект частиц (оптимизированный) */
+@keyframes floatParticle {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+.particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: #ff69b4;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatParticle 0.8s ease-out forwards;
+    z-index: 10;
+}
+
+/* Пульсация при готовности */
+@keyframes readyPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+.ready-pulse {
+    animation: readyPulse 2s ease-in-out infinite;
+}
+
+/* Эффект волны */
+@keyframes waveEffect {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+.wave {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle, rgba(255,105,180,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: waveEffect 0.4s ease-out;
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Анимации */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes fadeOutScale {
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Применение анимаций */
+.shake {
+    animation: shake 0.5s ease;
+}
+
+.fade-out-scale {
+    animation: fadeOutScale 0.5s ease forwards;
+}
+
+.arrow {
+    animation: pulse 1.2s infinite;
+}
+
+/* Мобильная адаптация */
+@media(max-width:420px) {
+    input.code {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+}
