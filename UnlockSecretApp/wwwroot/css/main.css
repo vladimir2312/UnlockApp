@@ -536,3 +536,14 @@ input.code {
         font-size: 1.3rem;
     }
 }
+input.code {
+    /* оставь все существующие стили */
+    line-height: 1; /* Убедись что это есть */
+    padding: 0; /* Убедись что это есть */
+    margin: 0; /* Убедись что это есть */
+    display: flex; /* Или block */
+    align-items: center; /* Если flex */
+    justify-content: center; /* Если flex */
+    font-size: 1.8rem; /* Увеличь размер шрифта */
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; /* Четкий шрифт */
+}
