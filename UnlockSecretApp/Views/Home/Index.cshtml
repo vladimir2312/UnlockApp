@@ -219,10 +219,10 @@
         <h1 class="title">Введи секретный 4-значный код</h1>
 
         <div class="inputs" aria-label="Код">
-            <input inputmode="numeric" maxlength="2" class="code" value="00" />
-            <input inputmode="numeric" maxlength="2" class="code" value="00" />
-            <input inputmode="numeric" maxlength="2" class="code" value="00" />
-            <input inputmode="numeric" maxlength="2" class="code" value="00" />
+            <input type="text" inputmode="numeric" maxlength="2" class="code" value="00" />
+            <input type="text" inputmode="numeric" maxlength="2" class="code" value="00" />
+            <input type="text" inputmode="numeric" maxlength="2" class="code" value="00" />
+            <input type="text" inputmode="numeric" maxlength="2" class="code" value="00" />
         </div>
 
         <div id="kitten" title="Свайпни вправо">
@@ -255,17 +255,18 @@
     </div>
     <div id="page2" class="overlay hidden">
         <div class="congrats-card glass">
-            <h2>🌸 Продолжение!</h2>
-            <p></p>
-            <button class="btn-next" id="next2">Далее ➡️</button>
+            <h2>💫 То, что делает тебя особенной</h2>
+            <div id="page2Content" class="qualities-thoughts-container"></div>
+            <button class="btn-next" id="next2" style="display: none;">Узнать больше 🌸</button>
         </div>
     </div>
     <div id="page3" class="overlay hidden">
         <div class="congrats-card glass">
-            <h2>Продолжение</h2>
-            <p></p>
-            <button class="btn-next" id="next3">Далее ➡️</button>
+            <h2>💌 Письмо в наше будущее</h2>
+            <div id="futureLetter" class="future-letter"></div>
+            <button class="btn-next" id="next3" style="display: none;">Прочитать финал 🌟</button>
         </div>
+    </div>
     </div>
     <div id="page4" class="overlay hidden">
         <div class="congrats-card glass">
@@ -284,6 +285,191 @@
             const glowEffect = kitten.querySelector('.glow-effect');
             const message = document.getElementById('message');
             const correctCode = ['00','00','00','00'];
+                           const futureLetterContent = `Сегодня, в твой день рождения...
+
+        Дорогая [Её имя],
+
+        В этот особенный день я хочу загадать наши общие мечты:
+
+        🌟 Я мечтаю о том дне, когда мы...
+
+        🌅 Представляю, как мы...
+
+        🎯 Обязательно осуществим...
+
+        С любовью,
+        Твой [Твоё имя]`;
+
+        function showPage3WithAnimation() {
+            const page3 = document.getElementById('page3');
+            const letterContainer = document.getElementById('futureLetter');
+            const nextButton = document.getElementById('next3');
+
+            page3.classList.remove('hidden');
+            setTimeout(() => page3.classList.add('show'), 50);
+
+            nextButton.style.display = 'none';
+            letterContainer.innerHTML = '';
+
+            // Эффект печатания письма
+            typeWriter(futureLetterContent, letterContainer, 30, () => {
+                setTimeout(() => {
+                    nextButton.style.display = 'block';
+                    nextButton.style.animation = 'fadeIn 0.5s ease';
+                }, 500);
+            });
+        }
+
+        // Обновляем обработчик
+        document.getElementById("next2").addEventListener('click', () => showPage3WithAnimation());
+                    const page2Content = [
+                   {
+            emoji: "😊",
+            title: "Твоя улыбка",
+            description: "Когда ты улыбаешься, все проблемы отступают на второй план. Твоя улыбка настолько уникальна, что я готов повторять это снова и снова.",
+            thought: "Иногда я ловлю себя на мысли, что твоя улыбка стала для меня как маленький праздник среди обыденности."
+        },
+                   {
+            emoji: "💫",
+            title: "Та самая искорка",
+            description: "В моём мире было много всего, но не было искры. Ты стала той самой искоркой, что зажгла во мне огонь, о котором я даже не мечтал.",
+            thought: "Иногда я просто смотрю на тебя и понимаю - вот оно. То самое чувство, ради которого стоит просыпаться каждый день. Ты превратила существование в жизнь."
+        },
+            {
+                emoji: "💫",
+                title: "Твоя забота",
+                description: "Ты чувствуешь, когда тяжело, и всегда находишь нужные слова. Твоя поддержка значит для меня больше, чем ты можешь представить.",
+                thought: "В трудные моменты твои слова становятся тем якорем, который не дает мне утонуть. Спасибо, что ты всегда рядом."
+            },
+          
+        ];
+
+        function showPage2WithAnimation() {
+            const page2 = document.getElementById('page2');
+            const contentContainer = document.getElementById('page2Content');
+            const nextButton = document.getElementById('next2');
+
+            page2.classList.remove('hidden');
+            setTimeout(() => page2.classList.add('show'), 50);
+
+            nextButton.style.display = 'none';
+            contentContainer.innerHTML = '';
+
+            let delay = 0;
+
+            page2Content.forEach((item, index) => {
+                setTimeout(() => {
+                    const qualityItem = document.createElement('div');
+                    qualityItem.className = 'quality-thought-item';
+                    qualityItem.innerHTML = `
+                        <div class="quality-header">
+                            <span class="quality-emoji">${item.emoji}</span>
+                            <div class="quality-title">${item.title}</div>
+                        </div>
+                        <div class="quality-description">${item.description}</div>
+                        <div class="personal-thought">${item.thought}</div>
+                    `;
+
+                    contentContainer.appendChild(qualityItem);
+
+                    // Анимация появления
+                    setTimeout(() => {
+                        qualityItem.classList.add('visible');
+                    }, 100);
+
+                }, delay);
+
+                delay += 1000; // Задержка 1 секунда между элементами
+            });
+
+            // Показываем кнопку после загрузки всего контента
+            setTimeout(() => {
+                nextButton.style.display = 'block';
+                nextButton.style.animation = 'fadeIn 0.5s ease';
+            }, delay + 500);
+        }
+
+        // Обновляем обработчик
+        document.getElementById("next1").addEventListener('click', () => showPage2WithAnimation());
+                    // Функция для эффекта печатания текста
+        function typeWriter(text, element, speed = 40, callback = null) {
+            let i = 0;
+            element.innerHTML = '';
+
+            function type() {
+                if (i < text.length) {
+                    // Обрабатываем специальные теги
+                    if (text.substring(i, i + 6) === '<wait>') {
+                        i += 6;
+                        setTimeout(type, 500);
+                        return;
+                    }
+
+                    if (text.substring(i, i + 8) === '<number>') {
+                        i += 8;
+                        const numEnd = text.indexOf('</number>', i);
+                        if (numEnd !== -1) {
+                            const number = text.substring(i, numEnd);
+                            element.innerHTML += `<span class="highlight-number">${number}</span>`;
+                            i = numEnd + 9;
+                        }
+                    } else {
+                        element.innerHTML += text.charAt(i);
+                        i++;
+                    }
+
+                    // Добавляем мигающий курсор
+                    const cursor = document.createElement('span');
+                    cursor.className = 'typed-cursor';
+                    element.appendChild(cursor);
+
+                    setTimeout(() => {
+                        if (cursor.parentNode) {
+                            cursor.parentNode.removeChild(cursor);
+                        }
+                        type();
+                    }, speed);
+                } else {
+                    // Текст напечатан
+                    if (callback) callback();
+                }
+            }
+            type();
+        }
+
+        // Содержимое для первой страницы
+        const page1Content = `Это не просто случайные числа...<wait>
+
+        Каждая цифра имеет своё значение:<wait>
+
+        Первые <number>00</number> - это...<wait> наши первые встречи<wait>
+        Вторые <number>00</number> - это...<wait> дни, когда ты меняла мою жизнь<wait>
+        Третьи <number>00</number> - это...<wait> моменты, которые я никогда не забуду<wait>
+        Четвёртые <number>00</number> - это...<wait> обещания на будущее<wait>
+
+        Хочешь узнать больше?`;
+
+        // Показ первой страницы с анимацией
+        function showPage1WithAnimation() {
+            const page1 = document.getElementById('page1');
+            const typedText = document.getElementById('typedText');
+            const nextButton = document.getElementById('next1');
+
+            page1.classList.remove('hidden');
+            setTimeout(() => page1.classList.add('show'), 50);
+
+            // Скрываем кнопку пока текст печатается
+            nextButton.style.display = 'none';
+
+            // Запускаем печать текста
+            typeWriter(page1Content, typedText, 30, () => {
+                // Когда текст напечатан, показываем кнопку
+                setTimeout(() => {
+                    nextButton.style.display = 'block';
+                    nextButton.style.animation = 'fadeIn 0.5s ease';
+                }, 500);
+            });
+        }
 
             // Добавляем пульсацию когда готов к свайпу
             kitten.classList.add('ready-pulse');
@@ -473,19 +659,21 @@
                 }, 400);
             }
 
-            function correctCodeAnimation() {
-                message.textContent = 'Ура! Правильно! 💖';
+                   function correctCodeAnimation() {
+            message.textContent = 'Ура! Правильно! 💖';
 
-                // Эффект успеха
-                kitten.classList.add('success-glow');
+            // Эффект успеха
+            kitten.classList.add('success-glow');
+            createParticlesAroundKitten();
 
-                inputs.forEach(inp => inp.blur());
+            inputs.forEach(inp => inp.blur());
 
-                setTimeout(() => {
-                    document.getElementById('container').classList.add('fade-out-scale');
-                    setTimeout(() => showPage('page1'), 500);
-                }, 800);
-            }
+            setTimeout(() => {
+                document.getElementById('container').classList.add('fade-out-scale');
+                setTimeout(() => showPage1WithAnimation(), 500);
+            }, 1000);
+        }
+
 
             function wrongCodeAnimation() {
                 message.textContent = 'Неверный код! Попробуй ещё 🌸';
