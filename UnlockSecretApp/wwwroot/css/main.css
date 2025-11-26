@@ -1,28 +1,23 @@
-﻿/* === TELEGRAM MINI APP STYLES (обновлено) === */
+﻿/* === TELEGRAM MINI APP STYLES === */
 
-/* Новый красивый рукописный шрифт */
 @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 
-/* Сброс и базовая типографика */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: 'Great Vibes', cursive, 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family: 'Great Vibes', cursive, 'Segoe UI', sans-serif;
 }
 
 html, body {
     height: 100dvh;
-    min-height: 100dvh;
-    background: linear-gradient(160deg, #f7fbff 0%, #fef7fb 50%, #f3f9ff 100%);
     display: flex;
-    align-items: center;
     justify-content: center;
-    overflow: hidden;
-    color: #4b1f5e; /* новый основной цвет текста */
+    align-items: center;
+    background: linear-gradient(160deg,#f7fbff 0%,#fef7fb 50%,#f3f9ff 100%);
+    color: #4b1f5e;
 }
 
-/* Фон на весь экран */
 .background {
     position: fixed;
     inset: 0;
@@ -31,7 +26,7 @@ html, body {
     z-index: 0;
 }
 
-/* Основной контейнер */
+/* Контейнер */
 #container.glass {
     position: relative;
     z-index: 2;
@@ -46,171 +41,123 @@ html, body {
     display: flex;
     flex-direction: column;
     gap: 1.4rem;
-    transition: opacity .3s ease, transform .3s ease;
-}
-
-/* Заголовок */
-.title {
-    font-weight: 700;
-    font-size: 2.2rem;
-    color: #7e2fa0; /* чуть насыщеннее */
 }
 
 /* Поля кода */
-.inputs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
+.inputs { display:flex; justify-content:center; gap:10px; }
 input.code {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    border: 1px solid rgba(180,180,200,0.4);
+    width:60px; height:60px; border-radius:12px;
+    border:1px solid rgba(180,180,200,0.4);
     background: rgba(255,240,250,0.7);
-    font-size: 1.5rem;
-    font-weight: 700;
-    text-align: center;
+    font-size:1.5rem; font-weight:700; text-align:center;
     color: #4b1f5e;
 }
-
-input.code:focus {
-    outline: none;
-    border-color: #c97be6; /* заменили зеленый на пастельный розово-фиолетовый */
-    background: rgba(255,245,255,0.85);
-}
+input.code:focus { outline:none; border-color:#c97be6; background: rgba(255,245,255,0.85); }
 
 /* Китёнок */
-#kitten {
-    width: 150px;
-    height: 70px;
-    margin: 0.6rem auto;
-    border-radius: 36px;
-    background: rgba(255,255,255,0.35);
-    border: 1px solid rgba(255,255,255,0.35);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    transition: transform .25s ease;
-}
+#kitten { width:130px; height:60px; margin:0.5rem auto; border-radius:36px; background: rgba(255,255,255,0.35); display:flex; align-items:center; justify-content:center; box-shadow:0 6px 20px rgba(0,0,0,0.08); }
+#kitten .kitten-inner { font-size:2rem; color:#ff9bb3; }
 
-#kitten .kitten-inner {
-    font-size: 2.2rem;
-    color: #ff9bb3;
-    pointer-events: none;
-}
+/* Свайп-стрелка */
+#swipeArrow { width:60px; height:60px; margin:1rem auto; border-radius:30px; background: rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center; cursor:grab; }
+#swipeArrow .arrow-inner { font-size:2rem; transition: transform 0.2s ease; }
 
-#kittenFill.fill {
-    position: absolute;
-    inset: 0;
-    width: 0%;
-    background: linear-gradient(90deg, rgba(201,123,230,0.25), rgba(200,180,255,0.25));
-    border-radius: inherit;
-    transition: width 0.2s linear;
-}
+/* Overlay поздравления */
+.overlay { position: fixed; inset:0; display:flex; justify-content:center; align-items:center; opacity:0; pointer-events:none; transform:scale(0.95); transition: opacity 0.5s ease, transform 0.5s ease; }
+.overlay.show { opacity:1; pointer-events:all; transform:scale(1); }
+.overlay.hidden { display:none; }
 
-/* Подпись под китёнком */
-#message {
-    font-size: 0.95rem;
-    color: rgba(75,31,94,0.75);
-    min-height: 1.2rem;
-}
-
-/* Поздравительные карточки */
-.congrats-card {
-    width: min(92%, 640px);
-    padding: 2rem;
-    border-radius: 18px;
-    background: rgba(255,255,255,0.65);
-    border: 1px solid rgba(255,255,255,0.35);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-}
-
-.congrats-title {
-    font-size: 2rem;
-    font-weight: 800;
-    color: #7e2fa0;
-    font-family: 'Great Vibes', cursive;
-}
-
-.congrats-body {
-    font-size: 1.05rem;
-    color: #4b1f5e;
-    line-height: 1.5;
-}
-
-/* Кнопки */
-.btn, .btn-next {
-    margin-top: 10px;
-    padding: .7rem 1.1rem;
-    border-radius: 12px;
-    background: linear-gradient(180deg,#fff0ff 0%,#f7f0ff 100%);
-    border: 1px solid rgba(200,150,255,0.2);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-    font-weight: 700;
-    color: #4b1f5e;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.btn-next:hover { transform: scale(1.05); }
-
-/* Текст печати */
-.typed-text {
-    font-family: 'Great Vibes', cursive;
-    white-space: pre-wrap;
-    text-align: left;
-    font-size: 1.2rem;
-    color: #4b1f5e;
-    line-height: 1.6;
-    min-height: 200px;
-}
-
-#typedCursor {
-    display: inline-block;
-    width: 3px;
-    height: 1.2em;
-    background-color: rgba(75,31,94,0.7);
-    margin-left: 2px;
-    animation: blinkCursor 0.8s step-end infinite;
-    vertical-align: bottom;
-}
-
-@keyframes blinkCursor { 50% { opacity: 0; } }
-
-/* Overlay */
-.overlay {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.5s ease, transform 0.5s ease;
-    transform: scale(0.95);
-}
-
-.overlay.show {
-    opacity: 1;
-    pointer-events: all;
-    transform: scale(1);
-}
-
-.overlay.hidden {
-    display: none;
-}
+.congrats-card { width:min(92%,640px); padding:2rem; border-radius:18px; background:rgba(255,255,255,0.65); border:1px solid rgba(255,255,255,0.35); box-shadow:0 12px 40px rgba(0,0,0,0.12); text-align:center; display:flex; flex-direction:column; align-items:center; gap:1rem; }
+.congrats-title { font-family:'Great Vibes', cursive; font-size:2rem; color:#7e2fa0; font-weight:800; }
+.congrats-body { font-size:1.05rem; color:#4b1f5e; line-height:1.5; }
 
 /* Мобильная адаптация */
-@media (max-width:420px) {
-    input.code { width: 50px; height: 50px; font-size: 1.3rem; }
-    #kitten { width: 130px; height: 60px; }
+@media(max-width:420px){ input.code{width:50px;height:50px;font-size:1.3rem;} }
+/* Анимации */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+@keyframes fadeOutScale {
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes heartBeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Применение анимаций */
+.arrow {
+    animation: pulse 1.2s infinite;
+}
+
+.fade-out-scale {
+    animation: fadeOutScale 0.5s ease forwards;
+}
+
+.hearts {
+    animation: float 3s ease-in-out infinite;
+}
+
+.heart-beat {
+    animation: heartBeat 2s ease-in-out infinite;
+}
+* {
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+/* Glow-trail за китёнком */
+#glowTrail {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    width: 0px;
+    height: 45px;
+    border-radius: 25px;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient( circle at left, rgba(255, 200, 240, 0.6), rgba(190, 160, 255, 0.15), transparent );
+    filter: blur(14px);
+    transition: width 0.15s ease-out, opacity 0.15s ease-out;
 }

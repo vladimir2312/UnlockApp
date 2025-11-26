@@ -5,8 +5,7 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>💖 MiniApp — Ввод кода</title>
 
     <meta name="theme-color" content="#ffffff">
@@ -16,16 +15,11 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/main.css" />
     <style>
-        /* === MINI APP STYLES === */
-
-        /* Подключаем красивый рукописный шрифт через Google Fonts */
-       
-        /* --- Сброс и базовая типографика --- */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Pacifico', cursive, 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Pacifico', cursive,'Segoe UI', system-ui,-apple-system, sans-serif;
         }
 
         html, body {
@@ -35,11 +29,10 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            background: linear-gradient(160deg, #f7fbff 0%, #fef7fb 50%, #f3f9ff 100%);
-            color: #7c2a8d; /* яркий фиолетово-розовый для текста */
+            background: linear-gradient(160deg,#f7fbff 0%,#fef7fb 50%,#f3f9ff 100%);
+            color: #7c2a8d;
         }
 
-        /* --- Фон на весь экран --- */
         .background {
             position: fixed;
             inset: 0;
@@ -48,20 +41,18 @@
             z-index: 0;
         }
 
-        /* --- Элементы поверх фона --- */
         #container, .overlay {
             position: relative;
             z-index: 1;
         }
 
-        /* --- Overlay --- */
         .overlay {
             position: fixed;
             inset: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
             backdrop-filter: blur(15px);
             opacity: 0;
             pointer-events: none;
@@ -79,7 +70,6 @@
                 display: none;
             }
 
-        /* --- Основной контейнер --- */
         #container {
             position: relative;
             width: 92%;
@@ -95,13 +85,11 @@
             gap: 1.5rem;
         }
 
-        /* --- Заголовок --- */
         .title {
             font-size: 2.2rem;
-            color: #7c2a8d; /* контрастный цвет */
+            color: #7c2a8d;
         }
 
-        /* --- Поля кода --- */
         .inputs {
             display: flex;
             justify-content: center;
@@ -126,10 +114,10 @@
                 background: rgba(255,240,250,0.9);
             }
 
-        /* --- Китёнок --- */
+        /* ===== Китёнок и свайп ===== */
         #kitten {
             width: 150px;
-            height: 70px;
+            height: 60px;
             margin: 0.6rem auto;
             border-radius: 36px;
             background: rgba(255,255,255,0.35);
@@ -137,37 +125,56 @@
             box-shadow: 0 6px 20px rgba(0,0,0,0.08);
             display: flex;
             align-items: center;
-            justify-content: center;
             position: relative;
-            transition: transform .25s ease;
+            overflow: hidden;
             cursor: pointer;
+            transition: box-shadow 0.3s ease;
         }
+
+            #kitten:hover {
+                box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+            }
+
+            #kitten .swipe-bar {
+                position: absolute;
+                left: 0;
+                top: 0;
+                height: 100%;
+                width: 0%;
+                background: linear-gradient(90deg, rgba(255,200,235,0.4), rgba(200,180,255,0.4));
+                border-radius: 36px;
+                transition: width 0.1s;
+            }
 
             #kitten .kitten-inner {
                 font-size: 2.2rem;
-                color: #ff6fa3; /* розовый цвет */
-                pointer-events: none;
+                color: #ff6fa3;
+                position: absolute;
+                left: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                transition: left 0.1s ease-out;
             }
 
-        #kittenFill.fill {
-            position: absolute;
-            inset: 0;
-            width: 0%;
-            background: linear-gradient(90deg, rgba(255,200,235,0.3), rgba(200,180,255,0.3));
-            border-radius: inherit;
-            transition: width 0.2s linear;
-        }
+            #kitten .arrow {
+                position: absolute;
+                right: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 1.5rem;
+                color: rgba(124,42,141,0.5);
+                animation: pulse 1.2s infinite;
+            }
+       
 
-        /* Подпись под китёнком */
         #message {
             font-size: 1rem;
             color: rgba(124,42,141,0.8);
             min-height: 1.2rem;
         }
 
-        /* --- Экраны поздравлений --- */
         .congrats-card {
-            width: min(92%, 640px);
+            width: min(92%,640px);
             padding: 2rem;
             border-radius: 18px;
             background: rgba(255,255,255,0.65);
@@ -186,7 +193,6 @@
             color: #7c2a8d;
         }
 
-        /* Кнопки */
         .btn, .btn-next {
             margin-top: 10px;
             padding: 0.7rem 1.2rem;
@@ -203,23 +209,12 @@
             .btn-next:hover {
                 transform: scale(1.05);
             }
-
-        
-
-        #kitten {
-            width: 130px;
-            height: 60px;
-        }
-
-        }
     </style>
 </head>
 
 <body>
-    <!-- Фон на весь экран -->
     <div class="background"></div>
 
-    <!-- Главный экран -->
     <main id="container">
         <h1 class="title">Введи секретный 4-значный код</h1>
 
@@ -230,15 +225,17 @@
             <input inputmode="numeric" maxlength="2" class="code" value="00" />
         </div>
 
-        <div id="kitten" title="Удерживай, чтобы открыть">
+        <div id="kitten" title="Свайпни вправо">
+            <div id="glowTrail"></div>
             <div id="kittenFill" class="fill"></div>
             <div class="kitten-inner">🐳</div>
         </div>
 
-        <div id="message">Удерживай китёнка, чтобы увидеть сюрприз</div>
+
+
+        <div id="message">Свайпни китёнка вправо, чтобы увидеть сюрприз</div>
     </main>
 
-    <!-- Loader -->
     <div id="loaderOverlay" class="overlay hidden">
         <div class="congrats-card glass">
             <div class="loading-text">Loading...</div>
@@ -253,7 +250,6 @@
             <button class="btn-next" id="next1">Далее ➡️</button>
         </div>
     </div>
-
     <div id="page2" class="overlay hidden">
         <div class="congrats-card glass">
             <h2>🌸 Продолжение!</h2>
@@ -261,7 +257,6 @@
             <button class="btn-next" id="next2">Далее ➡️</button>
         </div>
     </div>
-
     <div id="page3" class="overlay hidden">
         <div class="congrats-card glass">
             <h2>Продолжение</h2>
@@ -269,7 +264,6 @@
             <button class="btn-next" id="next3">Далее ➡️</button>
         </div>
     </div>
-
     <div id="page4" class="overlay hidden">
         <div class="congrats-card glass">
             <h2>Продолжение</h2>
@@ -278,81 +272,160 @@
     </div>
 
     <script>
+                     +
+
         (() => {
             const inputs = [...document.querySelectorAll('.code')];
             const kitten = document.getElementById('kitten');
-            const fill = document.getElementById('kittenFill');
-            const loader = document.getElementById('loaderOverlay');
+            const swipeBar = kitten.querySelector('.swipe-bar');
+            const kittenInner = kitten.querySelector('.kitten-inner');
             const message = document.getElementById('message');
-
-            const HOLD_DURATION = 1500;
             const correctCode = ['00','00','00','00'];
-            let holdTimer;
 
+            // ----------- INPUT CODE HANDLING -------------
             inputs.forEach((inp, i) => {
-                inp.addEventListener('focus', ()=>{ if(inp.value==='00') inp.value=''; });
-                inp.addEventListener('blur', ()=>{ if(inp.value==='') inp.value='00'; });
-                inp.addEventListener('input', e=>{
-                    e.target.value=e.target.value.replace(/\D/g,'').slice(0,2);
-                    if(e.target.value.length===2 && i<inputs.length-1) inputs[i+1].focus();
+                inp.addEventListener('focus', () => {
+                    if (inp.value === '00') inp.value = '';
+                });
+
+                inp.addEventListener('blur', () => {
+                    if (inp.value === '') inp.value = '00';
+                });
+
+                inp.addEventListener('input', e => {
+                    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 2);
+
+                    if (e.target.value.length === 2 && i < inputs.length - 1)
+                        inputs[i + 1].focus();
                 });
             });
 
-            function startHold(){
-                fill.style.width='100%';
-                fill.style.transition=`width ${HOLD_DURATION}ms linear`;
-                kitten.classList.add('holding');
-                message.textContent='Держи...';
-                holdTimer=setTimeout(onCompleteHold,HOLD_DURATION);
-            }
 
-            function cancelHold(){
-                clearTimeout(holdTimer);
-                fill.style.transition='width 250ms ease';
-                fill.style.width='0%';
-                kitten.classList.remove('holding');
-                message.textContent='Удерживай китёнка, чтобы увидеть сюрприз';
-            }
+            // ----------- SWIPE + BOUNCE ANIMATION -------------
 
-            kitten.addEventListener('pointerdown', e=>{e.preventDefault(); startHold();});
-            kitten.addEventListener('pointerup', cancelHold);
-            kitten.addEventListener('pointerleave', cancelHold);
+            let startX = 0;
+            let isSwiping = false;
 
-            function onCompleteHold(){
-                const userCode=inputs.map(inp=>inp.value.padStart(2,'0'));
-                if(!userCode.every((val,i)=>val===correctCode[i])){
-                    message.textContent='Неверный код! Попробуй ещё 🌸';
-                    cancelHold();
+            kitten.addEventListener('pointerdown', e => {
+                startX = e.clientX;
+                isSwiping = true;
+                kitten.setPointerCapture(e.pointerId);
+            });
+
+                   kitten.addEventListener('pointermove', e => {
+            if (!isSwiping) return;
+
+            const dx = Math.max(0, e.clientX - startX);
+            const progress = Math.min(dx / 1.5, 150);
+
+            // заполнение полосы
+            swipeBar.style.width = progress * 0.7 + '%';
+
+            // движение китёнка
+            kittenInner.style.left = progress + 'px';
+
+            // glow-хвост
+            const glow = document.getElementById('glowTrail');
+            glow.style.width = progress + 20 + 'px';
+            glow.style.opacity = progress > 10 ? 1 : 0;
+        });
+
+
+            kitten.addEventListener('pointerup', e => {
+                if (!isSwiping) return;
+                isSwiping = false;
+
+                const dx = e.clientX - startX;
+
+                // --- УСПЕШНЫЙ СВАЙП ---
+                if (dx > 100) {
+                    const userCode = inputs.map(inp => inp.value.padStart(2, '0'));
+
+                    if (!userCode.every((v, i) => v === correctCode[i])) {
+                        wrongCodeAnimation();
+                        return;
+                    }
+
+                    correctSwipeBounce();
                     return;
                 }
 
-                inputs.forEach(inp=>inp.blur());
-                setTimeout(()=>window.scrollTo(0,0),50);
+                // если недотянул — откат назад
+                resetSwipe();
+            });
 
-                document.getElementById('container').classList.add('fade-out-scale');
-                setTimeout(()=>{
-                    loader.classList.remove('hidden');
-                    setTimeout(()=>{
-                        loader.classList.add('hidden');
-                        showPage('page1');
-                    },2200);
-                },300);
+            // ----------- ANIMATIONS -----------
+
+            function correctSwipeBounce() {
+                // bounce-animation
+                kittenInner.animate([
+                    { transform: `translateY(-50%) translateX(150px)` },
+                    { transform: `translateY(-60%) translateX(150px)` },
+                    { transform: `translateY(-50%) translateX(150px)` }
+                ], {
+                    duration: 450,
+                    easing: "cubic-bezier(.34,1.56,.64,1)" // bounce
+                });
+
+                swipeBar.animate([
+                    { width: "70%" },
+                    { width: "72%" },
+                    { width: "70%" }
+                ], { duration: 300, easing: "ease-out" });
+
+                setTimeout(() => {
+                    inputs.forEach(inp => inp.blur());
+                    document.getElementById('container').classList.add('fade-out-scale');
+                    setTimeout(() => showPage('page1'), 300);
+                }, 300);
             }
 
-            function showPage(pageId){
-                const pages=['page1','page2','page3','page4'];
-                pages.forEach(id=>{
-                    const el=document.getElementById(id);
-                    if(id===pageId){ el.classList.remove('hidden'); setTimeout(()=>el.classList.add('show'),50); }
-                    else{ el.classList.remove('show'); setTimeout(()=>el.classList.add('hidden'),500); }
+
+            function wrongCodeAnimation() {
+                message.textContent = 'Неверный код! Попробуй ещё 🌸';
+
+                // shake_animation
+                kitten.animate([
+                    { transform: 'translateX(0)' },
+                    { transform: 'translateX(-6px)' },
+                    { transform: 'translateX(6px)' },
+                    { transform: 'translateX(0)' }
+                ], { duration: 250, easing: "ease-in-out" });
+
+                resetSwipe();
+            }
+
+            function resetSwipe() {
+                swipeBar.style.width = "0%";
+                kittenInner.style.left = "10px";
+            }
+
+            // ----------- PAGE HANDLING -----------
+            function showPage(pageId) {
+                const pages = ['page1', 'page2', 'page3', 'page4'];
+
+                pages.forEach(id => {
+                    const el = document.getElementById(id);
+
+                    if (id === pageId) {
+                        el.classList.remove("hidden");
+                        setTimeout(() => el.classList.add("show"), 30);
+                    } else {
+                        el.classList.remove("show");
+                        setTimeout(() => el.classList.add("hidden"), 300);
+                    }
                 });
             }
 
-            document.getElementById('next1').addEventListener('click',()=>showPage('page2'));
-            document.getElementById('next2').addEventListener('click',()=>showPage('page3'));
-            document.getElementById('next3').addEventListener('click',()=>showPage('page4'));
+            document.getElementById("next1").onclick = () => showPage("page2");
+            document.getElementById("next2").onclick = () => showPage("page3");
+            document.getElementById("next3").onclick = () => showPage("page4");
 
+            // auto-focus first input
             inputs[0].focus();
+    
+
+
         })();
     </script>
 </body>
