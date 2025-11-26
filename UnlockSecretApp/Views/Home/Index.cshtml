@@ -286,72 +286,8 @@
             const glowEffect = kitten.querySelector('.glow-effect');
             const message = document.getElementById('message');
             const correctCode = ['00','00','00','00'];
-                              function showPage3WithAnimation() {
-            const page3 = document.getElementById('page3');
-            const letterContainer = document.getElementById('futureLetter');
-            const nextButton = document.getElementById('next3');
-
-            page3.classList.remove('hidden');
-            setTimeout(() => page3.classList.add('show'), 50);
-
-            nextButton.style.display = 'none';
-
-            // Очищаем и устанавливаем базовую структуру
-            letterContainer.innerHTML = `
-                <div class="letter-date">Сегодня, в твой день рождения...</div>
-                <div class="letter-content">
-                    <p class="letter-line-1"></p>
-                    <p class="letter-line-2"></p>
-                    <div class="dreams-container"></div>
-                    <p class="letter-signature"></p>
-                </div>
-            `;
-
-            const dreams = [
-                "🌟 Я мечтаю о том дне, когда мы...",
-                "🌅 Представляю, как мы...",
-                "🎯 Обязательно осуществим..."
-            ];
-
-            // Последовательная печать
-            setTimeout(() => {
-                typeWriter("Дорогая [Её имя],", document.querySelector('.letter-line-1'), 40, () => {
-                    setTimeout(() => {
-                        typeWriter("В этот особенный день я хочу загадать наши общие мечты:", document.querySelector('.letter-line-2'), 40, () => {
-                            // Печатаем мечты по очереди
-                            printDreamsSequentially(dreams, 0, () => {
-                                setTimeout(() => {
-                                    typeWriter("С любовью,<br>Твой [Твоё имя]", document.querySelector('.letter-signature'), 40, () => {
-                                        setTimeout(() => {
-                                            nextButton.style.display = 'block';
-                                            nextButton.style.animation = 'fadeIn 0.5s ease';
-                                        }, 1000);
-                                    });
-                                }, 500);
-                            });
-                        });
-                    }, 500);
-                });
-            }, 1000);
-        }
-
-        function printDreamsSequentially(dreams, index, callback) {
-            if (index >= dreams.length) {
-                callback();
-                return;
-            }
-
-            const dreamsContainer = document.querySelector('.dreams-container');
-            const dreamElement = document.createElement('div');
-            dreamElement.className = 'dream-item';
-            dreamsContainer.appendChild(dreamElement);
-
-            typeWriter(dreams[index], dreamElement, 40, () => {
-                setTimeout(() => {
-                    printDreamsSequentially(dreams, index + 1, callback);
-                }, 800);
-            });
-        }
+                             
+        
 
                                          const page2Content = [
             {

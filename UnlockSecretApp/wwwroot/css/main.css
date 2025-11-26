@@ -626,3 +626,56 @@ input.code {
         .qualities-thoughts-container::-webkit-scrollbar-thumb:hover {
             background: rgba(255,105,180,0.7);
         }
+
+
+
+
+
+/* === SCROLL FIX FOR PAGE 2 === */
+.qualities-thoughts-container {
+    max-height: 50vh;
+    overflow-y: auto;
+    min-height: 200px;
+    padding-right: 10px;
+    width: 100%;
+}
+
+    .qualities-thoughts-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .qualities-thoughts-container::-webkit-scrollbar-track {
+        background: rgba(255,255,255,0.2);
+        border-radius: 3px;
+    }
+
+    .qualities-thoughts-container::-webkit-scrollbar-thumb {
+        background: rgba(255,105,180,0.5);
+        border-radius: 3px;
+    }
+
+/* === INPUT FIX === */
+.inputs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    align-items: center;
+    height: 70px;
+}
+
+input.code {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    border: 1px solid rgba(180,180,200,0.4);
+    background: rgba(255,245,255,0.8);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #7c2a8d;
+    text-align: center;
+    display: block;
+    line-height: 60px;
+    padding: 0;
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
