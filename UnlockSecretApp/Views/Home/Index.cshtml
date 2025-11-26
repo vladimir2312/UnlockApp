@@ -353,7 +353,7 @@
             });
         }
 
-                                  const page2Content = [
+                                         const page2Content = [
             {
                 emoji: "😊",
                 title: "Твоя улыбка",
@@ -408,14 +408,60 @@
 
                 }, delay);
 
-                delay += 800; // Уменьшенная задержка
+                delay += 800;
             });
 
+            // Добавляем обработчик скролла для кнопки
+            const checkScroll = () => {
+                const container = contentContainer;
+                const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 10;
+
+                if (isAtBottom) {
+                    nextButton.style.display = 'block';
+                    nextButton.style.animation = 'fadeIn 0.5s ease';
+                    container.removeEventListener('scroll', checkScroll);
+                }
+            };
+
+            // Альтернатива: показываем кнопку через время + слушаем скролл
             setTimeout(() => {
                 nextButton.style.display = 'block';
                 nextButton.style.animation = 'fadeIn 0.5s ease';
+
+                // Добавляем скролл проверку на всякий случай
+                contentContainer.addEventListener('scroll', checkScroll);
             }, delay + 500);
+
+            // Авто-скролл к новому элементу при добавлении
+            let lastAddedElement = null;
+            page2Content.forEach((item, index) => {
+                setTimeout(() => {
+                    const qualityItem = document.createElement('div');
+                    qualityItem.className = 'quality-thought-item';
+                    qualityItem.innerHTML = `
+                        <div class="quality-header">
+                            <span class="quality-emoji">${item.emoji}</span>
+                            <div class="quality-title">${item.title}</div>
+                        </div>
+                        <div class="quality-description">${item.description}</div>
+                        <div class="personal-thought">${item.thought}</div>
+                    `;
+
+                    contentContainer.appendChild(qualityItem);
+                    lastAddedElement = qualityItem;
+
+                    // Плавный скролл к новому элементу
+                    setTimeout(() => {
+                        qualityItem.classList.add('visible');
+                        if (qualityItem.offsetTop > contentContainer.clientHeight) {
+                            qualityItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }
+                    }, 100);
+
+                }, index * 800);
+            });
         }
+
         // Обновляем обработчик
         document.getElementById("next1").addEventListener('click', () => showPage2WithAnimation());
                     // Функция для эффекта печатания текста
