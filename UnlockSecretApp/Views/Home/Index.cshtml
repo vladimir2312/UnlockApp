@@ -269,12 +269,33 @@
         </div>
     </div>
     </div>
-    <div id="page4" class="overlay hidden">
-        <div class="congrats-card glass">
-            <h2>Продолжение</h2>
-            <p></p>
+  
+    <div class="congrats-card glass">
+        <h2>📸 Наши моменты</h2>
+        
+        <!-- Галерея -->
+        <div class="gallery-container">
+            <!-- Стрелка назад -->
+            <button class="gallery-arrow gallery-arrow-prev">❮</button>
+            
+            <!-- Область фото -->
+            <div class="gallery-slide">
+                <img id="galleryImage" src="" alt="Наше фото" class="gallery-image">
+                <div id="galleryCaption" class="gallery-caption"></div>
+            </div>
+            
+            <!-- Стрелка вперед -->
+            <button class="gallery-arrow gallery-arrow-next">❯</button>
         </div>
+        
+        <!-- Индикатор текущего фото -->
+        <div class="gallery-indicator">
+            <span id="currentIndex">1</span> / <span id="totalImages">0</span>
+        </div>
+        
+        <button class="btn-next" id="next4">Завершить 🌟</button>
     </div>
+</div>
 
     <script>
                       (() => {
@@ -286,8 +307,197 @@
             const glowEffect = kitten.querySelector('.glow-effect');
             const message = document.getElementById('message');
             const correctCode = ['00','00','00','00'];
-                             
+            // Добавляем после showPage3WithAnimation()
+
+function showPage4WithAnimation() {
+    const page4 = document.getElementById('page4');
+    page4.classList.remove('hidden');
+    setTimeout(() => page4.classList.add('show'), 50);
+    
+    // Инициализируем галерею
+    initGallery();
+}
+
+// Данные для галереи (замените на ваши фото и подписи)
+// Альтернативные данные с placeholder изображениями
+const galleryData = [
+    {
+        image: 'https://via.placeholder.com/400x300/FF69B4/FFFFFF?text=Наша+первая+встреча',
+        caption: 'Наша первая встреча... Помнишь, как все начиналось? 💫'
+    },
+    {
+        image: 'https://via.placeholder.com/400x300/9370DB/FFFFFF?text=Особенные+моменты',
+        caption: 'Тот день, когда я понял - ты особенная... ✨'
+    },
+    {
+        image: 'https://via.placeholder.com/400x300/20B2AA/FFFFFF?text=Совместные+мечты',
+        caption: 'Наши совместные мечты и планы... 🌸'
+    }
+];
+let currentGalleryIndex = 0;
+
+function initGallery() {
+    const galleryImage = document.getElementById('galleryImage');
+    const galleryCaption = document.getElementById('galleryCaption');
+    const currentIndexSpan = document.getElementById('currentIndex');
+    const totalImagesSpan = document.getElementById('totalImages');
+    
+    // Устанавливаем общее количество фото
+    totalImagesSpan.textContent = galleryData.length;
+    
+    // Показываем первое фото
+    showGalleryImage(0);
+    
+    // Обработчики для стрелок
+    document.querySelector('.gallery-arrow-prev').addEventListener('click', () => {
+        currentGalleryIndex = (currentGalleryIndex - 1 + galleryData.length) % galleryData.length;
+        showGalleryImage(currentGalleryIndex, 'prev');
+    });
+    
+    document.querySelector('.gallery-arrow-next').addEventListener('click', () => {
+        currentGalleryIndex = (currentGalleryIndex + 1) % galleryData.length;
+        showGalleryImage(currentGalleryIndex, 'next');
+    });
+    
+    // Добавляем обработчики свайпов для мобильных
+    let startX = 0;
+    const gallerySlide = document.querySelector('.gallery-slide');
+    
+    gallerySlide.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+    });
+    
+    gallerySlide.addEventListener('touchend', (e) => {
+        if (!startX) return;
         
+        const endX = e.changedTouches[0].clientX;
+        const diffX = startX - endX;
+        
+        if (Math.abs(diffX) > 50) { // Минимальное расстояние свайпа
+            if (diffX > 0) {
+                // Свайп влево - следующее фото
+                currentGalleryIndex = (currentGalleryIndex + 1) % galleryData.length;
+                showGalleryImage(currentGalleryIndex, 'next');
+            } else {
+                // Свайп вправо - предыдущее фото
+                currentGalleryIndex = (currentGalleryIndex - 1 + galleryData.length) % galleryData.length;
+                showGalleryImage(currentGalleryIndex, 'prev');
+            }
+        }
+        
+        startX = 0;
+    });
+    
+    function showGalleryImage(index, direction = 'next') {
+        const data = galleryData[index];
+        
+        // Добавляем класс анимации
+        galleryImage.classList.add(direction === 'next' ? 'slide-next' : 'slide-prev');
+        galleryCaption.classList.add(direction === 'next' ? 'slide-next' : 'slide-prev');
+        
+        // Устанавливаем фото и подпись
+        galleryImage.src = data.image;
+        galleryImage.alt = `Наше фото ${index + 1}`;
+        galleryCaption.textContent = data.caption;
+        
+        // Обновляем индикатор
+        currentIndexSpan.textContent = index + 1;
+        
+        // Убираем классы анимации после завершения
+        setTimeout(() => {
+            galleryImage.classList.remove('slide-next', 'slide-prev');
+            galleryCaption.classList.remove('slide-next', 'slide-prev');
+        }, 500);
+    }
+}
+
+// Обновляем обработчики
+document.getElementById("next3").addEventListener('click', () => showPage4WithAnimation());
+
+// Обработчик для завершающей кнопки
+document.getElementById("next4").addEventListener('click', () => {
+    // Можно добавить финальную анимацию или сообщение
+    alert('Спасибо, что прошла весь этот путь со мной! 💖');
+    // Или перезагрузить приложение
+    // location.reload();
+});
+
+                    // Добавляем после функции showPage2WithAnimation()
+
+        function showPage3WithAnimation() {
+            const page3 = document.getElementById('page3');
+            const letterContainer = document.getElementById('futureLetter');
+            const nextButton = document.getElementById('next3');
+
+            page3.classList.remove('hidden');
+            setTimeout(() => page3.classList.add('show'), 50);
+
+            // Скрываем кнопку пока письмо пишется
+            nextButton.style.display = 'none';
+            letterContainer.innerHTML = '';
+
+            // Содержимое письма
+            const letterContent = [
+                "Моя любимая...",
+                "Пишу тебе это письмо в наше будущее...",
+                "Когда ты это читаешь, знай - ты самое ценное, что есть в моей жизни...",
+                "Я верю, что нас ждут удивительные моменты вместе...",
+                "Путешествия, которые мы запланировали...",
+                "Мечты, которые осуществим...",
+                "Трудности, которые преодолеем рука об руку...",
+                "Я обещаю всегда быть рядом...",
+                "Поддерживать тебя в любых начинаниях...",
+                "Любить тебя сильнее с каждым днём...",
+                "Ты - моё счастье, моя надежда, моя любовь...",
+                "Навсегда твой... 💖"
+            ];
+
+            let currentLine = 0;
+
+            function typeNextLine() {
+                if (currentLine < letterContent.length) {
+                    const lineElement = document.createElement('div');
+                    lineElement.className = 'letter-line';
+                    lineElement.style.opacity = '0';
+                    lineElement.style.transform = 'translateY(20px)';
+                    lineElement.innerHTML = letterContent[currentLine];
+
+                    letterContainer.appendChild(lineElement);
+
+                    // Анимация появления строки
+                    setTimeout(() => {
+                        lineElement.style.transition = 'all 0.8s ease';
+                        lineElement.style.opacity = '1';
+                        lineElement.style.transform = 'translateY(0)';
+                    }, 100);
+
+                    currentLine++;
+                    setTimeout(typeNextLine, 1200); // Интервал между строками
+                } else {
+                    // Когда все строки напечатаны, показываем кнопку
+                    setTimeout(() => {
+                        nextButton.style.display = 'block';
+                        nextButton.style.animation = 'fadeIn 0.5s ease';
+
+                        // Добавляем сердечки в конце
+                        const hearts = document.createElement('div');
+                        hearts.className = 'letter-hearts';
+                        hearts.innerHTML = '💖✨💫🌸';
+                        hearts.style.textAlign = 'center';
+                        hearts.style.marginTop = '1rem';
+                        hearts.style.fontSize = '1.5rem';
+                        hearts.style.animation = 'heartBeat 2s infinite';
+                        letterContainer.appendChild(hearts);
+                    }, 1000);
+                }
+            }
+
+            // Начинаем печать письма
+            setTimeout(typeNextLine, 500);
+        }
+
+        // Обновляем обработчики
+        document.getElementById("next2").addEventListener('click', () => showPage3WithAnimation());
 
                                          const page2Content = [
             {
