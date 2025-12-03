@@ -6,7 +6,6 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
@@ -20,20 +19,16 @@ html, body {
     background: linear-gradient(160deg,#f7fbff 0%,#fef7fb 50%,#f3f9ff 100%);
     color: #4b1f5e;
     overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
+/* === BACKGROUND === */
 .background {
     position: fixed;
     inset: 0;
     background: url('/images/background.jpg') center/cover no-repeat;
     filter: blur(12px) brightness(0.7);
     z-index: 0;
-}
-
-/* === TYPOGRAPHY === */
-h1, h2, h3, .congrats-title, .title,
-.quality-title, .letter-section-title .section-text {
-    font-family: 'Great Vibes', cursive !important;
 }
 
 /* === MAIN CONTAINER === */
@@ -51,43 +46,47 @@ h1, h2, h3, .congrats-title, .title,
     display: flex;
     flex-direction: column;
     gap: 1.4rem;
-    overflow: hidden;
+}
+
+/* === TYPOGRAPHY === */
+h1, h2, h3, .congrats-title, .title,
+.quality-title, .letter-section-title .section-text {
+    font-family: 'Great Vibes', cursive;
 }
 
 /* === INPUT STYLES === */
 .inputs {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     margin: 1.5rem 0;
-    position: relative;
-    height: 70px;
-    align-items: flex-start;
+    height: 65px;
 }
 
 input.code {
-    width: 60px;
-    height: 60px;
+    width: 55px;
+    height: 55px;
     border-radius: 12px;
     border: 2px solid rgba(180,180,200,0.4);
     background: rgba(255,245,255,0.9);
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 800;
     color: #7c2a8d;
     text-align: center;
     padding: 0;
     margin: 0;
-    line-height: 1;
-    display: inline-block;
-    vertical-align: top;
+    line-height: 55px;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     -webkit-appearance: none;
     -moz-appearance: textfield;
     appearance: none;
     box-sizing: border-box;
-    transform: translateZ(0);
-    will-change: transform;
+    display: inline-block;
+    vertical-align: middle;
+    transition: all 0.2s ease;
 }
 
+    /* Remove number input arrows */
     input.code::-webkit-outer-spin-button,
     input.code::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -247,6 +246,37 @@ input.code {
     font-weight: 800;
 }
 
+/* === TEXT STYLES (все тексты одинаковые) === */
+#message,
+.quality-description,
+.personal-thought,
+.letter-section-content,
+.gallery-caption,
+.future-letter,
+.letter-line,
+.letter-final,
+.congrats-card p,
+.congrats-card div:not(.congrats-title) {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-weight: 400;
+    line-height: 1.6;
+    color: #4b1f5e;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    max-width: 100%;
+}
+
+/* Конкретно для сообщения под котенком */
+#message {
+    font-size: 0.95rem;
+    color: rgba(124, 42, 141, 0.8);
+    min-height: 1.5rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    padding: 0 0.5rem;
+}
+
 /* === TYPING ANIMATION STYLES === */
 .typing-container {
     min-height: 120px;
@@ -281,8 +311,10 @@ input.code {
     min-height: 200px;
     max-height: 50vh;
     overflow-y: auto;
-    padding-right: 10px;
+    padding: 10px 5px 10px 10px;
+    margin: 10px 0;
     width: 100%;
+    scrollbar-width: thin;
 }
 
     .qualities-thoughts-container::-webkit-scrollbar {
@@ -351,30 +383,13 @@ input.code {
     font-size: 1.1rem;
 }
 
-.quality-description,
-.personal-thought,
-.letter-section-content,
-.gallery-caption,
-.future-letter,
-.letter-line,
-.letter-final,
-#message {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    font-weight: 400;
-    line-height: 1.6;
-    color: #4b1f5e;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-    max-width: 100%;
-}
-
 .quality-description {
     font-size: 1rem;
     margin-bottom: 0.8rem;
     color: #5a2a6e;
-    width: 100%;
-    box-sizing: border-box;
+    line-height: 1.7;
+    text-align: justify;
+    text-indent: 1.5em;
 }
 
 .personal-thought {
@@ -386,8 +401,8 @@ input.code {
     color: #5a2a6e;
     line-height: 1.5;
     font-size: 0.95rem;
-    width: 100%;
-    box-sizing: border-box;
+    margin-top: 0.5rem;
+    text-align: justify;
 }
 
 .scroll-indicator {
@@ -427,24 +442,7 @@ input.code {
         border-radius: 3px;
     }
 
-.letter-line {
-    margin-bottom: 1rem;
-    padding: 0.8rem;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 8px;
-    border-left: 3px solid rgba(147, 112, 219, 0.5);
-    word-wrap: break-word;
-    max-width: 100%;
-}
-
-.letter-hearts {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-top: 1rem;
-    animation: heartBeat 2s ease-in-out infinite;
-}
-
-/* === COLLAPSIBLE LETTER SECTIONS === */
+/* Стили для раскрывающихся писем */
 .letter-section {
     margin: 1rem 0;
     background: rgba(255, 255, 255, 0.25);
@@ -487,11 +485,13 @@ input.code {
 
 .letter-section-content {
     padding: 0 1.2rem 1.2rem;
-    line-height: 1.6;
+    line-height: 1.7;
     font-size: 1rem;
     border-top: 1px solid rgba(255, 105, 180, 0.2);
     margin-top: 0.5rem;
     padding-top: 1rem;
+    text-align: justify;
+    text-indent: 1.5em;
 }
 
 .letter-final {
@@ -553,6 +553,7 @@ input.code {
     font-size: 0.95rem;
     max-width: 100%;
     word-wrap: break-word;
+    line-height: 1.5;
 }
 
 .gallery-arrow {
@@ -846,14 +847,14 @@ input.code {
 
     .inputs {
         gap: 8px;
-        height: 65px;
+        height: 60px;
     }
 
     input.code {
-        width: 55px;
-        height: 55px;
-        font-size: 1.8rem;
-        line-height: 55px;
+        width: 50px;
+        height: 50px;
+        font-size: 1.6rem;
+        line-height: 50px;
     }
 
     .congrats-card {
@@ -874,12 +875,12 @@ input.code {
         padding: 0.8rem;
     }
 
-    .quality-description {
-        font-size: 0.95rem;
-    }
-
-    .personal-thought {
+    .quality-description,
+    .personal-thought,
+    .letter-section-content {
         font-size: 0.9rem;
+        line-height: 1.5;
+        text-indent: 1em;
     }
 
     .gallery-container {
@@ -897,6 +898,11 @@ input.code {
     .gallery-arrow-next {
         right: -10px;
     }
+
+    #message {
+        font-size: 0.85rem;
+        padding: 0 0.3rem;
+    }
 }
 
 @media (max-width: 360px) {
@@ -905,18 +911,27 @@ input.code {
     }
 
     input.code {
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.4rem;
+        line-height: 45px;
+    }
+
+    .congrats-title, .title {
         font-size: 1.6rem;
-        line-height: 50px;
     }
 }
 
 /* === iOS FIXES === */
 @supports (-webkit-touch-callout: none) {
     input.code {
-        line-height: 60px;
-        height: 60px;
+        line-height: 55px;
+        height: 55px;
+    }
+
+    .qualities-thoughts-container,
+    .future-letter {
+        -webkit-overflow-scrolling: touch;
     }
 }
 
@@ -939,55 +954,4 @@ input.code {
 .future-letter::-webkit-scrollbar-thumb {
     background: rgba(255,105,180,0.5);
     border-radius: 3px;
-}
-@media (max-width: 420px) {
-    .title {
-        font-size: 1.8rem;
-    }
-
-    .congrats-title {
-        font-size: 1.7rem;
-    }
-
-    input.code {
-        width: 50px !important;
-        height: 50px !important;
-        font-size: 1.6rem !important;
-        line-height: 50px !important;
-    }
-
-    .inputs {
-        gap: 8px;
-        height: 60px;
-    }
-
-    #page2Content {
-        max-height: 45vh !important;
-        min-height: 180px !important;
-    }
-}
-
-@media (max-width: 360px) {
-    input .code {
-        width: 45px !important;
-        height: 45px !important;
-        font-size: 1.4rem !important;
-        line-height: 45px !important;
-    }
-
-    .inputs {
-        gap: 6px;
-    }
-}
-
-/* ФИКС ДЛЯ iOS */
-@supports (-webkit-touch-callout: none) {
-    input .code {
-        line-height: 55px !important;
-        height: 55px !important;
-    }
-
-    #page2Content {
-        -webkit-overflow-scrolling: touch;
-    }
 }
