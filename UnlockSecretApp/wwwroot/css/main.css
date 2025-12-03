@@ -726,6 +726,68 @@ input.code:focus {
     top: 0;
     left: 0;
 }
+/* ФИКС ДЛЯ МОБИЛЬНЫХ INPUT */
+.inputs {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: nowrap;
+    position: relative;
+    min-height: 70px;
+}
+
+input.code {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    border: 1px solid rgba(180,180,200,0.4);
+    background: rgba(255,245,255,0.8);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #7c2a8d;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    /* ВАЖНО: фиксируем отображение */
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+    line-height: 1 !important;
+    /* Отключаем стандартное поведение */
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
+}
+
+    /* Для Firefox */
+    input.code::-moz-number-spin-box {
+        display: none;
+    }
+
+/* Для Safari iOS */
+input.code {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Принудительно фиксируем на мобильных */
+@media (max-width: 768px) {
+    .inputs {
+        display: flex;
+        align-items: flex-start; /* меняем с center на flex-start */
+        height: auto;
+        min-height: 65px;
+    }
+
+    input.code {
+        flex-shrink: 0; /* запрещаем сжиматься */
+        flex-grow: 0; /* запрещаем растягиваться */
+        transform: translateZ(0); /* включаем GPU acceleration */
+        will-change: transform; /* оптимизация */
+    }
+}
 /* === PAGE 3 LETTER STYLES === */
 .future-letter {
     min-height: 300px;
