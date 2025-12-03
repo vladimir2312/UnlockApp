@@ -174,45 +174,7 @@
             const message = document.getElementById('message');
             const correctCode = ['20','05','10'];
             // Добавляем после showPage3WithAnimation()
-                    // Ждем загрузки Telegram Web App
-            document.addEventListener('DOMContentLoaded', function() {
-                // Проверяем, что мы в Telegram Web App
-                if (window.Telegram && window.Telegram.WebApp) {
-                    const tg = window.Telegram.WebApp;
 
-                    // 1. Открываем на весь экран
-                    tg.expand();
-
-                    // 2. Настраиваем тему
-                    tg.setHeaderColor('#ff69b4'); // Розовый заголовок
-                    tg.setBackgroundColor('#fef7fb'); // Ваш градиентный фон
-
-                    // 3. Скрываем стандартную кнопку "Назад"
-                    tg.BackButton.hide();
-
-                    // 4. Можно показывать свою кнопку "Назад"
-                    // tg.BackButton.show();
-                    // tg.BackButton.onClick(() => {
-                    //     history.back();
-                    // });
-
-                    // 5. Получаем данные пользователя (опционально)
-                    const user = tg.initDataUnsafe.user;
-                    if (user) {
-                        console.log('Пользователь:', user.first_name, user.last_name);
-                        // Можно персонализировать приложение
-                    }
-
-                    console.log('✅ WebApp развернут на весь экран');
-
-                    // 6. Блокируем масштабирование для мобильных
-                    const viewportMeta = document.querySelector('meta[name="viewport"]');
-                    if (viewportMeta) {
-                        viewportMeta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
-                    }
-
-                    // 7. Добавляем CSS для полноэкранного режима
-                   
 
 function showPage4WithAnimation() {
     const page4 = document.getElementById('page4');
