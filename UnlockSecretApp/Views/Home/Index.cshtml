@@ -97,35 +97,41 @@
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
+            height: 70px;
+            align-items: flex-start;
+            position: relative;
         }
 
         input.code {
             width: 60px;
             height: 60px;
             border-radius: 12px;
-            border: 1px solid rgba(180,180,200,0.4);
-            background: rgba(255,245,255,0.8);
-            font-size: 1.8rem;
-            font-weight: 700;
-            text-align: center;
+            border: 2px solid rgba(180,180,200,0.4);
+            background: rgba(255,245,255,0.9);
+            font-size: 2rem;
+            font-weight: 800;
             color: #7c2a8d;
-            /* Убираем стандартные стили браузера */
-            -webkit-appearance: none;
-            -moz-appearance: textfield;
-            appearance: none;
-            /* Центрируем текст */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: normal;
+            text-align: center;
+            padding: 0 !important;
+            margin: 0 !important;
+            line-height: 60px !important;
+            display: inline-block !important;
+            vertical-align: top !important;
+            box-sizing: border-box !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: textfield !important;
+            appearance: none !important;
         }
 
             input.code:focus {
-                outline: none;
-                border-color: rgba(200,120,255,0.9);
-                background: rgba(255,240,250,0.9);
+                outline: none !important;
+                border-color: rgba(200,120,255,0.9) !important;
+                background: rgba(255,240,250,0.95) !important;
+                transform: scale(1.05) !important;
             }
+
+       
 
         /* ===== Китёнок и свайп ===== */
         #kitten {
@@ -222,6 +228,7 @@
             .btn-next:hover {
                 transform: scale(1.05);
             }
+
     </style>
 </head>
 
@@ -997,6 +1004,59 @@ document.getElementById("next4").addEventListener('click', () => {
             setTimeout(() => inputs[0].focus(), 100);
 
         })();
+                // ДОБАВЬ ПОСЛЕ ВСЕГО ОСТАЛЬНОГО КОДА В КОНЦЕ ФУНКЦИИ
+        // ========== FIX FOR MOBILE INPUT POSITION ==========
+
+        // Функция для принудительного фиксирования позиции inputs
+        function fixMobileInputs() {
+            const inputs = document.querySelectorAll('.code');
+
+            inputs.forEach(input => {
+                // При фокусе фиксируем позицию
+                input.addEventListener('focus', function() {
+                    this.style.position = 'relative';
+                    this.style.top = '0';
+                    this.style.left = '0';
+                    this.style.transform = 'scale(1.05)';
+                    this.style.zIndex = '100';
+                });
+
+                // При потере фокуса
+                input.addEventListener('blur', function() {
+                    this.style.transform = 'scale(1)';
+                    this.style.zIndex = '1';
+                });
+
+                // При вводе
+                input.addEventListener('input', function() {
+                    // Принудительно устанавливаем высоту строки
+                    this.style.lineHeight = this.offsetHeight + 'px';
+                });
+            });
+
+            // Принудительно устанавливаем правильную высоту line-height
+            setTimeout(() => {
+                inputs.forEach(input => {
+                    if (input.offsetHeight > 0) {
+                        input.style.lineHeight = input.offsetHeight + 'px';
+                    }
+                });
+            }, 100);
+
+            // Пересчитываем при изменении размера экрана
+            window.addEventListener('resize', () => {
+                setTimeout(() => {
+                    inputs.forEach(input => {
+                        if (input.offsetHeight > 0) {
+                            input.style.lineHeight = input.offsetHeight + 'px';
+                        }
+                    });
+                }, 100);
+            });
+        }
+
+        // Вызываем функцию после загрузки
+        setTimeout(fixMobileInputs, 500);
     </script>
 </body>
 </html>

@@ -726,68 +726,7 @@ input.code:focus {
     top: 0;
     left: 0;
 }
-/* ФИКС ДЛЯ МОБИЛЬНЫХ INPUT */
-.inputs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    flex-wrap: nowrap;
-    position: relative;
-    min-height: 70px;
-}
 
-input.code {
-    width: 60px;
-    height: 60px;
-    border-radius: 12px;
-    border: 1px solid rgba(180,180,200,0.4);
-    background: rgba(255,245,255,0.8);
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #7c2a8d;
-    text-align: center;
-    padding: 0;
-    margin: 0;
-    /* ВАЖНО: фиксируем отображение */
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    vertical-align: middle !important;
-    line-height: 1 !important;
-    /* Отключаем стандартное поведение */
-    -webkit-tap-highlight-color: transparent;
-    tap-highlight-color: transparent;
-}
-
-    /* Для Firefox */
-    input.code::-moz-number-spin-box {
-        display: none;
-    }
-
-/* Для Safari iOS */
-input.code {
-    -webkit-user-select: text;
-    -moz-user-select: text;
-    -ms-user-select: text;
-    user-select: text;
-}
-
-/* Принудительно фиксируем на мобильных */
-@media (max-width: 768px) {
-    .inputs {
-        display: flex;
-        align-items: flex-start; /* меняем с center на flex-start */
-        height: auto;
-        min-height: 65px;
-    }
-
-    input.code {
-        flex-shrink: 0; /* запрещаем сжиматься */
-        flex-grow: 0; /* запрещаем растягиваться */
-        transform: translateZ(0); /* включаем GPU acceleration */
-        will-change: transform; /* оптимизация */
-    }
-}
 /* === PAGE 3 LETTER STYLES === */
 .future-letter {
     min-height: 300px;
@@ -1192,4 +1131,107 @@ html, body {
     padding: 1rem;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 10px;
+}
+/* === COMPLETE INPUT FIX FOR MOBILE === */
+.inputs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 1.5rem 0;
+    position: relative;
+    /* Фиксируем высоту контейнера */
+    height: 70px;
+    align-items: flex-start; /* Меняем с center на flex-start */
+}
+
+input.code {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    border: 2px solid rgba(180,180,200,0.4);
+    background: rgba(255,245,255,0.9);
+    font-size: 2rem;
+    font-weight: 800;
+    color: #7c2a8d;
+    text-align: center;
+    /* СБРАСЫВАЕМ ВСЕ СТАНДАРТНЫЕ СТИЛИ */
+    padding: 0 !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    /* ФИКС ДЛЯ ВЫРАВНИВАНИЯ */
+    display: inline-block !important;
+    vertical-align: top !important;
+    /* Отключаем все браузерные стили */
+    -webkit-appearance: none !important;
+    -moz-appearance: textfield !important;
+    appearance: none !important;
+    /* Отключаем увеличение на iOS */
+    font-size: 2rem !important;
+    /* Фиксируем box-sizing */
+    box-sizing: border-box !important;
+    /* Для производительности */
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+    /* Убираем стрелки у числового input */
+    input.code::-webkit-outer-spin-button,
+    input.code::-webkit-inner-spin-button {
+        -webkit-appearance: none !important;
+        margin: 0 !important;
+    }
+
+    /* Для Firefox */
+    input.code[type=number] {
+        -moz-appearance: textfield !important;
+    }
+
+    /* При фокусе - фиксированная позиция */
+    input.code:focus {
+        outline: none !important;
+        border-color: rgba(200,120,255,0.9) !important;
+        background: rgba(255,240,250,0.95) !important;
+        transform: scale(1.05) !important;
+        position: relative;
+        z-index: 2;
+    }
+
+/* Специально для Telegram на iOS */
+@supports (-webkit-touch-callout: none) {
+    input.code {
+        /* iOS Safari specific */
+        line-height: 60px !important;
+        height: 60px !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+}
+
+/* Адаптация для маленьких экранов */
+@media (max-width: 420px) {
+    .inputs {
+        gap: 8px;
+        height: 65px;
+    }
+
+    input.code {
+        width: 55px;
+        height: 55px;
+        font-size: 1.8rem !important;
+        line-height: 55px !important;
+    }
+}
+
+/* Для очень маленьких экранов */
+@media (max-width: 360px) {
+    .inputs {
+        gap: 6px;
+    }
+
+    input.code {
+        width: 50px;
+        height: 50px;
+        font-size: 1.6rem !important;
+        line-height: 50px !important;
+    }
 }
