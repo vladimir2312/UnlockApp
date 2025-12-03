@@ -4,6 +4,20 @@ using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Добавляем логирование
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+// Добавляем сервисы
+builder.Services.AddControllersWithViews();
+
+// Регистрируем бота как hosted service
+builder.Services.AddHostedService<BotWorker>();
+
+var app = builder.Build();
+
 // Добавляем фонового Telegram-бота
 builder.Services.AddHostedService<BotWorker>();
 
@@ -11,7 +25,7 @@ builder.Services.AddHostedService<BotWorker>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-var app = builder.Build();
+
 
 // Настройка порта для Render
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";

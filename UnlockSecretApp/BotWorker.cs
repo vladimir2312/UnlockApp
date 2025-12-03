@@ -7,102 +7,163 @@ using Telegram.Bot.Types.ReplyMarkups;
 public class BotWorker : BackgroundService
 {
     private readonly TelegramBotClient _botClient;
+    private readonly ILogger<BotWorker> _logger;
+    private readonly HashSet<long> _processedMessages = new();
+    private readonly object _lock = new();
 
-    public BotWorker()
+    public BotWorker(ILogger<BotWorker> logger)
     {
         string token = "8431829253:AAGNLz7LW9Yy7fQ8Qi6ctP2LoDsz9L9oyA0";
         _botClient = new TelegramBotClient(token);
+        _logger = logger;
     }
 
-    protected override Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _botClient.StartReceiving(
-            updateHandler: HandleUpdateAsync,
-            errorHandler: HandleErrorAsync,
-            cancellationToken: stoppingToken
-        );
-        Console.WriteLine("🤖 Бот запущен и готов дарить подарки!");
-        return Task.CompletedTask;
+        try
+        {
+            // Удаляем вебхук чтобы использовать polling
+            await _botClient.DeleteWebhookAsync(cancellationToken: stoppingToken);
+
+            // Настраиваем получение через polling с правильными параметрами
+            _botClient.StartReceiving(
+                updateHandler: HandleUpdateAsync,
+                errorHandler: HandleErrorAsync,
+                cancellationToken: stoppingToken
+            );
+
+            _logger.LogInformation("🤖 Бот успешно запущен!");
+
+            // Бесконечная задача чтобы сервис не завершался
+            await Task.Delay(Timeout.Infinite, stoppingToken);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "❌ Ошибка при запуске бота");
+        }
     }
 
     private async Task HandleUpdateAsync(ITelegramBotClient bot, Update update, CancellationToken token)
     {
-        // Обработка команды /start
-        if (update.Type == UpdateType.Message && update.Message?.Text == "/start")
+        // Проверка на дублирование сообщений
+        var messageId = update.Message?.MessageId ?? update.CallbackQuery?.Message?.MessageId ?? 0;
+        var chatId = update.Message?.Chat.Id ?? update.CallbackQuery?.Message?.Chat.Id ?? 0;
+
+        var uniqueKey = (chatId << 32) | (uint)messageId;
+
+        lock (_lock)
         {
-            var webAppUrl = "https://unlockapp-11212.onrender.com/"; // Ваш WebApp
-
-            // Создаем клавиатуру с кнопкой WebApp
-            var inlineKeyboard = new InlineKeyboardMarkup(new[]
+            if (_processedMessages.Contains(uniqueKey))
             {
-                new[]
-                {
-                    InlineKeyboardButton.WithWebApp(
-                        "🎁 Открыть подарок",
-                        new WebAppInfo(webAppUrl)
-                    )
-                },
-                new[]
-                {
-                    InlineKeyboardButton.WithCallbackData("💌 Что внутри?", "about"),
-                    InlineKeyboardButton.WithCallbackData("❓ Помощь", "help")
-                }
-            });
+                _logger.LogDebug("Пропущено дублирующее сообщение: {MessageId}", messageId);
+                return;
+            }
+            _processedMessages.Add(uniqueKey);
 
-            // Отправляем красивое сообщение
-            await bot.SendTextMessageAsync(
-                chatId: update.Message.Chat.Id,
-                text: "🎂 <b>С днём рождения, моя любимая!</b> 💖\n\n" +
-                      "Я подготовил для тебя особенный сюрприз...\n" +
-                      "Это не просто подарок, а целое путешествие\n" +
-                      "по нашим воспоминаниям и мечтам ✨\n\n" +
-                      "<i>Нажми на кнопку ниже, чтобы начать...</i>",
-                parseMode: ParseMode.Html,
-                replyMarkup: inlineKeyboard
-            );
+            // Очищаем старые записи каждые 1000 сообщений
+            if (_processedMessages.Count > 1000)
+            {
+                _processedMessages.Clear();
+            }
         }
 
-        // Обработка нажатий на callback кнопки
-        if (update.Type == UpdateType.CallbackQuery)
+        try
         {
-            var callback = update.CallbackQuery;
+            // Обработка команды /start
+            if (update.Type == UpdateType.Message && update.Message?.Text == "/start")
+            {
+                _logger.LogInformation("Получен /start от пользователя: {UserId} ({Username})",
+                    update.Message.From?.Id, update.Message.From?.Username);
 
-            if (callback.Data == "about")
-            {
-                await bot.AnswerCallbackQueryAsync(callback.Id);
+                var webAppUrl = "https://unlockapp-11212.onrender.com/";
+
+                // Создаем клавиатуру
+                var inlineKeyboard = new InlineKeyboardMarkup(new[]
+                {
+                    new[]
+                    {
+                        InlineKeyboardButton.WithWebApp(
+                            "🎁 Открыть подарок",
+                            new WebAppInfo(webAppUrl)
+                        )
+                    },
+                    new[]
+                    {
+                        InlineKeyboardButton.WithUrl("💬 Автор", "https://t.me/dinoZaViK")
+                    }
+                });
+
+                // Отправляем сообщение
                 await bot.SendTextMessageAsync(
-                    chatId: callback.Message.Chat.Id,
-                    text: "✨ <b>Внутри подарка:</b>\n\n" +
-                          "• 🔐 Секретный код с нашей историей\n" +
-                          "• 💫 Твои самые прекрасные качества\n" +
-                          "• 💌 Письма в наше будущее\n" +
-                          "• 📸 Галерея наших моментов\n" +
-                          "• 🎀 И много маленьких сюрпризов!\n\n" +
-                          "<i>Открой и узнаешь всё остальное...</i> 💖",
-                    parseMode: ParseMode.Html
+                    chatId: update.Message.Chat.Id,
+                    text: "🎂 <b>С днём рождения, любимая!</b> 💖\n\n" +
+                          "Я подготовил для тебя особенный подарок...\n" +
+                          "Это цифровой сюрприз с нашими воспоминаниями ✨\n\n" +
+                          "<i>Нажми на кнопку ниже чтобы открыть...</i>",
+                    parseMode: ParseMode.Html,
+                    replyMarkup: inlineKeyboard,
+                    cancellationToken: token
                 );
+
+                _logger.LogInformation("✅ Отправлен подарок для {UserId}", update.Message.From?.Id);
             }
-            else if (callback.Data == "help")
+
+            // Обработка команды /help
+            else if (update.Type == UpdateType.Message && update.Message?.Text == "/help")
             {
-                await bot.AnswerCallbackQueryAsync(callback.Id);
                 await bot.SendTextMessageAsync(
-                    chatId: callback.Message.Chat.Id,
+                    chatId: update.Message.Chat.Id,
                     text: "❓ <b>Помощь:</b>\n\n" +
-                          "Просто нажми кнопку \"🎁 Открыть подарок\"!\n" +
-                          "Приложение откроется прямо в Telegram.\n\n" +
-                          "Если что-то не работает, попробуй:\n" +
-                          "1. Обновить Telegram\n" +
-                          "2. Перезагрузить бота\n" +
-                          "3. Написать разработчику 💌",
-                    parseMode: ParseMode.Html
+                          "1. Напиши <b>/start</b> чтобы открыть подарок 🎁\n" +
+                          "2. Нажми кнопку \"🎁 Открыть подарок\"\n" +
+                          "3. Следуй инструкциям в приложении\n\n" +
+                          "По вопросам пиши автору: @dinoZaViK",
+                    parseMode: ParseMode.Html,
+                    cancellationToken: token
                 );
             }
+
+            // Обработка любых других текстовых сообщений
+            else if (update.Type == UpdateType.Message && !string.IsNullOrEmpty(update.Message?.Text))
+            {
+                var message = update.Message.Text.ToLower();
+
+                if (message.Contains("спасибо") || message.Contains("благодар"))
+                {
+                    await bot.SendTextMessageAsync(
+                        chatId: update.Message.Chat.Id,
+                        text: "💖 Рад, что тебе нравится!\nАвтор будет рад услышать отзыв: @dinoZaViK",
+                        cancellationToken: token
+                    );
+                }
+                else if (!message.StartsWith("/"))
+                {
+                    await bot.SendTextMessageAsync(
+                        chatId: update.Message.Chat.Id,
+                        text: "✨ Напиши <b>/start</b> чтобы открыть подарок!\n" +
+                              "Или свяжись с автором: @dinoZaViK",
+                        parseMode: ParseMode.Html,
+                        cancellationToken: token
+                    );
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Ошибка при обработке сообщения от {UserId}",
+                update.Message?.From?.Id ?? update.CallbackQuery?.From?.Id);
         }
     }
 
     private Task HandleErrorAsync(ITelegramBotClient bot, Exception exception, CancellationToken token)
     {
-        Console.WriteLine($"❌ Ошибка бота: {exception.Message}");
+        _logger.LogError(exception, "❌ Ошибка в Telegram боте");
         return Task.CompletedTask;
+    }
+
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("🛑 Остановка бота...");
+        await base.StopAsync(cancellationToken);
     }
 }
