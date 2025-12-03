@@ -82,7 +82,7 @@
             margin-bottom: 1rem;
             text-align: center;
         }
-        
+
         /* ФИКС ДЛЯ ТЕКСТА */
         #message {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
@@ -94,7 +94,7 @@
             text-align: center;
             padding: 0 0.5rem;
         }
-        
+
         /* ФИКС ДЛЯ INPUT КОДА */
         .inputs {
             display: flex;
@@ -127,25 +127,25 @@
             vertical-align: middle !important;
         }
 
-        /* Убираем стрелки у числового input */
-        input.code::-webkit-outer-spin-button,
-        input.code::-webkit-inner-spin-button {
-            -webkit-appearance: none !important;
-            margin: 0 !important;
-        }
+            /* Убираем стрелки у числового input */
+            input.code::-webkit-outer-spin-button,
+            input.code::-webkit-inner-spin-button {
+                -webkit-appearance: none !important;
+                margin: 0 !important;
+            }
 
-        input.code[type=number] {
-            -moz-appearance: textfield !important;
-        }
+            input.code[type=number] {
+                -moz-appearance: textfield !important;
+            }
 
-        input.code:focus {
-            outline: none !important;
-            border-color: rgba(200,120,255,0.9) !important;
-            background: rgba(255,240,250,0.95) !important;
-            transform: scale(1.05) !important;
-            position: relative;
-            z-index: 2;
-        }
+            input.code:focus {
+                outline: none !important;
+                border-color: rgba(200,120,255,0.9) !important;
+                background: rgba(255,240,250,0.95) !important;
+                transform: scale(1.05) !important;
+                position: relative;
+                z-index: 2;
+            }
 
         /* ФИКС ДЛЯ СТРАНИЦЫ 2 */
         #page2Content {
@@ -159,22 +159,22 @@
             -webkit-overflow-scrolling: touch; /* Плавный скролл на iOS */
         }
 
-        #page2Content::-webkit-scrollbar {
-            width: 6px;
-        }
+            #page2Content::-webkit-scrollbar {
+                width: 6px;
+            }
 
-        #page2Content::-webkit-scrollbar-track {
-            background: rgba(255,255,255,0.2);
-            border-radius: 3px;
-        }
+            #page2Content::-webkit-scrollbar-track {
+                background: rgba(255,255,255,0.2);
+                border-radius: 3px;
+            }
 
-        #page2Content::-webkit-scrollbar-thumb {
-            background: rgba(255,105,180,0.5);
-            border-radius: 3px;
-        }
+            #page2Content::-webkit-scrollbar-thumb {
+                background: rgba(255,105,180,0.5);
+                border-radius: 3px;
+            }
 
         /* ФИКС ДЛЯ ТЕКСТА В КАЧЕСТВАХ */
-        .quality-description, 
+        .quality-description,
         .personal-thought {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
             font-size: 0.95rem !important;
@@ -194,55 +194,64 @@
 
         /* АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ */
         @media (max-width: 420px) {
-            .title {
-                font-size: 1.8rem;
-            }
-            
-            .congrats-title {
-                font-size: 1.7rem;
-            }
-            
-            input.code {
-                width: 50px !important;
-                height: 50px !important;
-                font-size: 1.6rem !important;
-                line-height: 50px !important;
-            }
-            
-            .inputs {
-                gap: 8px;
-                height: 60px;
-            }
-            
-            #page2Content {
-                max-height: 45vh !important;
-                min-height: 180px !important;
-            }
+            .title
+
+        {
+            font-size: 1.8rem;
+        }
+
+        .congrats-title {
+            font-size: 1.7rem;
+        }
+
+        input.code {
+            width: 50px !important;
+            height: 50px !important;
+            font-size: 1.6rem !important;
+            line-height: 50px !important;
+        }
+
+        .inputs {
+            gap: 8px;
+            height: 60px;
+        }
+
+        #page2Content {
+            max-height: 45vh !important;
+            min-height: 180px !important;
+        }
+
         }
 
         @media (max-width: 360px) {
-            input.code {
-                width: 45px !important;
-                height: 45px !important;
-                font-size: 1.4rem !important;
-                line-height: 45px !important;
-            }
-            
-            .inputs {
-                gap: 6px;
-            }
+            input .code
+
+        {
+            width: 45px !important;
+            height: 45px !important;
+            font-size: 1.4rem !important;
+            line-height: 45px !important;
+        }
+
+        .inputs {
+            gap: 6px;
+        }
+
         }
 
         /* ФИКС ДЛЯ iOS */
         @supports (-webkit-touch-callout: none) {
-            input.code {
-                line-height: 55px !important;
-                height: 55px !important;
-            }
-            
-            #page2Content {
-                -webkit-overflow-scrolling: touch;
-            }
+            input .code
+
+        {
+            line-height: 55px !important;
+            height: 55px !important;
+        }
+
+        #page2Content {
+            -webkit-overflow-scrolling: touch;
+        }
+
         }
     </style>
 </head>
@@ -331,7 +340,7 @@
             const correctCode = ['20','05','10'];
 
             // ========== ИНИЦИАЛИЗАЦИЯ ВСЕХ СТРАНИЦ ==========
-            
+
             // Галерея
             function initGallery() {
                 const galleryData = [
@@ -348,57 +357,57 @@
                         caption: 'Наши совместные мечты и планы... 🌸'
                     }
                 ];
-                
+
                 let currentGalleryIndex = 0;
                 const galleryImage = document.getElementById('galleryImage');
                 const galleryCaption = document.getElementById('galleryCaption');
                 const currentIndexSpan = document.getElementById('currentIndex');
                 const totalImagesSpan = document.getElementById('totalImages');
-                
+
                 totalImagesSpan.textContent = galleryData.length;
-                
+
                 function showGalleryImage(index, direction = 'next') {
                     const data = galleryData[index];
                     galleryImage.classList.add(direction === 'next' ? 'slide-next' : 'slide-prev');
                     galleryCaption.classList.add(direction === 'next' ? 'slide-next' : 'slide-prev');
-                    
+
                     galleryImage.src = data.image;
                     galleryImage.alt = `Наше фото ${index + 1}`;
                     galleryCaption.textContent = data.caption;
                     currentIndexSpan.textContent = index + 1;
-                    
+
                     setTimeout(() => {
                         galleryImage.classList.remove('slide-next', 'slide-prev');
                         galleryCaption.classList.remove('slide-next', 'slide-prev');
                     }, 500);
                 }
-                
+
                 showGalleryImage(0);
-                
+
                 document.querySelector('.gallery-arrow-prev').addEventListener('click', () => {
                     currentGalleryIndex = (currentGalleryIndex - 1 + galleryData.length) % galleryData.length;
                     showGalleryImage(currentGalleryIndex, 'prev');
                 });
-                
+
                 document.querySelector('.gallery-arrow-next').addEventListener('click', () => {
                     currentGalleryIndex = (currentGalleryIndex + 1) % galleryData.length;
                     showGalleryImage(currentGalleryIndex, 'next');
                 });
-                
+
                 // Свайпы для мобильных
                 let startX = 0;
                 const gallerySlide = document.querySelector('.gallery-slide');
-                
+
                 gallerySlide.addEventListener('touchstart', (e) => {
                     startX = e.touches[0].clientX;
                 });
-                
+
                 gallerySlide.addEventListener('touchend', (e) => {
                     if (!startX) return;
-                    
+
                     const endX = e.changedTouches[0].clientX;
                     const diffX = startX - endX;
-                    
+
                     if (Math.abs(diffX) > 50) {
                         if (diffX > 0) {
                             currentGalleryIndex = (currentGalleryIndex + 1) % galleryData.length;
@@ -564,14 +573,14 @@
                 const fixFonts = () => {
                     const descriptions = contentContainer.querySelectorAll('.quality-description');
                     const thoughts = contentContainer.querySelectorAll('.personal-thought');
-                    
+
                     descriptions.forEach(el => {
                         el.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
                         el.style.fontSize = "0.95rem";
                         el.style.lineHeight = "1.5";
                         el.style.wordWrap = "break-word";
                     });
-                    
+
                     thoughts.forEach(el => {
                         el.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
                         el.style.fontSize = "0.9rem";
@@ -595,29 +604,29 @@
                         `;
 
                         contentContainer.appendChild(qualityItem);
-                        
+
                         setTimeout(() => {
                             qualityItem.classList.add('visible');
                             fixFonts();
-                            
+
                             // Скроллим к последнему элементу
                             if (index === page2Content.length - 1) {
                                 setTimeout(() => {
                                     nextButton.style.display = 'block';
                                     nextButton.style.animation = 'fadeIn 0.5s ease';
-                                    
+
                                     // Добавляем слушатель скролла для кнопки
                                     const checkScroll = () => {
                                         const container = contentContainer;
                                         const isAtBottom = container.scrollHeight - container.scrollTop <= container.clientHeight + 10;
-                                        
+
                                         if (isAtBottom) {
                                             nextButton.style.display = 'block';
                                             nextButton.style.animation = 'fadeIn 0.5s ease';
                                             container.removeEventListener('scroll', checkScroll);
                                         }
                                     };
-                                    
+
                                     contentContainer.addEventListener('scroll', checkScroll);
                                 }, 800);
                             }
@@ -698,12 +707,12 @@
                 setTimeout(() => page1.classList.add('show'), 50);
 
                 nextButton.style.display = 'none';
-                
+
                 // Фиксируем шрифт для печатной машинки
                 typedText.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
                 typedText.style.fontSize = "1rem";
                 typedText.style.lineHeight = "1.6";
-                
+
                 typeWriter(page1Content, typedText, 30, () => {
                     setTimeout(() => {
                         nextButton.style.display = 'block';
@@ -731,7 +740,7 @@
                     inp.style.textAlign = "center";
                     inp.style.padding = "0";
                     inp.style.margin = "0";
-                    
+
                     inp.addEventListener('focus', () => {
                         if (inp.value === '00') inp.value = '';
                         inp.style.lineHeight = inp.offsetHeight + "px";
@@ -763,7 +772,7 @@
                         }
                     });
                 });
-                
+
                 // Пересчитываем line-height при изменении размера
                 window.addEventListener('resize', () => {
                     setTimeout(() => {
@@ -953,23 +962,23 @@
             // ========== ИНИЦИАЛИЗАЦИЯ ==========
             kitten.classList.add('ready-pulse');
             fixInputs();
-            
+
             // Функция для фикса всех шрифтов
             function fixAllFonts() {
                 // Фиксируем шрифты для сообщений
                 message.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-                
+
                 // Фиксируем шрифты в inputs
                 inputs.forEach(inp => {
                     inp.style.fontFamily = "'Segoe UI', system-ui, -apple-system, sans-serif";
                 });
-                
+
                 // Фиксируем шрифты в кнопках
                 const buttons = document.querySelectorAll('.btn-next');
                 buttons.forEach(btn => {
                     btn.style.fontFamily = "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
                 });
-                
+
                 // Фиксируем заголовки
                 const titles = document.querySelectorAll('.title, .congrats-title');
                 titles.forEach(title => {
