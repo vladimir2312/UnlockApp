@@ -15,13 +15,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/main.css" />
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            /* УБИРАЕМ font-family отсюда, он уже в main.css */
-        }
-
+        /* ТОЛЬКО специфические стили для Index.cshtml */
         html, body {
             height: 100dvh;
             min-height: 100dvh;
@@ -30,13 +24,6 @@
             justify-content: center;
             overflow: hidden;
             background: linear-gradient(160deg,#f7fbff 0%,#fef7fb 50%,#f3f9ff 100%);
-            color: #7c2a8d;
-        }
-
-        /* Добавляем отдельно стили для заголовков */
-        h1.title {
-            font-family: 'Great Vibes', cursive;
-            font-size: 2.2rem;
             color: #7c2a8d;
         }
 
@@ -77,158 +64,19 @@
                 display: none;
             }
 
-        #container {
-            position: relative;
-            width: 92%;
-            max-width: 420px;
-            padding: 2rem;
-            border-radius: 20px;
-            background: rgba(255,255,255,0.55);
-            border: 1px solid rgba(255,255,255,0.35);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        /* ОСТАВЛЯЕМ ТОЛЬКО КОНКРЕТНЫЕ СТИЛИ, КОТОРЫХ НЕТ В main.css */
-        .inputs {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin: 1.5rem 0;
-            height: 70px;
-            align-items: flex-start;
-            position: relative;
-        }
-
-        input.code {
-            width: 60px;
-            height: 60px;
-            border-radius: 12px;
-            border: 2px solid rgba(180,180,200,0.4);
-            background: rgba(255,245,255,0.9);
-            font-size: 2rem;
-            font-weight: 800;
+        /* ОСТАВЬ ТОЛЬКО ЭТИ специфические стили */
+        .title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.2rem;
             color: #7c2a8d;
-            text-align: center;
-            padding: 0 !important;
-            margin: 0 !important;
-            line-height: 60px !important;
-            display: inline-block !important;
-            vertical-align: top !important;
-            box-sizing: border-box !important;
-            -webkit-appearance: none !important;
-            -moz-appearance: textfield !important;
-            appearance: none !important;
-        }
-
-            input.code:focus {
-                outline: none !important;
-                border-color: rgba(200,120,255,0.9) !important;
-                background: rgba(255,240,250,0.95) !important;
-                transform: scale(1.05) !important;
-            }
-
-       
-
-        /* ===== Китёнок и свайп ===== */
-        #kitten {
-            width: 150px;
-            height: 60px;
-            margin: 0.6rem auto;
-            border-radius: 36px;
-            background: rgba(255,255,255,0.35);
-            border: 1px solid rgba(255,255,255,0.35);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            transition: box-shadow 0.3s ease;
-        }
-
-            #kitten:hover {
-                box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            }
-
-            #kitten .swipe-bar {
-                position: absolute;
-                left: 0;
-                top: 0;
-                height: 100%;
-                width: 0%;
-                background: linear-gradient(90deg, rgba(255,200,235,0.4), rgba(200,180,255,0.4));
-                border-radius: 36px;
-                transition: width 0.1s;
-            }
-
-            #kitten .kitten-inner {
-                font-size: 2.2rem;
-                color: #ff6fa3;
-                position: absolute;
-                left: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                transition: left 0.1s ease-out;
-            }
-
-            #kitten .arrow {
-                position: absolute;
-                right: 10px;
-                top: 50%;
-                transform: translateY(-50%);
-                font-size: 1.5rem;
-                color: rgba(124,42,141,0.5);
-                animation: pulse 1.2s infinite;
-            }
-
-        #message {
-            font-size: 1rem;
-            color: rgba(124,42,141,0.8);
-            min-height: 1.2rem;
-        }
-
-        .congrats-card {
-            width: min(92%,640px);
-            padding: 2rem;
-            border-radius: 18px;
-            background: rgba(255,255,255,0.65);
-            border: 1px solid rgba(255,255,255,0.35);
-            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
         }
 
         .congrats-title {
+            font-family: 'Great Vibes', cursive;
             font-size: 2rem;
             font-weight: 800;
             color: #7c2a8d;
-            font-family: 'Great Vibes', cursive; /* Добавляем шрифт */
         }
-
-        .btn, .btn-next {
-            margin-top: 10px;
-            padding: 0.7rem 1.2rem;
-            border-radius: 12px;
-            background: linear-gradient(180deg,#ffe0f0 0%,#fff0ff 100%);
-            border: 1px solid rgba(200,120,255,0.2);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-            font-weight: 700;
-            color: #7c2a8d;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-
-            .btn-next:hover {
-                transform: scale(1.05);
-            }
-
     </style>
 </head>
 
