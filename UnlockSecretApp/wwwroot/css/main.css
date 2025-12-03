@@ -859,3 +859,228 @@ input.code {
         right: -10px;
     }
 }
+/* === ТЕКСТ И ШРИФТЫ === */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    /* Оставляем Great Vibes только для заголовков */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Для заголовков используем красивый рукописный шрифт */
+h1, h2, h3, .congrats-title, .title {
+    font-family: 'Great Vibes', cursive;
+}
+
+/* Для основного текста - читаемый шрифт */
+body, .quality-description, .personal-thought,
+.letter-content, .future-letter, .gallery-caption,
+#message, .typing-container, input.code {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+}
+
+/* Улучшаем читаемость текста */
+.quality-description, .personal-thought,
+.letter-content, .future-letter {
+    color: #4b1f5e;
+    font-size: 1rem;
+    line-height: 1.7;
+    text-align: left;
+}
+
+/* Делаем текст в input больше и чётче */
+input.code {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #7c2a8d;
+}
+/* === ИСПРАВЛЕНИЕ ВЫПАДАНИЯ ТЕКСТА === */
+
+/* Для всех текстовых контейнеров */
+.quality-description, .personal-thought,
+.letter-line, .gallery-caption,
+.typing-container, .future-letter {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    max-width: 100%;
+}
+
+/* Конкретно для письма */
+.future-letter {
+    min-height: 300px;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.letter-line {
+    margin-bottom: 1rem;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    border-left: 3px solid rgba(147, 112, 219, 0.5);
+    word-wrap: break-word;
+    max-width: 100%;
+}
+
+/* Для страницы с качествами */
+.quality-thought-item {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(255,255,255,0.4);
+    border-radius: 15px;
+    border-left: 4px solid;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.quality-description, .personal-thought {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Для галереи */
+.gallery-caption {
+    padding: 0.8rem;
+    min-height: 60px;
+    max-width: 100%;
+    word-wrap: break-word;
+    font-size: 0.95rem;
+}
+
+/* Для анимации печатания */
+.typing-container {
+    min-height: 120px;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    text-align: left;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    overflow-y: auto;
+    max-height: 200px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Для кнопок - делаем их адаптивными */
+.btn, .btn-next {
+    width: auto;
+    min-width: 120px;
+    max-width: 200px;
+    margin: 10px auto 0;
+    padding: 0.8rem 1.5rem;
+    white-space: nowrap;
+}
+/* Автоматическая высота для текстовых контейнеров */
+.qualities-thoughts-container,
+.future-letter,
+.typing-container {
+    min-height: 150px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding-right: 10px;
+    scrollbar-width: thin;
+}
+
+    /* Плавный скролл */
+    .qualities-thoughts-container::-webkit-scrollbar,
+    .future-letter::-webkit-scrollbar,
+    .typing-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .qualities-thoughts-container::-webkit-scrollbar-track,
+    .future-letter::-webkit-scrollbar-track,
+    .typing-container::-webkit-scrollbar-track {
+        background: rgba(255,255,255,0.2);
+        border-radius: 3px;
+    }
+
+    .qualities-thoughts-container::-webkit-scrollbar-thumb,
+    .future-letter::-webkit-scrollbar-thumb,
+    .typing-container::-webkit-scrollbar-thumb {
+        background: rgba(255,105,180,0.5);
+        border-radius: 3px;
+    }
+
+/* Убираем горизонтальный скролл */
+html, body {
+    overflow-x: hidden;
+}
+
+#container.glass, .congrats-card {
+    max-width: 95vw;
+    overflow: hidden;
+}
+/* Стили для раскрывающихся писем */
+.letter-section {
+    margin: 1rem 0;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    border-left: 4px solid #ff69b4;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.letter-section-title {
+    padding: 1rem 1.2rem;
+    font-weight: 600;
+    color: #7c2a8d;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.3s ease;
+}
+
+    .letter-section-title:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+.section-emoji {
+    font-size: 1.3rem;
+    margin-right: 0.8rem;
+}
+
+.section-text {
+    flex-grow: 1;
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.4rem;
+}
+
+.section-arrow {
+    font-size: 0.9rem;
+    color: #ff69b4;
+    transition: transform 0.3s ease;
+}
+
+.letter-section-content {
+    padding: 0 1.2rem 1.2rem;
+    color: #4b1f5e;
+    line-height: 1.6;
+    font-size: 1rem;
+    border-top: 1px solid rgba(255, 105, 180, 0.2);
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+}
+
+.letter-final {
+    text-align: center;
+    margin-top: 2rem;
+    font-style: italic;
+    color: #ff69b4;
+    animation: pulse 2s infinite;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
