@@ -955,3 +955,36 @@ input.code {
     background: rgba(255,105,180,0.5);
     border-radius: 3px;
 }
+/* === ВЫРАВНИВАНИЕ ЗАГОЛОВКА ПО ЦЕНТРУ === */
+#container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+
+.title {
+    text-align: center !important;
+    width: 100% !important;
+    margin: 0 auto 1.5rem !important;
+    display: block !important;
+}
+
+.inputs {
+    justify-content: center !important;
+    width: 100% !important;
+    display: flex !important;
+    margin: 1.5rem auto !important;
+}
+
+#kitten {
+    margin: 1rem auto !important;
+}
+
+#message {
+    text-align: center !important;
+    width: 100% !important;
+    margin: 0.5rem auto 0 !important;
+}

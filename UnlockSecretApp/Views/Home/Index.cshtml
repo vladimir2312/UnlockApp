@@ -27,13 +27,14 @@
             color: #7c2a8d;
         }
 
-        .background {
-            position: fixed;
-            inset: 0;
-            background: url('/images/background.jpg') center/cover no-repeat;
-            filter: blur(12px) brightness(0.7);
-            z-index: 0;
-        }
+       .background {
+    position: fixed;
+    inset: 0;
+    background: url('/images/background.jpg') center/cover no-repeat;
+    /* Убрать filter: blur() */
+    filter: brightness(0.7); /* Только затемнение останется */
+    z-index: 0;
+}
 
         #container, .overlay {
             position: relative;
