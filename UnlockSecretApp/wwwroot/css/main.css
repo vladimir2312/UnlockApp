@@ -940,3 +940,54 @@ input.code {
     background: rgba(255,105,180,0.5);
     border-radius: 3px;
 }
+@media (max-width: 420px) {
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .congrats-title {
+        font-size: 1.7rem;
+    }
+
+    input.code {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1.6rem !important;
+        line-height: 50px !important;
+    }
+
+    .inputs {
+        gap: 8px;
+        height: 60px;
+    }
+
+    #page2Content {
+        max-height: 45vh !important;
+        min-height: 180px !important;
+    }
+}
+
+@media (max-width: 360px) {
+    input .code {
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 1.4rem !important;
+        line-height: 45px !important;
+    }
+
+    .inputs {
+        gap: 6px;
+    }
+}
+
+/* ФИКС ДЛЯ iOS */
+@supports (-webkit-touch-callout: none) {
+    input .code {
+        line-height: 55px !important;
+        height: 55px !important;
+    }
+
+    #page2Content {
+        -webkit-overflow-scrolling: touch;
+    }
+}
