@@ -27,14 +27,14 @@
             color: #7c2a8d;
         }
 
-       .background {
-    position: fixed;
-    inset: 0;
-    background: url('/images/background.jpg') center/cover no-repeat;
-    /* Убрать filter: blur() */
-    filter: brightness(0.7); /* Только затемнение останется */
-    z-index: 0;
-}
+        .background {
+            position: fixed;
+            inset: 0;
+            background: url('/images/background.jpg') center/cover no-repeat;
+            /* Убрать filter: blur() */
+            filter: brightness(0.7); /* Только затемнение останется */
+            z-index: 0;
+        }
 
         #container, .overlay {
             position: relative;
@@ -185,97 +185,164 @@ function showPage4WithAnimation() {
 
 // Данные для галереи (замените на ваши фото и подписи)
 // Альтернативные данные с placeholder изображениями
-const galleryData = [
-    {
-        image: 'https://via.placeholder.com/400x300/FF69B4/FFFFFF?text=Наша+первая+встреча',
-        caption: 'Наша первая встреча... Помнишь, как все начиналось? 💫'
-    },
-    {
-        image: 'https://via.placeholder.com/400x300/9370DB/FFFFFF?text=Особенные+моменты',
-        caption: 'Тот день, когда я понял - ты особенная... ✨'
-    },
-    {
-        image: 'https://via.placeholder.com/400x300/20B2AA/FFFFFF?text=Совместные+мечты',
-        caption: 'Наши совместные мечты и планы... 🌸'
-    }
-];
-let currentGalleryIndex = 0;
+        const galleryData = [
+            {
+                image: '/images/1.jpg',
+                caption: 'Наша первая встреча... Помнишь, как все начиналось? 💫'
+            },
+            {
+                image: '/images/2.jpg',
+                caption: 'Тот день, когда я понял - ты особенная... ✨'
+            },
+            {
+                image: '/images/3.jpg',
+                caption: 'Наши совместные мечты и планы... 🌸'
+            },
+            {
+                image: '/images/4.jpg',
+                caption: 'Моменты счастья, которые запомнятся навсегда... 💖'
+            },
+            {
+                image: '/images/5.jpg',
+                caption: 'Смех, радость и бесконечное тепло... 😊'
+            },
+            {
+                image: '/images/6.jpg',
+                caption: 'Тихие вечера и разговоры по душам... 🌙'
+            },
+            {
+                image: '/images/7.jpg',
+                caption: 'Приключения, которые мы пережили вместе... 🌟'
+            },
+            {
+                image: '/images/8.jpg',
+                caption: 'Наше будущее, которое мы строим вместе... 💫'
+            }
+        ];
+        function initGallery() {
+            const galleryData = [
+                {
+                    image: '/images/1.jpg',
+                    caption: 'Наша первая встреча... Помнишь, как все начиналось? 💫'
+                },
+                {
+                    image: '/images/2.jpg',
+                    caption: 'Тот день, когда я понял - ты особенная... ✨'
+                },
+                {
+                    image: '/images/3.jpg',
+                    caption: 'Наши совместные мечты и планы... 🌸'
+                },
+                {
+                    image: '/images/4.jpg',
+                    caption: 'Моменты счастья, которые запомнятся навсегда... 💖'
+                },
+                {
+                    image: '/images/5.jpg',
+                    caption: 'Смех, радость и бесконечное тепло... 😊'
+                },
+                {
+                    image: '/images/6.jpg',
+                    caption: 'Тихие вечера и разговоры по душам... 🌙'
+                },
+                {
+                        image: '/images/7.jpg',
+                    caption: 'Приключения, которые мы пережили вместе... 🌟'
+                },
+                {
+                    image: '/images/8.jpg',
+                    caption: 'Наше будущее, которое мы строим вместе... 💫'
+                }
+            ];
 
-function initGallery() {
-    const galleryImage = document.getElementById('galleryImage');
-    const galleryCaption = document.getElementById('galleryCaption');
-    const currentIndexSpan = document.getElementById('currentIndex');
-    const totalImagesSpan = document.getElementById('totalImages');
-    
-    // Устанавливаем общее количество фото
-    totalImagesSpan.textContent = galleryData.length;
-    
-    // Показываем первое фото
-    showGalleryImage(0);
-    
-    // Обработчики для стрелок
-    document.querySelector('.gallery-arrow-prev').addEventListener('click', () => {
-        currentGalleryIndex = (currentGalleryIndex - 1 + galleryData.length) % galleryData.length;
-        showGalleryImage(currentGalleryIndex, 'prev');
-    });
-    
-    document.querySelector('.gallery-arrow-next').addEventListener('click', () => {
-        currentGalleryIndex = (currentGalleryIndex + 1) % galleryData.length;
-        showGalleryImage(currentGalleryIndex, 'next');
-    });
-    
-    // Добавляем обработчики свайпов для мобильных
-    let startX = 0;
-    const gallerySlide = document.querySelector('.gallery-slide');
-    
-    gallerySlide.addEventListener('touchstart', (e) => {
-        startX = e.touches[0].clientX;
-    });
-    
-    gallerySlide.addEventListener('touchend', (e) => {
-        if (!startX) return;
-        
-        const endX = e.changedTouches[0].clientX;
-        const diffX = startX - endX;
-        
-        if (Math.abs(diffX) > 50) { // Минимальное расстояние свайпа
-            if (diffX > 0) {
-                // Свайп влево - следующее фото
-                currentGalleryIndex = (currentGalleryIndex + 1) % galleryData.length;
-                showGalleryImage(currentGalleryIndex, 'next');
-            } else {
-                // Свайп вправо - предыдущее фото
+            let currentGalleryIndex = 0;
+            const galleryImage = document.getElementById('galleryImage');
+            const galleryCaption = document.getElementById('galleryCaption');
+            const currentIndexSpan = document.getElementById('currentIndex');
+            const totalImagesSpan = document.getElementById('totalImages');
+
+            // Устанавливаем общее количество фото
+            totalImagesSpan.textContent = galleryData.length;
+
+                   function showGalleryImage(index, direction = 'next') {
+            const data = galleryData[index];
+
+            // Добавляем класс анимации
+            galleryImage.classList.add(direction === 'next' ? 'slide-next' : 'slide-prev');
+            galleryCaption.classList.add(direction === 'next' ? 'slide-next' : 'slide-prev');
+
+            // Устанавливаем фото и подпись
+            galleryImage.src = data.image;
+            galleryImage.alt = `Наше фото ${index + 1}`;
+            galleryCaption.textContent = data.caption;
+
+            // Обновляем индикатор
+            currentIndexSpan.textContent = index + 1;
+
+            // После загрузки фото корректируем высоту
+            galleryImage.onload = function() {
+                // Автоматически подстраиваем высоту контейнера
+                const container = document.querySelector('.gallery-container');
+                const imageHeight = galleryImage.naturalHeight;
+                const imageWidth = galleryImage.naturalWidth;
+
+                // Если фото вертикальное, уменьшаем высоту отображения
+                if (imageHeight > imageWidth) {
+                    galleryImage.style.height = '180px';
+                    galleryImage.style.objectFit = 'contain';
+                } else {
+                    galleryImage.style.height = '200px';
+                    galleryImage.style.objectFit = 'cover';
+                }
+            };
+
+            setTimeout(() => {
+                galleryImage.classList.remove('slide-next', 'slide-prev');
+                galleryCaption.classList.remove('slide-next', 'slide-prev');
+            }, 500);
+        }
+            // Показываем первое фото
+            showGalleryImage(0);
+
+            // Обработчики для стрелок
+            document.querySelector('.gallery-arrow-prev').addEventListener('click', () => {
                 currentGalleryIndex = (currentGalleryIndex - 1 + galleryData.length) % galleryData.length;
                 showGalleryImage(currentGalleryIndex, 'prev');
-            }
-        }
-        
-        startX = 0;
-    });
-    
-    function showGalleryImage(index, direction = 'next') {
-        const data = galleryData[index];
-        
-        // Добавляем класс анимации
-        galleryImage.classList.add(direction === 'next' ? 'slide-next' : 'slide-prev');
-        galleryCaption.classList.add(direction === 'next' ? 'slide-next' : 'slide-prev');
-        
-        // Устанавливаем фото и подпись
-        galleryImage.src = data.image;
-        galleryImage.alt = `Наше фото ${index + 1}`;
-        galleryCaption.textContent = data.caption;
-        
-        // Обновляем индикатор
-        currentIndexSpan.textContent = index + 1;
-        
-        // Убираем классы анимации после завершения
-        setTimeout(() => {
-            galleryImage.classList.remove('slide-next', 'slide-prev');
-            galleryCaption.classList.remove('slide-next', 'slide-prev');
-        }, 500);
-    }
-}
+            });
 
+            document.querySelector('.gallery-arrow-next').addEventListener('click', () => {
+                currentGalleryIndex = (currentGalleryIndex + 1) % galleryData.length;
+                showGalleryImage(currentGalleryIndex, 'next');
+            });
+
+            // Добавляем обработчики свайпов для мобильных
+            let startX = 0;
+            const gallerySlide = document.querySelector('.gallery-slide');
+
+            gallerySlide.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].clientX;
+            });
+
+            gallerySlide.addEventListener('touchend', (e) => {
+                if (!startX) return;
+
+                const endX = e.changedTouches[0].clientX;
+                const diffX = startX - endX;
+
+                if (Math.abs(diffX) > 50) {
+                    if (diffX > 0) {
+                        // Свайп влево - следующее фото
+                        currentGalleryIndex = (currentGalleryIndex + 1) % galleryData.length;
+                        showGalleryImage(currentGalleryIndex, 'next');
+                    } else {
+                        // Свайп вправо - предыдущее фото
+                        currentGalleryIndex = (currentGalleryIndex - 1 + galleryData.length) % galleryData.length;
+                        showGalleryImage(currentGalleryIndex, 'prev');
+                    }
+                }
+                startX = 0;
+            });
+        }
 // Обновляем обработчики
 document.getElementById("next3").addEventListener('click', () => showPage4WithAnimation());
 
