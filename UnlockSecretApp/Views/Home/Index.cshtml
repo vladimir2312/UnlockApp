@@ -163,6 +163,20 @@
     </div>
 
     <script>
+                // Инициализация Telegram Web App
+        const tg = window.Telegram.WebApp;
+
+        // Расширяем на весь экран
+        tg.expand();
+
+        // Меняем цвет фона
+        tg.backgroundColor = '#fef7fb';
+        tg.headerColor = '#ff69b4';
+
+        // Скрываем кнопку "Назад" если нужно
+        // tg.BackButton.hide();
+
+        console.log('Telegram Web App инициализирован');
                       (() => {
             const inputs = [...document.querySelectorAll('.code')];
             const kitten = document.getElementById('kitten');
