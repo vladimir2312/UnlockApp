@@ -1,70 +1,66 @@
-﻿
-/* ===========================
-   GLOBAL RESET
-   =========================== */
+﻿/* === TELEGRAM MINI APP STYLES === */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 
+/* === RESET & BASE STYLES === */
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
 
 html, body {
-    height: 100vh;
-    width: 100%;
-    overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(160deg,#f7fbff 0%,#fef7fb 50%,#f3f9ff 100%);
+    height: 100dvh;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: linear-gradient(160deg,#f7fbff 0%,#fef7fb 50%,#f3f9ff 100%);
+    color: #4b1f5e;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-/* ===========================
-   BACKGROUND
-   =========================== */
-
+/* === BACKGROUND === */
 .background {
     position: fixed;
     inset: 0;
     background: url('/images/background.jpg') center/cover no-repeat;
-    filter: brightness(0.7);
+    filter: blur(12px) brightness(0.7);
     z-index: 0;
 }
 
-/* ===========================
-   MAIN CONTAINER
-   =========================== */
-
-#container {
+/* === MAIN CONTAINER === */
+#container.glass {
     position: relative;
-    z-index: 10;
+    z-index: 2;
     width: 92%;
     max-width: 420px;
-    padding: 2rem 1.5rem 2.5rem;
-    border-radius: 22px;
-    background: rgba(255,255,255,0.45);
-    backdrop-filter: blur(18px);
+    padding: 2rem;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.55);
     border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
 }
 
-.title {
+/* === TYPOGRAPHY === */
+h1, h2, h3, .congrats-title, .title,
+.quality-title, .letter-section-title .section-text {
     font-family: 'Great Vibes', cursive;
-    font-size: 2rem;
-    color: #7c2a8d;
 }
 
-/* ===========================
-   CODE INPUT
-   =========================== */
-
+/* === INPUT STYLES === */
 .inputs {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
     margin: 1.5rem 0;
+    height: 65px;
 }
 
 input.code {
@@ -72,104 +68,140 @@ input.code {
     height: 55px;
     border-radius: 12px;
     border: 2px solid rgba(180,180,200,0.4);
-    font-size: 1.6rem;
-    font-weight: 700;
+    background: rgba(255,245,255,0.9);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #7c2a8d;
     text-align: center;
-    background: rgba(255,255,255,0.85);
-    transition: 0.2s ease;
+    padding: 0;
+    margin: 0;
+    line-height: 55px;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: none;
+    box-sizing: border-box;
+    display: inline-block;
+    vertical-align: middle;
+    transition: all 0.2s ease;
 }
+
+    /* Remove number input arrows */
+    input.code::-webkit-outer-spin-button,
+    input.code::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    input.code[type=number] {
+        -moz-appearance: textfield;
+    }
 
     input.code:focus {
         outline: none;
+        border-color: rgba(200,120,255,0.9);
         background: rgba(255,240,250,0.95);
-        transform: scale(1.08);
-        border-color: rgba(200,120,255,0.7);
+        transform: scale(1.05);
+        position: relative;
+        z-index: 2;
     }
 
-/* ===========================
-   KITTEN SWIPE
-   =========================== */
-
+/* === KITTEN SWIPE STYLES === */
 #kitten {
-    position: relative;
     width: 150px;
-    height: 55px;
-    margin: 1rem auto 0;
+    height: 60px;
+    margin: 0.6rem auto;
     border-radius: 36px;
-    background: rgba(255,255,255,0.3);
-    border: 1px solid rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.35);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     display: flex;
     align-items: center;
-    cursor: pointer;
+    position: relative;
     overflow: hidden;
-    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
 }
+
+    #kitten:hover {
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
 
     #kitten .swipe-bar {
         position: absolute;
+        left: 0;
+        top: 0;
         height: 100%;
         width: 0%;
-        left: 0;
-        background: linear-gradient(90deg, rgba(255,200,235,0.5), rgba(200,180,255,0.4));
+        background: linear-gradient(90deg, rgba(255,200,235,0.4), rgba(200,180,255,0.4));
+        border-radius: 36px;
         transition: width 0.15s ease;
     }
 
     #kitten .kitten-inner {
+        font-size: 2.2rem;
+        color: #ff6fa3;
         position: absolute;
         left: 10px;
-        font-size: 2.2rem;
         top: 50%;
         transform: translateY(-50%);
-        transition: left 0.15s ease;
+        transition: left 0.15s ease-out;
     }
 
     #kitten .arrow {
         position: absolute;
-        right: 12px;
-        font-size: 1.4rem;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.5rem;
         color: rgba(124,42,141,0.5);
-        animation: pulse 1.6s infinite;
     }
 
+/* === SWIPE EFFECTS === */
 .sparkle-effect, .glow-effect {
     position: absolute;
     pointer-events: none;
+    border-radius: 36px;
+    transition: opacity 0.3s ease;
 }
 
 .sparkle-effect {
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
     opacity: 0;
-    background: radial-gradient(circle, rgba(255,255,255,0.6), transparent 70%);
-    transition: opacity 0.25s ease;
 }
 
 .glow-effect {
-    width: 0%;
-    height: 80%;
     top: 50%;
+    left: 0;
     transform: translateY(-50%);
-    background: linear-gradient(90deg, rgba(255,105,180,0.3), rgba(147,112,219,0.3));
+    width: 0;
+    height: 80%;
+    background: linear-gradient(90deg, rgba(255,105,180,0.3) 0%, rgba(147,112,219,0.2) 50%, transparent 100%);
     border-radius: 20px;
-    filter: blur(6px);
+    filter: blur(5px);
     transition: width 0.2s ease;
 }
 
-/* ===========================
-   MESSAGE UNDER KITTEN
-   =========================== */
-
-#message {
-    margin-top: 0.4rem;
-    color: rgba(124,42,141,0.8);
-    font-size: 0.95rem;
-    min-height: 1.2rem;
+#glowTrail {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    width: 0px;
+    height: 45px;
+    border-radius: 25px;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(circle at left, rgba(255, 200, 240, 0.6), rgba(190, 160, 255, 0.15), transparent);
+    filter: blur(14px);
+    transition: width 0.15s ease-out, opacity 0.15s ease-out;
 }
 
-/* ===========================
-   OVERLAY PAGES (1–4)
-   =========================== */
-
+/* === OVERLAY STYLES === */
 .overlay {
     position: fixed;
     inset: 0;
@@ -181,8 +213,7 @@ input.code {
     opacity: 0;
     pointer-events: none;
     transform: scale(0.95);
-    transition: opacity 0.45s ease, transform 0.45s ease;
-    z-index: 20;
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
     .overlay.show {
@@ -196,55 +227,122 @@ input.code {
     }
 
 .congrats-card {
-    width: min(92%, 600px);
+    width: min(92%,640px);
     padding: 2rem;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.55);
-    backdrop-filter: blur(14px);
-    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 18px;
+    background: rgba(255,255,255,0.65);
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+    text-align: center;
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 1rem;
-    text-align: center;
 }
 
-/* ===========================
-   PAGE 1 — TYPING TEXT
-   =========================== */
+.congrats-title {
+    font-size: 2rem;
+    color: #7e2fa0;
+    font-weight: 800;
+}
 
-#typedText {
-    font-size: 1.1rem;
-    text-align: left;
-    white-space: pre-wrap;
+/* === TEXT STYLES (все тексты одинаковые) === */
+#message,
+.quality-description,
+.personal-thought,
+.letter-section-content,
+.gallery-caption,
+.future-letter,
+.letter-line,
+.letter-final,
+.congrats-card p,
+.congrats-card div:not(.congrats-title) {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    font-weight: 400;
     line-height: 1.6;
+    color: #4b1f5e;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    max-width: 100%;
+}
+
+/* Конкретно для сообщения под котенком */
+#message {
+    font-size: 0.95rem;
+    color: rgba(124, 42, 141, 0.8);
+    min-height: 1.5rem;
+    margin-top: 0.5rem;
+    text-align: center;
+    padding: 0 0.5rem;
+}
+
+/* === TYPING ANIMATION STYLES === */
+.typing-container {
+    min-height: 120px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-align: left;
+    color: #4b1f5e;
+    padding: 1.2rem;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 12px;
+    margin: 1rem 0;
+    max-height: 250px;
+    overflow-y: auto;
 }
 
 .typed-cursor {
     display: inline-block;
+    background-color: #ff69b4;
+    margin-left: 2px;
     width: 2px;
-    background: #ff69b4;
     animation: blink 1s infinite;
 }
 
-/* ===========================
-   PAGE 2 — QUALITIES
-   =========================== */
-
-.qualities-thoughts-container {
-    max-height: 50vh;
-    overflow-y: auto;
-    padding-right: 6px;
+.highlight-number {
+    color: #ff69b4;
+    font-weight: bold;
+    font-size: 1.2em;
 }
 
+/* === PAGE 2 STYLES === */
+.qualities-thoughts-container {
+    min-height: 200px;
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 10px 5px 10px 10px;
+    margin: 10px 0;
+    width: 100%;
+    scrollbar-width: thin;
+}
+
+    .qualities-thoughts-container::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .qualities-thoughts-container::-webkit-scrollbar-track {
+        background: rgba(255,255,255,0.2);
+        border-radius: 3px;
+    }
+
+    .qualities-thoughts-container::-webkit-scrollbar-thumb {
+        background: rgba(255,105,180,0.5);
+        border-radius: 3px;
+    }
+
 .quality-thought-item {
-    background: rgba(255,255,255,0.4);
+    margin: 1rem 0;
     padding: 1rem;
+    background: rgba(255,255,255,0.4);
     border-radius: 15px;
-    margin-bottom: 1rem;
-    border-left: 4px solid #ff69b4;
+    border-left: 4px solid;
     opacity: 0;
-    transform: translateX(-20px);
-    transition: 0.6s ease;
+    transform: translateX(-30px);
+    transition: all 0.6s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    width: 100%;
+    box-sizing: border-box;
 }
 
     .quality-thought-item.visible {
@@ -252,122 +350,320 @@ input.code {
         transform: translateX(0);
     }
 
-/* ===========================
-   PAGE 3 — LETTER
-   =========================== */
+    .quality-thought-item:nth-child(1) {
+        border-left-color: #ff69b4;
+    }
 
-.future-letter {
-    overflow-y: auto;
-    max-height: 50vh;
-    padding: 1rem;
-    background: rgba(255,255,255,0.45);
-    border-radius: 14px;
-    border-left: 4px solid #ff69b4;
+    .quality-thought-item:nth-child(2) {
+        border-left-color: #9370db;
+    }
+
+    .quality-thought-item:nth-child(3) {
+        border-left-color: #20b2aa;
+    }
+
+    .quality-thought-item:nth-child(4) {
+        border-left-color: #ffa500;
+    }
+
+.quality-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
 }
 
+.quality-emoji {
+    font-size: 2rem;
+    margin-right: 1rem;
+}
+
+.quality-title {
+    font-weight: bold;
+    color: #7c2a8d;
+    font-size: 1.1rem;
+}
+
+.quality-description {
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+    color: #5a2a6e;
+    line-height: 1.7;
+    text-align: justify;
+    text-indent: 1.5em;
+}
+
+.personal-thought {
+    padding: 0.8rem;
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+    border-left: 3px solid rgba(255,105,180,0.5);
+    font-style: italic;
+    color: #5a2a6e;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    margin-top: 0.5rem;
+    text-align: justify;
+}
+
+.scroll-indicator {
+    text-align: center;
+    color: rgba(124,42,141,0.6);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    animation: bounce 2s infinite;
+}
+
+/* === PAGE 3 LETTER STYLES === */
+.future-letter {
+    min-height: 300px;
+    max-height: 50vh;
+    overflow-y: auto;
+    text-align: left;
+    line-height: 1.8;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    border-left: 4px solid #ff69b4;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+    .future-letter::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .future-letter::-webkit-scrollbar-track {
+        background: rgba(255,255,255,0.2);
+        border-radius: 3px;
+    }
+
+    .future-letter::-webkit-scrollbar-thumb {
+        background: rgba(255,105,180,0.5);
+        border-radius: 3px;
+    }
+
+/* Стили для раскрывающихся писем */
 .letter-section {
-    background: rgba(255,255,255,0.25);
+    margin: 1rem 0;
+    background: rgba(255, 255, 255, 0.25);
     border-radius: 12px;
-    margin-bottom: 1rem;
+    border-left: 4px solid #ff69b4;
+    overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 .letter-section-title {
-    padding: 1rem;
+    padding: 1rem 1.2rem;
     font-weight: 600;
-    display: flex;
-    justify-content: space-between;
+    color: #7c2a8d;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.3s ease;
+}
+
+    .letter-section-title:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+.section-emoji {
+    font-size: 1.3rem;
+    margin-right: 0.8rem;
+}
+
+.section-text {
+    flex-grow: 1;
+    font-size: 1.4rem;
+}
+
+.section-arrow {
+    font-size: 0.9rem;
+    color: #ff69b4;
+    transition: transform 0.3s ease;
 }
 
 .letter-section-content {
-    padding: 1rem;
-    display: none;
+    padding: 0 1.2rem 1.2rem;
+    line-height: 1.7;
+    font-size: 1rem;
+    border-top: 1px solid rgba(255, 105, 180, 0.2);
+    margin-top: 0.5rem;
+    padding-top: 1rem;
+    text-align: justify;
+    text-indent: 1.5em;
 }
 
-/* ===========================
-   PAGE 4 — GALLERY
-   =========================== */
+.letter-final {
+    text-align: center;
+    margin-top: 2rem;
+    font-style: italic;
+    color: #ff69b4;
+    animation: pulse 2s infinite;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+}
 
+/* === PAGE 4 GALLERY STYLES === */
 .gallery-container {
+    position: relative;
     width: 100%;
-    max-width: 380px;
+    max-width: 400px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.gallery-slide {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .gallery-image {
     width: 100%;
-    height: 200px;
+    height: 250px;
     object-fit: cover;
-    border-radius: 12px;
+    border-radius: 15px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .gallery-caption {
     margin-top: 1rem;
-    font-style: italic;
-    background: rgba(255,255,255,0.4);
-    border-left: 3px solid #ff69b4;
-    padding: 0.7rem;
+    padding: 0.8rem;
+    background: rgba(255,255,255,0.3);
     border-radius: 10px;
+    text-align: center;
+    font-style: italic;
+    color: #5a2a6e;
+    border-left: 3px solid #ff69b4;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-size: 0.95rem;
+    max-width: 100%;
+    word-wrap: break-word;
+    line-height: 1.5;
 }
 
-/* ===========================
-   BUTTONS
-   =========================== */
+.gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.8);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
 
-.btn-next {
+    .gallery-arrow:hover {
+        background: rgba(255,255,255,1);
+        transform: translateY(-50%) scale(1.1);
+    }
+
+.gallery-arrow-prev {
+    left: -20px;
+}
+
+.gallery-arrow-next {
+    right: -20px;
+}
+
+.gallery-indicator {
+    margin: 1rem 0;
+    font-size: 1rem;
+    color: #7c2a8d;
+    font-weight: bold;
+}
+
+/* === BUTTON STYLES === */
+.btn, .btn-next {
+    margin-top: 10px;
     padding: 0.8rem 1.5rem;
     border-radius: 12px;
-    border: none;
-    background: linear-gradient(180deg,#ffe0f0,#fff0ff);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    cursor: pointer;
-    color: #7c2a8d;
+    background: linear-gradient(180deg,#ffe0f0 0%,#fff0ff 100%);
+    border: 1px solid rgba(200,120,255,0.2);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
     font-weight: 600;
-    transition: 0.2s;
+    color: #7c2a8d;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 1rem;
+    width: auto;
+    min-width: 120px;
+    max-width: 200px;
+    margin: 10px auto 0;
+    white-space: nowrap;
 }
 
     .btn-next:hover {
         transform: scale(1.05);
     }
 
-/* ===========================
-   SNOW (OPTIONAL)
-   =========================== */
+/* === ANIMATIONS === */
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
 
-.snowflake {
-    position: fixed;
-    top: -10px;
-    width: 6px;
-    height: 6px;
-    background: white;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: fall 5s linear forwards;
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
 }
 
-@keyframes fall {
+@keyframes fadeOutScale {
     to {
-        transform: translateY(120vh);
         opacity: 0;
-    }
-}
-
-/* ===========================
-   ANIMATIONS
-   =========================== */
-
-@keyframes blink {
-    0%,50% {
-        opacity: 1;
-    }
-
-    51%,100% {
-        opacity: 0;
+        transform: scale(0.8);
     }
 }
 
 @keyframes pulse {
-    0%,100% {
+    0%, 100% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes heartBeat {
+    0%, 100% {
         transform: scale(1);
     }
 
@@ -376,8 +672,14 @@ input.code {
     }
 }
 
-.success-glow {
-    animation: successGlow 1s ease;
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+
+    51%, 100% {
+        opacity: 0;
+    }
 }
 
 @keyframes successGlow {
@@ -385,39 +687,560 @@ input.code {
         box-shadow: 0 0 0 0 rgba(255,105,180,0.4);
     }
 
-    100% {
-        box-shadow: 0 0 0 25px rgba(255,105,180,0);
+    70% {
+        box-shadow: 0 0 0 15px rgba(255,105,180,0);
     }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255,105,180,0);
+    }
+}
+
+@keyframes floatParticle {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes readyPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.02);
+    }
+}
+
+@keyframes waveEffect {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+@keyframes slideInFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* === ANIMATION CLASSES === */
+.shake {
+    animation: shake 0.5s ease;
+}
+
+.fade-out-scale {
+    animation: fadeOutScale 0.5s ease forwards;
+}
+
+.arrow {
+    animation: pulse 1.2s infinite;
+}
+
+.hearts {
+    animation: float 3s ease-in-out infinite;
+}
+
+.heart-beat {
+    animation: heartBeat 2s ease-in-out infinite;
+}
+
+.ready-pulse {
+    animation: readyPulse 2s ease-in-out infinite;
+}
+
+.success-glow {
+    animation: successGlow 1s ease;
+}
+
+.particle {
+    position: fixed;
+    width: 6px;
+    height: 6px;
+    background: #ff69b4;
+    border-radius: 50%;
+    pointer-events: none;
+    animation: floatParticle 0.8s ease-out forwards;
+    z-index: 10;
+}
+
+.wave {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle, rgba(255,105,180,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: waveEffect 0.4s ease-out;
+    pointer-events: none;
+    z-index: 5;
 }
 
 .slide-next {
-    animation: slideNext 0.5s ease;
+    animation: slideInFromRight 0.5s ease;
 }
 
 .slide-prev {
-    animation: slidePrev 0.5s ease;
+    animation: slideInFromLeft 0.5s ease;
 }
 
-@keyframes slideNext {
-    from {
-        opacity: 0;
-        transform: translateX(40px);
+/* === RESPONSIVE ADJUSTMENTS === */
+@media (max-width: 420px) {
+    #container.glass {
+        padding: 1.5rem;
+        gap: 1rem;
     }
 
-    to {
-        opacity: 1;
-        transform: translateX(0);
+    .inputs {
+        gap: 8px;
+        height: 60px;
+    }
+
+    input.code {
+        width: 50px;
+        height: 50px;
+        font-size: 1.6rem;
+        line-height: 50px;
+    }
+
+    .congrats-card {
+        padding: 1.5rem;
+    }
+
+    .congrats-title, .title {
+        font-size: 1.8rem;
+    }
+
+    .typing-container {
+        font-size: 1rem;
+        padding: 1rem;
+    }
+
+    .quality-thought-item {
+        margin: 0.8rem 0;
+        padding: 0.8rem;
+    }
+
+    .quality-description,
+    .personal-thought,
+    .letter-section-content {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        text-indent: 1em;
+    }
+
+    .gallery-container {
+        height: 250px;
+    }
+
+    .gallery-image {
+        height: 200px;
+    }
+
+    .gallery-arrow-prev {
+        left: -10px;
+    }
+
+    .gallery-arrow-next {
+        right: -10px;
+    }
+
+    #message {
+        font-size: 0.85rem;
+        padding: 0 0.3rem;
     }
 }
 
-@keyframes slidePrev {
-    from {
-        opacity: 0;
-        transform: translateX(-40px);
+@media (max-width: 360px) {
+    .inputs {
+        gap: 6px;
     }
 
-    to {
-        opacity: 1;
-        transform: translateX(0);
+    input.code {
+        width: 45px;
+        height: 45px;
+        font-size: 1.4rem;
+        line-height: 45px;
     }
+
+    .congrats-title, .title {
+        font-size: 1.6rem;
+    }
+}
+
+/* === iOS FIXES === */
+@supports (-webkit-touch-callout: none) {
+    input.code {
+        line-height: 55px;
+        height: 55px;
+    }
+
+    .qualities-thoughts-container,
+    .future-letter {
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* === SCROLLBAR STYLES === */
+.typing-container::-webkit-scrollbar,
+.qualities-thoughts-container::-webkit-scrollbar,
+.future-letter::-webkit-scrollbar {
+    width: 6px;
+}
+
+.typing-container::-webkit-scrollbar-track,
+.qualities-thoughts-container::-webkit-scrollbar-track,
+.future-letter::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.2);
+    border-radius: 3px;
+}
+
+.typing-container::-webkit-scrollbar-thumb,
+.qualities-thoughts-container::-webkit-scrollbar-thumb,
+.future-letter::-webkit-scrollbar-thumb {
+    background: rgba(255,105,180,0.5);
+    border-radius: 3px;
+}
+/* === ВЫРАВНИВАНИЕ ЗАГОЛОВКА ПО ЦЕНТРУ === */
+#container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+    width: 100% !important;
+}
+
+.title {
+    text-align: center !important;
+    width: 100% !important;
+    margin: 0 auto 1.5rem !important;
+    display: block !important;
+}
+
+.inputs {
+    justify-content: center !important;
+    width: 100% !important;
+    display: flex !important;
+    margin: 1.5rem auto !important;
+}
+
+#kitten {
+    margin: 1rem auto !important;
+}
+
+#message {
+    text-align: center !important;
+    width: 100% !important;
+    margin: 0.5rem auto 0 !important;
+}
+.gallery-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    background: rgba(255,255,255,0.1); /* Фон пока грузится фото */
+}
+
+/* Для мобильных */
+@media (max-width: 420px) {
+    .gallery-image {
+        height: 200px;
+    }
+}
+/* === PAGE 4 GALLERY STYLES === */
+.gallery-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: auto; /* Измените на auto */
+    display: flex;
+    flex-direction: column; /* Добавьте */
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+    min-height: 280px; /* Добавьте минимальную высоту */
+}
+
+.gallery-slide {
+    position: relative;
+    width: 100%;
+    height: auto; /* Измените на auto */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.gallery-image {
+    width: 100%;
+    height: 200px; /* Уменьшите высоту с 250px */
+    object-fit: cover; /* Или используйте contain */
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.gallery-caption {
+    margin-top: 1rem;
+    padding: 0.8rem;
+    background: rgba(255,255,255,0.3);
+    border-radius: 10px;
+    text-align: center;
+    font-style: italic;
+    color: #5a2a6e;
+    border-left: 3px solid #ff69b4;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    font-size: 0.95rem;
+    max-width: 100%;
+    word-wrap: break-word;
+    line-height: 1.5;
+}
+
+/* Для маленьких экранов */
+@media (max-width: 420px) {
+    .gallery-container {
+        height: auto;
+        min-height: 250px;
+    }
+
+    .gallery-image {
+        height: 180px; /* Еще меньше для мобильных */
+    }
+
+    .gallery-caption {
+        font-size: 0.9rem;
+        padding: 0.7rem;
+        min-height: 55px;
+    }
+}
+
+@media (max-width: 360px) {
+    .gallery-image {
+        height: 160px;
+    }
+}
+/* FIX: Кнопки на маленьких экранах */
+@media (max-width: 380px) {
+    .btn, .btn-next {
+        padding: 0.7rem 1.2rem;
+        font-size: 0.95rem;
+        min-width: 110px;
+    }
+
+    .gallery-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .gallery-arrow-prev {
+        left: -15px;
+    }
+
+    .gallery-arrow-next {
+        right: -15px;
+    }
+}
+.snowflake {
+    position: fixed;
+    top: -10px;
+    width: 6px;
+    height: 6px;
+    background: white;
+    opacity: 0.8;
+    border-radius: 50%;
+    filter: blur(1px);
+    animation: fall linear forwards;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(120vh);
+        opacity: 0;
+    }
+}
+/* ======= FIX: отображение контейнера с кодом ======== */
+#container {
+    position: relative;
+    z-index: 10;
+    padding-top: 40px;
+}
+
+/* поля ввода */
+.code {
+    width: 60px;
+    height: 60px;
+    font-size: 32px;
+    text-align: center;
+    border-radius: 12px;
+    border: none;
+    outline: none;
+    background: rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
+    margin: 0 6px;
+    z-index: 20;
+}
+
+/* ======= FIX: китёнок должен быть сверху ======== */
+#kitten {
+    position: relative;
+    margin-top: 30px;
+    z-index: 30;
+}
+
+/* бар свайпа */
+.swipe-bar {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    height: 6px;
+    width: 0%;
+    background: rgba(255,255,255,0.8);
+    border-radius: 4px;
+}
+
+/* китёнок */
+.kitten-inner {
+    position: absolute;
+    left: 10px;
+    top: -25px;
+    font-size: 40px;
+    cursor: pointer;
+    z-index: 40;
+}
+/* === FIX LAYOUT ROOT === */
+html, body {
+    display: block !important;
+    overflow: visible !important;
+    height: auto !important;
+}
+
+/* === FIX MAIN CONTAINER === */
+#container {
+    position: relative !important;
+    z-index: 5 !important;
+    width: 100% !important;
+    padding: 20px 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+}
+
+/* === FIX INPUTS === */
+.inputs {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    width: 100% !important;
+    margin-top: 20px !important;
+}
+
+.code {
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 36px !important;
+    z-index: 20 !important;
+    position: relative !important;
+}
+
+/* === FIX KITTEN SWIPE === */
+#kitten {
+    position: relative !important;
+    z-index: 25 !important;
+    margin-top: 25px !important;
+    height: 60px !important;
+    cursor: pointer !important;
+}
+
+.swipe-bar {
+    position: absolute !important;
+    top: 50% !important;
+    left: 0 !important;
+    height: 6px !important;
+    width: 0 !important;
+    transform: translateY(-50%) !important;
+    border-radius: 6px !important;
+}
+
+.kitten-inner {
+    position: absolute !important;
+    z-index: 40 !important;
+    left: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-size: 2.3rem !important;
+}
+
+/* === FIX MESSAGE === */
+#message {
+    position: relative !important;
+    z-index: 5 !important;
+    margin-top: 12px !important;
+}
+
+/* === FIX BACKGROUND BLOCKING CLICKS === */
+.background {
+    pointer-events: none !important;
 }
