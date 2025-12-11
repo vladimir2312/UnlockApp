@@ -1482,3 +1482,214 @@ input.code {
         min-width: 160px;
     }
 }
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
+    }
+
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 8px 30px rgba(255, 105, 180, 0.6);
+    }
+}
+
+.pulse-animation {
+    animation: pulse 2s infinite ease-in-out;
+}
+/* =================== СТИЛИ ДЛЯ TELEGRAM =================== */
+
+/* Основной контейнер для Telegram */
+.telegram-text-container {
+    width: 100% !important;
+    max-height: 250px !important;
+    overflow-y: scroll !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 15px !important;
+    margin: 15px 0 !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    border-radius: 10px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    font-family: 'Arial', 'Helvetica', sans-serif !important;
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+    color: white !important;
+    text-align: left !important;
+    position: relative !important;
+}
+
+/* Фикс для скролла в Telegram */
+.telegram-text-container {
+    scrollbar-width: thin !important;
+    scrollbar-color: #ff69b4 rgba(0,0,0,0.2) !important;
+}
+
+    .telegram-text-container::-webkit-scrollbar {
+        width: 6px !important;
+    }
+
+    .telegram-text-container::-webkit-scrollbar-track {
+        background: rgba(0,0,0,0.1) !important;
+        border-radius: 3px !important;
+    }
+
+    .telegram-text-container::-webkit-scrollbar-thumb {
+        background: #ff69b4 !important;
+        border-radius: 3px !important;
+    }
+
+/* Стили для текста */
+.text-chunk {
+    margin-bottom: 20px !important;
+    opacity: 0 !important;
+    transform: translateY(10px) !important;
+    animation: telegramFadeIn 0.5s ease forwards !important;
+    padding: 10px !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
+
+@keyframes telegramFadeIn {
+    to {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+}
+
+/* Блок с числом */
+.number-chunk {
+    display: flex !important;
+    align-items: flex-start !important;
+    padding: 15px !important;
+    margin: 15px 0 !important;
+    background: rgba(255, 105, 180, 0.1) !important;
+    border-left: 4px solid #ff69b4 !important;
+    border-radius: 8px !important;
+}
+
+.number-badge {
+    font-size: 24px !important;
+    font-weight: 800 !important;
+    color: #ff69b4 !important;
+    min-width: 50px !important;
+    text-align: center !important;
+    padding: 5px !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-radius: 5px !important;
+    margin-right: 15px !important;
+}
+
+.number-content {
+    flex: 1 !important;
+    padding-top: 3px !important;
+}
+
+.number-emoji {
+    font-size: 20px !important;
+    margin-left: 10px !important;
+    vertical-align: middle !important;
+}
+
+/* Подсказка скролла */
+.scroll-hint {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    margin: 10px 0 !important;
+    opacity: 0.7 !important;
+    animation: scrollHintPulse 2s infinite !important;
+}
+
+.scroll-hint-arrow {
+    font-size: 20px !important;
+    margin-bottom: 5px !important;
+    animation: arrowBounce 1s infinite !important;
+}
+
+.scroll-hint-text {
+    font-size: 12px !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+@keyframes scrollHintPulse {
+    0%, 100% {
+        opacity: 0.4;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes arrowBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(5px);
+    }
+}
+
+/* Кнопка для Telegram */
+.btn-next {
+    width: 200px !important;
+    height: 50px !important;
+    background: linear-gradient(135deg, #ff69b4, #9370db) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 25px !important;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    margin-top: 20px !important;
+    cursor: pointer !important;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+    .btn-next:not(:disabled):hover {
+        transform: scale(1.05) !important;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .btn-next:disabled {
+        opacity: 0.5 !important;
+        cursor: not-allowed !important;
+        transform: scale(0.95) !important;
+    }
+
+    .btn-next.active {
+        animation: btnGlow 2s infinite !important;
+    }
+
+@keyframes btnGlow {
+    0%, 100% {
+        box-shadow: 0 5px 15px rgba(255, 105, 180, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 5px 20px rgba(255, 105, 180, 0.8);
+    }
+}
+
+/* Адаптив для маленьких экранов */
+@media (max-width: 480px) {
+    .telegram-text-container {
+        max-height: 220px !important;
+        font-size: 15px !important;
+        padding: 12px !important;
+    }
+
+    .number-badge {
+        font-size: 22px !important;
+        min-width: 45px !important;
+    }
+
+    .btn-next {
+        width: 180px !important;
+        height: 48px !important;
+        font-size: 16px !important;
+    }
+}

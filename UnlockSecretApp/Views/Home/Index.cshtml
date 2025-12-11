@@ -658,28 +658,22 @@ document.getElementById("next4").addEventListener('click', () => {
             type();
         }
 
-                             // Текст для первой страницы (структурированный)
-        const page1Content = [
+                 // Текст для Telegram (упрощенный)
+        const telegramContent = [
             {
                 type: 'text',
-                content: 'За этими цифрами — наша история...',
-                delay: 500,
-                className: 'text-line waiting'
-            },
-            {
-                type: 'empty',
-                delay: 300
+                text: 'За этими цифрами — наша история...',
+                delay: 500
             },
             {
                 type: 'text',
-                content: 'Каждое число хранит маленькие воспоминания:',
-                className: 'text-line'
-            },
-            {
-                type: 'empty',
+                text: 'Каждое число хранит маленькие воспоминания:',
                 delay: 400
             },
-            // Число 20
+            {
+                type: 'spacer',
+                height: 10
+            },
             {
                 type: 'number',
                 number: '20',
@@ -688,10 +682,9 @@ document.getElementById("next4").addEventListener('click', () => {
                 delay: 600
             },
             {
-                type: 'empty',
-                delay: 400
+                type: 'spacer',
+                height: 15
             },
-            // Число 05
             {
                 type: 'number',
                 number: '05',
@@ -700,61 +693,55 @@ document.getElementById("next4").addEventListener('click', () => {
                 delay: 600
             },
             {
-                type: 'empty',
-                delay: 400
+                type: 'spacer',
+                height: 15
             },
-            // Число 10
             {
                 type: 'number',
                 number: '10',
                 emoji: '💖',
-                text: `День, когда я впервые сказал тебе, что люблю,
-        а ты сначала удивилась и сказала: "А не рано ли?"
-        Но именно с этого момента всё стало по-настоящему.`,
+                text: 'День, когда я впервые сказал тебе, что люблю, а ты сначала удивилась и сказала: "А не рано ли?" Но именно с этого момента всё стало по-настоящему.',
                 delay: 800
             },
             {
-                type: 'empty',
+                type: 'spacer',
+                height: 15
+            },
+            {
+                type: 'text',
+                text: 'Сегодня твой день, и я хочу сказать:',
                 delay: 400
             },
-            // Финальное сообщение
             {
                 type: 'text',
-                content: 'Сегодня твой день, и я хочу сказать:',
+                text: 'Ты делаешь мою жизнь ярче, теплее и счастливее.',
                 delay: 400,
-                className: 'text-line'
+                highlight: true
             },
             {
                 type: 'text',
-                content: 'Ты делаешь мою жизнь ярче, теплее и счастливее.',
-                delay: 400,
-                className: 'text-line highlight'
-            },
-            {
-                type: 'text',
-                content: 'С днём рождения, моя любимая! 💕',
+                text: 'С днём рождения, моя любимая! 💕',
                 delay: 600,
-                className: 'text-line special'
+                special: true
             },
             {
-                type: 'empty',
-                delay: 300
+                type: 'spacer',
+                height: 10
             },
             {
                 type: 'text',
-                content: 'Готова продолжить? 💫',
+                text: 'Готова продолжить? 💫',
                 delay: 400,
-                className: 'text-line waiting final'
+                final: true
             }
         ];
 
-        // Функция для показа первой страницы
-        function showPage1WithAnimation() {
+        // Простая функция для Telegram
+        function showPage1ForTelegram() {
             const page1 = document.getElementById('page1');
             const typedText = document.getElementById('typedText');
             const nextButton = document.getElementById('next1');
-            const typingIndicator = document.querySelector('.typing-indicator');
-            const scrollThumb = document.querySelector('.scroll-thumb');
+            const scrollHint = document.querySelector('.scroll-hint');
 
             // Скрываем основную страницу
             document.getElementById('container').style.display = 'none';
@@ -768,138 +755,146 @@ document.getElementById("next4").addEventListener('click', () => {
 
             // Блокируем кнопку
             nextButton.disabled = true;
-            nextButton.style.opacity = '0.5';
+            nextButton.classList.remove('active');
 
-            // Показываем индикатор печати
-            typingIndicator.style.opacity = '1';
+            // Настройки для Telegram
+            if (window.Telegram && window.Telegram.WebApp) {
+                // Расширяем на весь экран
+                Telegram.WebApp.expand();
 
-            // Функция для обновления скроллбара
-            function updateScrollbar() {
-                const container = typedText;
-                const scrollPercentage = (container.scrollTop / (container.scrollHeight - container.clientHeight)) * 100;
-                const thumbHeight = Math.max(30, (container.clientHeight / container.scrollHeight) * 100);
+                // Отключаем контекстное меню для лучшего скролла
+                typedText.addEventListener('contextmenu', (e) => e.preventDefault());
 
-                scrollThumb.style.height = thumbHeight + '%';
-                scrollThumb.style.transform = `translateY(${scrollPercentage * (100 - thumbHeight) / 100}%)`;
+                // Оптимизация для мобильных
+                typedText.style.webkitOverflowScrolling = 'touch';
             }
 
-            // Обработчик скролла
-            typedText.addEventListener('scroll', updateScrollbar);
-
-            // Переменные для анимации
             let currentIndex = 0;
             let totalDelay = 0;
 
-            // Функция для добавления элемента
-            function addNextElement() {
-                if (currentIndex >= page1Content.length) {
+            function addNextChunk() {
+                if (currentIndex >= telegramContent.length) {
                     // Все элементы добавлены
-                    typingIndicator.style.opacity = '0';
-                    typingIndicator.style.transition = 'opacity 0.3s ease';
-
-                    // Активируем кнопку
                     setTimeout(() => {
                         nextButton.disabled = false;
-                        nextButton.style.opacity = '1';
-                        nextButton.style.animation = 'pulse 2s infinite';
+                        nextButton.classList.add('active');
 
-                        // Добавляем класс для пульсации
-                        nextButton.classList.add('pulse-animation');
+                        // Скрываем подсказку скролла
+                        if (scrollHint) {
+                            scrollHint.style.display = 'none';
+                        }
                     }, 500);
-
                     return;
                 }
 
-                const item = page1Content[currentIndex];
-                totalDelay += item.delay;
+                const chunk = telegramContent[currentIndex];
+                totalDelay += chunk.delay || 400;
 
                 setTimeout(() => {
                     let element;
 
-                    switch(item.type) {
+                    switch(chunk.type) {
                         case 'text':
                             element = document.createElement('div');
-                            element.className = item.className || 'text-line';
-                            element.innerHTML = item.content;
+                            element.className = 'text-chunk';
+                            element.style.animationDelay = '0s';
+
+                            if (chunk.highlight) {
+                                element.style.background = 'rgba(255, 105, 180, 0.15)';
+                                element.style.border = '1px solid rgba(255, 105, 180, 0.3)';
+                                element.style.fontWeight = '600';
+                            }
+
+                            if (chunk.special) {
+                                element.style.fontSize = '18px';
+                                element.style.textAlign = 'center';
+                                element.style.color = '#ffeb3b';
+                            }
+
+                            if (chunk.final) {
+                                element.style.textAlign = 'center';
+                                element.style.fontStyle = 'italic';
+                                element.style.marginTop = '20px';
+                            }
+
+                            element.textContent = chunk.text;
                             typedText.appendChild(element);
                             break;
 
                         case 'number':
                             element = document.createElement('div');
-                            element.className = 'number-block';
+                            element.className = 'number-chunk';
+                            element.style.animationDelay = '0s';
                             element.innerHTML = `
-                                <div class="highlight-number">${item.number}</div>
-                                <div class="number-text">
-                                    ${item.text}
-                                    <span class="emoji">${item.emoji}</span>
+                                <div class="number-badge">${chunk.number}</div>
+                                <div class="number-content">
+                                    ${chunk.text}
+                                    <span class="number-emoji">${chunk.emoji}</span>
                                 </div>
                             `;
                             typedText.appendChild(element);
                             break;
 
-                        case 'empty':
-                            // Просто пустая строка для отступа
-                            const emptyDiv = document.createElement('div');
-                            emptyDiv.style.height = '20px';
-                            typedText.appendChild(emptyDiv);
+                        case 'spacer':
+                            element = document.createElement('div');
+                            element.style.height = chunk.height + 'px';
+                            typedText.appendChild(element);
                             break;
                     }
 
-                    // Прокручиваем к новому элементу
-                    if (element) {
-                        element.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'end'
-                        });
-
-                        // Обновляем скроллбар
-                        setTimeout(updateScrollbar, 100);
+                    // Автоскролл к новому элементу (простой вариант для Telegram)
+                    if (element && element.scrollIntoView) {
+                        setTimeout(() => {
+                            element.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'end'
+                            });
+                        }, 100);
                     }
 
                     currentIndex++;
-                    addNextElement();
+                    addNextChunk();
 
-                }, item.delay);
+                }, chunk.delay || 400);
             }
 
-            // Начинаем анимацию
+            // Запускаем
+            setTimeout(addNextChunk, 800);
+
+            // Обработчик скролла для скрытия подсказки
+            let hasScrolled = false;
+            typedText.addEventListener('scroll', () => {
+                if (!hasScrolled && scrollHint) {
+                    hasScrolled = true;
+                    scrollHint.style.opacity = '0';
+                    scrollHint.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        scrollHint.style.display = 'none';
+                    }, 500);
+                }
+            });
+
+            // Насильно показываем скроллбар в начале
+            typedText.scrollTop = 1;
             setTimeout(() => {
-                addNextElement();
-            }, 800);
-
-            // Добавляем кастомный скроллбар
-            scrollThumb.addEventListener('mousedown', startDrag);
-            scrollThumb.addEventListener('touchstart', startDrag);
-
-            function startDrag(e) {
-                e.preventDefault();
-                const startY = e.clientY || e.touches[0].clientY;
-                const startTop = parseInt(getComputedStyle(scrollThumb).transform.split(',')[5]) || 0;
-
-                function doDrag(e) {
-                    const y = e.clientY || e.touches[0].clientY;
-                    const delta = y - startY;
-                    const maxTop = typedText.clientHeight - scrollThumb.clientHeight;
-                    const newTop = Math.max(0, Math.min(maxTop, startTop + delta));
-                    const percentage = newTop / (typedText.clientHeight - scrollThumb.clientHeight);
-
-                    typedText.scrollTop = percentage * (typedText.scrollHeight - typedText.clientHeight);
-                }
-
-                function stopDrag() {
-                    document.removeEventListener('mousemove', doDrag);
-                    document.removeEventListener('touchmove', doDrag);
-                    document.removeEventListener('mouseup', stopDrag);
-                    document.removeEventListener('touchend', stopDrag);
-                }
-
-                document.addEventListener('mousemove', doDrag);
-                document.addEventListener('touchmove', doDrag);
-                document.addEventListener('mouseup', stopDrag);
-                document.addEventListener('touchend', stopDrag);
-            }
+                typedText.scrollTop = 0;
+            }, 100);
         }
 
+        // Инициализация для Telegram
+        document.getElementById("next1").addEventListener('click', () => {
+            const nextBtn = document.getElementById('next1');
+            if (!nextBtn.disabled) {
+                nextBtn.disabled = true;
+                showPage2WithAnimation();
+            }
+        });
+
+        // Вместо showPage1WithAnimation() используй showPage1ForTelegram()
+        // В функции correctCodeAnimation замени вызов:
+        // setTimeout(() => showPage1WithAnimation(), 500);
+        // на:
+        // setTimeout(() => showPage1ForTelegram(), 500);
        
             // Добавляем пульсацию когда готов к свайпу
             kitten.classList.add('ready-pulse');
@@ -1089,18 +1084,16 @@ document.getElementById("next4").addEventListener('click', () => {
                 }, 400);
             }
 
-                   function correctCodeAnimation() {
+                          function correctCodeAnimation() {
             message.textContent = 'Ура! Правильно! 💖';
-
-            // Эффект успеха
             kitten.classList.add('success-glow');
             createParticlesAroundKitten();
-
             inputs.forEach(inp => inp.blur());
 
             setTimeout(() => {
                 document.getElementById('container').classList.add('fade-out-scale');
-                setTimeout(() => showPage1WithAnimation(), 500);
+                // ИСПОЛЬЗУЙ ЭТУ ФУНКЦИЮ ДЛЯ TELEGRAM:
+                setTimeout(() => showPage1ForTelegram(), 500);
             }, 1000);
         }
 
