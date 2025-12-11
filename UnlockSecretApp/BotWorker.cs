@@ -7,6 +7,7 @@ using Telegram.Bot.Types.ReplyMarkups;
 public class BotWorker : BackgroundService
 {
     private readonly TelegramBotClient _botClient;
+    private readonly string _webAppUrl = "https://unlockapp-11212.onrender.com/";
 
     public BotWorker()
     {
@@ -30,20 +31,26 @@ public class BotWorker : BackgroundService
         // Обработка команды /start - показываем кнопки
         if (update.Type == UpdateType.Message && update.Message?.Text == "/start")
         {
-            var webAppUrl = "https://unlockapp-11212.onrender.com/";
-
             // Создаем клавиатуру с кнопками (reply_markup)
             var inlineKeyboard = new InlineKeyboardMarkup(new[]
             {
-                // Первый ряд - основная кнопка WebApp
+                // Первый ряд - ОСНОВНАЯ кнопка с открытием в браузере
+                new[]
+                {
+                    InlineKeyboardButton.WithUrl(
+                        "🎁 Открыть подарок (рекомендуется в браузере)",
+                        _webAppUrl
+                    )
+                },
+                // Второй ряд - альтернатива (в Telegram WebApp)
                 new[]
                 {
                     InlineKeyboardButton.WithWebApp(
-                        "🎁 Открыть подарок",
-                        new WebAppInfo(webAppUrl)
+                        "📱 Открыть в Telegram",
+                        new WebAppInfo(_webAppUrl)
                     )
                 },
-                // Второй ряд - дополнительные кнопки
+                // Третий ряд - дополнительные кнопки
                 new[]
                 {
                     InlineKeyboardButton.WithUrl(
@@ -63,8 +70,10 @@ public class BotWorker : BackgroundService
                 text: "🎂 <b>С днём рождения, любимая!</b> 💖\n\n" +
                       "Я подготовил для тебя особенный подарок...\n" +
                       "Это цифровой сюрприз с нашими воспоминаниями ✨\n\n" +
-                      "<i>Нажми на кнопку ниже, чтобы начать...</i>",
-                parseMode: ParseMode.Html, // Включаем HTML для красивого текста
+                      "<b>🎯 Рекомендуем открыть в браузере</b> (первая кнопка) —\n" +
+                      "так все анимации будут работать идеально! 🚀\n\n" +
+                      "<i>Выбери способ открытия:</i>",
+                parseMode: ParseMode.Html,
                 replyMarkup: inlineKeyboard,
                 cancellationToken: token
             );
@@ -84,35 +93,57 @@ public class BotWorker : BackgroundService
                     cancellationToken: token
                 );
 
+                // Создаем клавиатуру для сообщения с помощью
+                var helpKeyboard = new InlineKeyboardMarkup(new[]
+                {
+                    new[]
+                    {
+                        InlineKeyboardButton.WithUrl(
+                            "🎁 Открыть в браузере (рекомендуется)",
+                            _webAppUrl
+                        )
+                    },
+                    new[]
+                    {
+                        InlineKeyboardButton.WithUrl(
+                            "💬 Написать автору",
+                            "https://t.me/dinoZaViK"
+                        )
+                    },
+                    new[]
+                    {
+                        InlineKeyboardButton.WithCallbackData(
+                            "↩️ Назад к выбору",
+                            "back_to_start"
+                        )
+                    }
+                });
+
                 // Отправляем сообщение с помощью
                 await bot.SendTextMessageAsync(
                     chatId: callbackQuery.Message.Chat.Id,
-                    text: "❓ <b>Как открыть подарок:</b>\n\n" +
-                          "1. Нажми кнопку <b>\"🎁 Открыть подарок\"</b>\n" +
-                          "2. Приложение откроется прямо в Telegram\n" +
-                          "3. Следуй инструкциям внутри\n\n" +
-                          "Если что-то не работает:\n" +
-                          "• Обнови Telegram\n" +
+                    text: "❓ <b>Как лучше открыть подарок:</b>\n\n" +
+                          "🚀 <b>Рекомендуемый способ:</b>\n" +
+                          "1. Нажми <b>\"🎁 Открыть в браузере\"</b>\n" +
+                          "2. Приложение откроется в Chrome/Safari\n" +
+                          "3. <b>Все анимации работают на 100%!</b>\n\n" +
+
+                          "📱 <b>Альтернатива (в Telegram):</b>\n" +
+                          "1. Нажми <b>\"📱 Открыть в Telegram\"</b>\n" +
+                          "2. Могут не работать некоторые эффекты\n" +
+                          "3. Подходит для быстрого просмотра\n\n" +
+
+                          "💡 <b>Советы для браузера:</b>\n" +
+                          "• Поверни телефон горизонтально 📲\n" +
+                          "• Можно добавить на главный экран 📌\n" +
+                          "• Включи звук для полного погружения 🔈\n\n" +
+
+                          "🔧 <b>Если что-то не работает:</b>\n" +
+                          "• Обнови Telegram до последней версии\n" +
                           "• Перезапусти бота командой /start\n" +
                           "• Напиши автору: @dinoZaViK",
                     parseMode: ParseMode.Html,
-                    replyMarkup: new InlineKeyboardMarkup(new[]
-                    {
-                        new[]
-                        {
-                            InlineKeyboardButton.WithUrl(
-                                "💬 Написать автору",
-                                "https://t.me/dinoZaViK"
-                            )
-                        },
-                        new[]
-                        {
-                            InlineKeyboardButton.WithCallbackData(
-                                "↩️ Назад",
-                                "back_to_start"
-                            )
-                        }
-                    }),
+                    replyMarkup: helpKeyboard,
                     cancellationToken: token
                 );
             }
@@ -121,14 +152,20 @@ public class BotWorker : BackgroundService
                 await bot.AnswerCallbackQueryAsync(callbackQuery.Id, cancellationToken: token);
 
                 // Возвращаемся к начальному сообщению
-                var webAppUrl = "https://unlockapp-11212.onrender.com/";
                 var inlineKeyboard = new InlineKeyboardMarkup(new[]
                 {
                     new[]
                     {
+                        InlineKeyboardButton.WithUrl(
+                            "🎁 Открыть подарок (рекомендуется в браузере)",
+                            _webAppUrl
+                        )
+                    },
+                    new[]
+                    {
                         InlineKeyboardButton.WithWebApp(
-                            "🎁 Открыть подарок",
-                            new WebAppInfo(webAppUrl)
+                            "📱 Открыть в Telegram",
+                            new WebAppInfo(_webAppUrl)
                         )
                     },
                     new[]
@@ -151,7 +188,9 @@ public class BotWorker : BackgroundService
                     text: "🎂 <b>С днём рождения, любимая!</b> 💖\n\n" +
                           "Я подготовил для тебя особенный подарок...\n" +
                           "Это цифровой сюрприз с нашими воспоминаниями ✨\n\n" +
-                          "<i>Нажми на кнопку ниже, чтобы начать...</i>",
+                          "<b>🎯 Рекомендуем открыть в браузере</b> (первая кнопка) —\n" +
+                          "так все анимации будут работать идеально! 🚀\n\n" +
+                          "<i>Выбери способ открытия:</i>",
                     parseMode: ParseMode.Html,
                     replyMarkup: inlineKeyboard,
                     cancellationToken: token
@@ -162,9 +201,29 @@ public class BotWorker : BackgroundService
         // Обработка команды /help в текстовом виде
         if (update.Type == UpdateType.Message && update.Message?.Text == "/help")
         {
+            var helpKeyboard = new InlineKeyboardMarkup(new[]
+            {
+                new[]
+                {
+                    InlineKeyboardButton.WithUrl(
+                        "🎁 Открыть в браузере",
+                        _webAppUrl
+                    )
+                },
+                new[]
+                {
+                    InlineKeyboardButton.WithCallbackData(
+                        "ℹ️ Подробная помощь",
+                        "help"
+                    )
+                }
+            });
+
             await bot.SendTextMessageAsync(
                 chatId: update.Message.Chat.Id,
-                text: "Напиши /start чтобы открыть подарок с кнопками! 🎁",
+                text: "Напиши /start чтобы открыть подарок с кнопками! 🎁\n\n" +
+                      "Для лучшего опыта используй браузер! 🚀",
+                replyMarkup: helpKeyboard,
                 cancellationToken: token
             );
         }
