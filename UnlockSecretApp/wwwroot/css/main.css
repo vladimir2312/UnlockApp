@@ -209,7 +209,7 @@ input.code {
     justify-content: center;
     align-items: center;
     background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(15px);
+   
     opacity: 0;
     pointer-events: none;
     transform: scale(0.95);
@@ -242,7 +242,7 @@ input.code {
 
 .congrats-title {
     font-size: 2rem;
-    color: #7e2fa0;
+    color: #2499ff;
     font-weight: 800;
 }
 
@@ -260,7 +260,7 @@ input.code {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
     font-weight: 400;
     line-height: 1.6;
-    color: #4b1f5e;
+    color: #2499ff;
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
@@ -270,7 +270,7 @@ input.code {
 /* Конкретно для сообщения под котенком */
 #message {
     font-size: 0.95rem;
-    color: rgba(124, 42, 141, 0.8);
+    color: #2499ff;
     min-height: 1.5rem;
     margin-top: 0.5rem;
     text-align: center;
@@ -283,7 +283,7 @@ input.code {
     font-size: 1.1rem;
     line-height: 1.6;
     text-align: left;
-    color: #4b1f5e;
+    color: #2499ff;
     padding: 1.2rem;
     background: rgba(255, 255, 255, 0.25);
     border-radius: 12px;
@@ -294,14 +294,14 @@ input.code {
 
 .typed-cursor {
     display: inline-block;
-    background-color: #ff69b4;
+    background-color: #2499ff;
     margin-left: 2px;
     width: 2px;
     animation: blink 1s infinite;
 }
 
 .highlight-number {
-    color: #ff69b4;
+    color: #2499ff;
     font-weight: bold;
     font-size: 1.2em;
 }
@@ -351,7 +351,7 @@ input.code {
     }
 
     .quality-thought-item:nth-child(1) {
-        border-left-color: #ff69b4;
+        border-left-color: #2499ff;
     }
 
     .quality-thought-item:nth-child(2) {
@@ -379,7 +379,7 @@ input.code {
 
 .quality-title {
     font-weight: bold;
-    color: #7c2a8d;
+    color: #2499ff;
     font-size: 1.1rem;
 }
 

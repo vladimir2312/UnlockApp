@@ -42,14 +42,7 @@ public class BotWorker : BackgroundService
                         _webAppUrl
                     )
                 },
-                // Второй ряд - альтернатива (в Telegram WebApp)
-                new[]
-                {
-                    InlineKeyboardButton.WithWebApp(
-                        "📱 Открыть в Telegram",
-                        new WebAppInfo(_webAppUrl)
-                    )
-                },
+                
                 // Третий ряд - дополнительные кнопки
                 new[]
                 {
@@ -161,13 +154,7 @@ public class BotWorker : BackgroundService
                             _webAppUrl
                         )
                     },
-                    new[]
-                    {
-                        InlineKeyboardButton.WithWebApp(
-                            "📱 Открыть в Telegram",
-                            new WebAppInfo(_webAppUrl)
-                        )
-                    },
+                  
                     new[]
                     {
                         InlineKeyboardButton.WithUrl(
