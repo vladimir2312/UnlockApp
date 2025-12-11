@@ -334,81 +334,82 @@ function showPage4WithAnimation() {
 // Обновляем обработчики
 document.getElementById("next3").addEventListener('click', () => showPage4WithAnimation());
 
+// Обработчик для завершающей кнопки
+document.getElementById("next4").addEventListener('click', () => {
+           
 
+                // Создаем финальный экран заранее и добавляем в body
+                const finalScreen = document.createElement('div');
+                finalScreen.id = 'finalScreen';
+                finalScreen.style.position = 'fixed';
+                finalScreen.style.top = '0';
+                finalScreen.style.left = '0';
+                finalScreen.style.width = '100%';
+                finalScreen.style.height = '100%';
+                finalScreen.style.display = 'flex';
+                finalScreen.style.justifyContent = 'center';
+                finalScreen.style.alignItems = 'center';
+                                finalScreen.style.color = '#000000';
+                finalScreen.style.background = 'rgba(0,0,0,0.7)'; // тёмный фон для эффекта
+                finalScreen.style.zIndex = '9999'; // поверх всего
+                finalScreen.innerHTML = `
+                    <div class="congrats-card glass" style="text-align:center; padding:40px;">
+                        <h2>С днём рождения! 💕</h2>
+                        <canvas id="confettiCanvas" style="position:absolute; top:0; left:0;"></canvas>
+                    </div>
+                `;
+                finalScreen.classList.add('hidden');
+                document.body.appendChild(finalScreen);
 
-        const page4 = document.getElementById('page4');
-        const next4 = document.getElementById('next4');
+                next4.addEventListener('click', () => {
+                    // 1. Скрываем галерею
+                    page4.classList.add('hidden');
 
-        // Создаем финальный экран заранее и добавляем в body
-        const finalScreen = document.createElement('div');
-        finalScreen.id = 'finalScreen';
-        finalScreen.style.position = 'fixed';
-        finalScreen.style.top = '0';
-        finalScreen.style.left = '0';
-        finalScreen.style.width = '100%';
-        finalScreen.style.height = '100%';
-        finalScreen.style.display = 'flex';
-        finalScreen.style.justifyContent = 'center';
-        finalScreen.style.alignItems = 'center';
-                        finalScreen.style.color = '#000000';
-        finalScreen.style.background = 'rgba(0,0,0,0.7)'; // тёмный фон для эффекта
-        finalScreen.style.zIndex = '9999'; // поверх всего
-        finalScreen.innerHTML = `
-            <div class="congrats-card glass" style="text-align:center; padding:40px;">
-                <h2>С днём рождения! 💕</h2>
-                <canvas id="confettiCanvas" style="position:absolute; top:0; left:0;"></canvas>
-            </div>
-        `;
-        finalScreen.classList.add('hidden');
-        document.body.appendChild(finalScreen);
+                    // 2. Показываем финальный экран
+                    finalScreen.classList.remove('hidden');
 
-        next4.addEventListener('click', () => {
-            // 1. Скрываем галерею
-            page4.classList.add('hidden');
-
-            // 2. Показываем финальный экран
-            finalScreen.classList.remove('hidden');
-
-            // 3. Запускаем анимацию конфетти
-            startConfetti();
-        });
-
-        function startConfetti() {
-            const confettiCanvas = document.getElementById('confettiCanvas');
-            confettiCanvas.width = window.innerWidth;
-            confettiCanvas.height = window.innerHeight;
-            const ctx = confettiCanvas.getContext('2d');
-
-            const confettiCount = 150;
-            const confettis = [];
-
-            for (let i = 0; i < confettiCount; i++) {
-                confettis.push({
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight - window.innerHeight,
-                    r: Math.random() * 6 + 4,
-                    d: Math.random() * confettiCount
+                    // 3. Запускаем анимацию конфетти
+                    startConfetti();
                 });
-            }
 
-            function draw() {
-                ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-                confettis.forEach(c => {
-                    ctx.beginPath();
-                    ctx.arc(c.x, c.y, c.r, 0, Math.PI*2);
-                    ctx.fillStyle = `hsl(${Math.random()*360}, 100%, 50%)`;
-                    ctx.fill();
-                    c.y += Math.cos(c.d) + 1 + c.r/2;
-                    c.x += Math.sin(c.d);
-                    if (c.y > window.innerHeight) {
-                        c.y = -10;
-                        c.x = Math.random() * window.innerWidth;
+                function startConfetti() {
+                    const confettiCanvas = document.getElementById('confettiCanvas');
+                    confettiCanvas.width = window.innerWidth;
+                    confettiCanvas.height = window.innerHeight;
+                    const ctx = confettiCanvas.getContext('2d');
+
+                    const confettiCount = 150;
+                    const confettis = [];
+
+                    for (let i = 0; i < confettiCount; i++) {
+                        confettis.push({
+                            x: Math.random() * window.innerWidth,
+                            y: Math.random() * window.innerHeight - window.innerHeight,
+                            r: Math.random() * 6 + 4,
+                            d: Math.random() * confettiCount
+                        });
                     }
-                });
-                requestAnimationFrame(draw);
-            }
-            draw();
-        }
+
+                    function draw() {
+                        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+                        confettis.forEach(c => {
+                            ctx.beginPath();
+                            ctx.arc(c.x, c.y, c.r, 0, Math.PI*2);
+                            ctx.fillStyle = `hsl(${Math.random()*360}, 100%, 50%)`;
+                            ctx.fill();
+                            c.y += Math.cos(c.d) + 1 + c.r/2;
+                            c.x += Math.sin(c.d);
+                            if (c.y > window.innerHeight) {
+                                c.y = -10;
+                                c.x = Math.random() * window.innerWidth;
+                            }
+                        });
+                        requestAnimationFrame(draw);
+                    }
+                    draw();
+                }
+
+});
 
                     // Добавляем после функции showPage2WithAnimation()
 
