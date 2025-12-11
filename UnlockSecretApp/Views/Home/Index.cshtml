@@ -613,50 +613,7 @@ document.getElementById("next4").addEventListener('click', () => {
             showPage2WithAnimation();
         });
                     // Функция для эффекта печатания текста
-        function typeWriter(text, element, speed = 40, callback = null) {
-            let i = 0;
-            element.innerHTML = '';
-
-            function type() {
-                if (i < text.length) {
-                    // Обрабатываем специальные теги
-                    if (text.substring(i, i + 6) === '<wait>') {
-                        i += 6;
-                        setTimeout(type, 500);
-                        return;
-                    }
-
-                    if (text.substring(i, i + 8) === '<number>') {
-                        i += 8;
-                        const numEnd = text.indexOf('</number>', i);
-                        if (numEnd !== -1) {
-                            const number = text.substring(i, numEnd);
-                            element.innerHTML += `<span class="highlight-number">${number}</span>`;
-                            i = numEnd + 9;
-                        }
-                    } else {
-                        element.innerHTML += text.charAt(i);
-                        i++;
-                    }
-
-                    // Добавляем мигающий курсор
-                    const cursor = document.createElement('span');
-                    cursor.className = 'typed-cursor';
-                    element.appendChild(cursor);
-
-                    setTimeout(() => {
-                        if (cursor.parentNode) {
-                            cursor.parentNode.removeChild(cursor);
-                        }
-                        type();
-                    }, speed);
-                } else {
-                    // Текст напечатан
-                    if (callback) callback();
-                }
-            }
-            type();
-        }
+       
 
                  // Текст для Telegram (упрощенный)
         const telegramContent = [
