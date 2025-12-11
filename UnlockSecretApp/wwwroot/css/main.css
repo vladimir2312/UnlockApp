@@ -1169,111 +1169,316 @@ input.code {
     cursor: pointer;
     z-index: 40;
 }
-/* Фикс для viewport в Telegram */
-@supports (padding: max(0px)) {
-    body {
-        padding-left: env(safe-area-inset-left);
-        padding-right: env(safe-area-inset-right);
-        padding-top: env(safe-area-inset-top);
-        padding-bottom: env(safe-area-inset-bottom);
-    }
-}
 
-/* Принудительный сброс для Telegram */
-html.telegram-ios, html.telegram-android {
-    font-size: 16px !important;
-    -webkit-text-size-adjust: 100% !important;
-}
-
-/* Фикс для контейнеров в Telegram */
-.congrats-card {
-    max-width: min(92%, 640px) !important;
-    width: 92% !important;
-    margin: 0 auto !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-}
-
-/* Фикс для текста в Telegram */
-#typedText, .quality-description, .personal-thought,
-.letter-section-content, .gallery-caption, .future-letter {
-    max-width: 100% !important;
-    word-wrap: break-word !important;
-    overflow-wrap: break-word !important;
-    hyphens: auto !important;
-    box-sizing: border-box !important;
-}
-
-/* Специальные фиксы для page1 */
-#page1 .congrats-card {
-    padding: 1.5rem !important;
-}
-
-#typedText {
-    font-size: 1rem !important;
-    line-height: 1.5 !important;
-    text-align: left !important;
-    padding: 1rem !important;
-    background: rgba(255, 255, 255, 0.25) !important;
-    border-radius: 10px !important;
-    margin: 1rem 0 !important;
-    max-height: 60vh !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-}
-
-    /* Убедись, что <br> не ломают верстку */
-    #typedText br {
-        content: "" !important;
-        display: block !important;
-        margin-bottom: 0.5rem !important;
-    }
-
-/* Фикс для выделения чисел */
-.highlight-number {
-    color: #ff69b4 !important;
-    font-weight: bold !important;
-    font-size: 1.1em !important;
-    display: inline-block !important;
-    margin: 0 2px !important;
-}
-
-/* Адаптация для маленьких экранов в Telegram */
-@media (max-height: 700px) {
-    .congrats-card {
-        padding: 1rem !important;
-        max-height: 85vh !important;
-        overflow-y: auto !important;
-    }
-
-    #typedText {
-        max-height: 50vh !important;
-        font-size: 0.95rem !important;
-    }
-}
-
-/* Для очень маленьких экранов */
-@media (max-height: 600px) {
-    .congrats-card {
-        padding: 0.8rem !important;
-        max-height: 90vh !important;
-    }
-
-    #typedText {
-        max-height: 45vh !important;
-        font-size: 0.9rem !important;
-        line-height: 1.4 !important;
-        padding: 0.8rem !important;
-    }
-
-    .congrats-title {
-        font-size: 1.5rem !important;
-        margin-bottom: 0.5rem !important;
-    }
-}
 
 
 #typedText {
     white-space: pre-line; /* сохраняет переносы и игнорирует лишние пробелы */
 }
 
+/* =================== СТИЛИ ДЛЯ СТРАНИЦЫ 1 =================== */
+
+/* Заголовок страницы */
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.typing-indicator {
+    display: flex;
+    gap: 4px;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    background: #ff69b4;
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: typingPulse 1.4s infinite ease-in-out;
+}
+
+    .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+@keyframes typingPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+}
+
+/* Контейнер для текста со скроллом */
+.text-scroll-container {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    margin: 20px 0;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Стильный скроллбар */
+.scroll-track {
+    position: absolute;
+    right: 8px;
+    top: 20px;
+    bottom: 20px;
+    width: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    z-index: 10;
+}
+
+.scroll-thumb {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(to bottom, #ff69b4, #9370db);
+    border-radius: 3px;
+    transition: transform 0.1s ease;
+    cursor: pointer;
+}
+
+/* Контейнер для печатаемого текста */
+.typed-text-container {
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 20px;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: white;
+    text-align: justify;
+}
+
+    /* Убираем стандартный скроллбар */
+    .typed-text-container::-webkit-scrollbar {
+        display: none;
+    }
+
+/* Стили для отдельных строк и элементов текста */
+.text-line {
+    margin-bottom: 15px;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+    .text-line.waiting {
+        color: rgba(255, 255, 255, 0.7);
+        font-style: italic;
+    }
+
+.number-block {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    padding-left: 10px;
+    border-left: 3px solid #ff69b4;
+}
+
+.highlight-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #ff69b4;
+    min-width: 60px;
+    text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+    animation: numberGlow 2s infinite alternate;
+}
+
+@keyframes numberGlow {
+    from {
+        text-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
+    }
+
+    to {
+        text-shadow: 0 0 20px rgba(255, 105, 180, 0.8);
+    }
+}
+
+.number-text {
+    margin-left: 15px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.emoji {
+    font-size: 1.4rem;
+    margin-left: 10px;
+    display: inline-block;
+    animation: float 3s infinite ease-in-out;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Кнопка "Далее" */
+.pulse-btn {
+    position: relative;
+    background: linear-gradient(135deg, #ff69b4, #9370db);
+    color: white;
+    border: none;
+    padding: 16px 40px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-top: 25px;
+    box-shadow: 0 8px 25px rgba(255, 105, 180, 0.4);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 180px;
+    justify-content: center;
+}
+
+    .pulse-btn:not(:disabled):hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(255, 105, 180, 0.6);
+    }
+
+    .pulse-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: scale(0.95);
+    }
+
+.btn-text {
+    position: relative;
+    z-index: 2;
+}
+
+.btn-arrow {
+    position: relative;
+    z-index: 2;
+    animation: arrowBounce 1s infinite;
+}
+
+@keyframes arrowBounce {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+}
+
+.btn-sparkle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255,255,255,0.3) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.pulse-btn:not(:disabled):hover .btn-sparkle {
+    opacity: 1;
+}
+
+/* Декоративные элементы страницы */
+.page1-heart {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 2rem;
+    opacity: 0.3;
+    animation: heartbeat 2s infinite;
+}
+
+.page1-sparkle {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    font-size: 1.8rem;
+    opacity: 0.3;
+    animation: spin 4s infinite linear;
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Анимации */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 480px) {
+    .text-scroll-container {
+        height: 250px;
+        padding: 15px;
+    }
+
+    .highlight-number {
+        font-size: 1.8rem;
+        min-width: 50px;
+    }
+
+    .typed-text-container {
+        font-size: 1rem;
+    }
+
+    .pulse-btn {
+        padding: 14px 30px;
+        font-size: 1.1rem;
+        min-width: 160px;
+    }
+}
