@@ -5,7 +5,7 @@
 <html lang="ru">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>💖 MiniApp — Ввод кода</title>
 
     <meta name="theme-color" content="#ffffff">
@@ -53,18 +53,36 @@
             pointer-events: none;
             transition: opacity 0.5s ease, transform 0.5s ease;
             transform: scale(0.95);
+        
+        }
+        /* Специальные стили для текста page1 в Telegram */
+        .telegram-webapp #typedText {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+            font-size: 16px !important;
+            line-height: 1.6 !important;
+            letter-spacing: 0.01em !important;
+            text-rendering: optimizeLegibility !important;
+            -webkit-font-smoothing: antialiased !important;
         }
 
-            .overlay.show {
-                opacity: 1;
-                pointer-events: all;
-                transform: scale(1);
+            .telegram-webapp #typedText br {
+                line-height: 1.8 !important;
+                height: 0.8em !important;
+                display: inline-block !important;
             }
 
-            .overlay.hidden {
-                display: none;
-            }
+        .telegram-webapp .highlight-number {
+            font-size: 1.2em !important;
+            font-weight: 700 !important;
+            color: #ff1493 !important;
+            background: linear-gradient(45deg, #ff69b4, #ff1493) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+            padding: 0 2px !important;
+        }
 
+           
         /* ОСТАВЬ ТОЛЬКО ЭТИ специфические стили */
         .title {
             font-family: 'Great Vibes', cursive;
@@ -177,17 +195,7 @@
             const correctCode = ['20','05','10'];
             // Добавляем после showPage3WithAnimation()
 
-                    function createSnow() {
-            const snow = document.createElement('div');
-            snow.className = 'snowflake';
-            snow.style.left = Math.random() * 100 + 'vw';
-            snow.style.animationDuration = 3 + Math.random() * 5 + 's';
-            document.body.appendChild(snow);
-
-            setTimeout(() => snow.remove(), 7000);
-        }
-
-        setInterval(createSnow, 150);
+                    
 
 
 function showPage4WithAnimation() {
@@ -237,158 +245,10 @@ function showPage4WithAnimation() {
                     caption: 'Наше будущее, которое мы строим вместе... 💫'
                 }
             ];
-                     (function() {
-                // Ждем инициализации Telegram Web App
-                const initSnow = () => {
-                    // Проверяем, в Telegram ли мы
-                    const isTelegram = window.Telegram && window.Telegram.WebApp;
+                   
 
-                    // Настройки снега
-                    const snowConfig = {
-                        count: isTelegram ? 30 : 50, // Меньше снежинок в Telegram для производительности
-                        speed: 2,
-                        wind: 0.5,
-                        size: {
-                            min: 2,
-                            max: 6
-                        }
-                    };
-
-                    const container = document.getElementById('snowContainer');
-                    if (!container) return;
-
-                    // Очищаем предыдущий снег
-                    container.innerHTML = '';
-
-                    // Создаем снежинки
-                    for (let i = 0; i < snowConfig.count; i++) {
-                        createSnowflake(i);
-                    }
-
-                    // Функция создания снежинки
-                    function createSnowflake(index) {
-                        const snowflake = document.createElement('div');
-                        snowflake.className = 'snowflake';
-
-                        // Размеры
-                        const size = Math.random() * (snowConfig.size.max - snowConfig.size.min) + snowConfig.size.min;
-
-                        // Позиция
-                        const startX = Math.random() * 100;
-                        const startY = Math.random() * -100;
-
-                        // Время
-                        const duration = Math.random() * 10 + 10;
-                        const delay = Math.random() * 5;
-
-                        // Устанавливаем стили
-                        snowflake.style.cssText = `
-                            position: absolute;
-                            width: ${size}px;
-                            height: ${size}px;
-                            background: white;
-                            border-radius: 50%;
-                            opacity: ${Math.random() * 0.7 + 0.3};
-                            filter: blur(${size * 0.3}px);
-                            left: ${startX}%;
-                            top: ${startY}%;
-                            pointer-events: none;
-                            will-change: transform;
-                            transform: translate3d(0, 0, 0);
-                        `;
-
-                        container.appendChild(snowflake);
-
-                        // Анимация падения
-                        animateSnowflake(snowflake, index, duration, delay);
-                    }
-
-                    // Упрощенная анимация для Telegram
-                    function animateSnowflake(flake, index, duration, delay) {
-                        if (!flake.parentNode) return;
-
-                        let startTime = null;
-                        const amplitude = Math.random() * 20 + 10; // Амплитуда качания
-                        const frequency = Math.random() * 0.02 + 0.01; // Частота качания
-
-                        function fall(timestamp) {
-                            if (!flake.parentNode) return;
-
-                            if (!startTime) startTime = timestamp;
-                            const elapsed = timestamp - startTime;
-                            const progress = Math.min((elapsed - delay * 1000) / (duration * 1000), 1);
-
-                            if (progress < 0) {
-                                // Еще ждем delay
-                                requestAnimationFrame(fall);
-                                return;
-                            }
-
-                            if (progress >= 1) {
-                                // Снежинка упала - перезапускаем сверху
-                                flake.style.top = '-10%';
-                                startTime = null;
-                                setTimeout(() => requestAnimationFrame(fall), 100);
-                                return;
-                            }
-
-                            // Вертикальное движение
-                            const y = progress * 110; // 110% чтобы выходили за нижнюю границу
-
-                            // Горизонтальное движение (качание)
-                            const x = Math.sin(progress * Math.PI * frequency * duration) * amplitude;
-
-                            // Применяем transform
-                            flake.style.transform = `translate3d(${x}px, ${y}%, 0)`;
-
-                            // Прозрачность при приближении к низу
-                            if (progress > 0.8) {
-                                flake.style.opacity = (1 - (progress - 0.8) * 5).toString();
-                            }
-
-                            requestAnimationFrame(fall);
-                        }
-
-                        // Запускаем анимацию
-                        requestAnimationFrame(fall);
-                    }
-
-                    // Адаптация к изменению размера экрана
-                    let resizeTimeout;
-                    window.addEventListener('resize', () => {
-                        clearTimeout(resizeTimeout);
-                        resizeTimeout = setTimeout(() => {
-                            container.innerHTML = '';
-                            for (let i = 0; i < snowConfig.count; i++) {
-                                createSnowflake(i);
-                            }
-                        }, 250);
-                    });
-                };
-
-                // Запускаем снег с задержкой
-                setTimeout(() => {
-                    // Проверяем, что приложение загружено
-                    if (document.readyState === 'loading') {
-                        document.addEventListener('DOMContentLoaded', initSnow);
-                    } else {
-                        initSnow();
-                    }
-                }, 1500);
-
-                // Альтернатива: запуск после успешного свайпа
-                window.startSnow = function() {
-                    initSnow();
-                };
-
-                // Добавляем в correctCodeAnimation
-                const originalCorrectCodeAnimation = correctCodeAnimation;
-                correctCodeAnimation = function() {
-                    originalCorrectCodeAnimation.apply(this, arguments);
-                    setTimeout(initSnow, 500); // Запускаем снег после анимации
-                };
-
-            })();
+                    
+               
             let currentGalleryIndex = 0;
             const galleryImage = document.getElementById('galleryImage');
             const galleryCaption = document.getElementById('galleryCaption');
@@ -730,10 +590,11 @@ document.getElementById("next4").addEventListener('click', () => {
         // Обновляем обработчик
         document.getElementById("next1").addEventListener('click', () => showPage2WithAnimation());
                     // Функция для эффекта печатания текста
-        function typeWriter(text, element, speed = 40, callback = null) {
+                function typeWriter(text, element, speed = 40, callback = null) {
             let i = 0;
             element.innerHTML = '';
 
+            // Обрабатываем текст по частям
             function type() {
                 if (i < text.length) {
                     // Обрабатываем специальные теги
@@ -751,7 +612,12 @@ document.getElementById("next4").addEventListener('click', () => {
                             element.innerHTML += `<span class="highlight-number">${number}</span>`;
                             i = numEnd + 9;
                         }
+                    } else if (text.substring(i, i + 4) === '<br>') {
+                        // Обработка переносов строк
+                        element.innerHTML += '<br>';
+                        i += 4;
                     } else {
+                        // Обычный символ
                         element.innerHTML += text.charAt(i);
                         i++;
                     }
@@ -760,6 +626,9 @@ document.getElementById("next4").addEventListener('click', () => {
                     const cursor = document.createElement('span');
                     cursor.className = 'typed-cursor';
                     element.appendChild(cursor);
+
+                    // Скроллим к концу текста
+                    element.scrollTop = element.scrollHeight;
 
                     setTimeout(() => {
                         if (cursor.parentNode) {
@@ -774,32 +643,32 @@ document.getElementById("next4").addEventListener('click', () => {
             }
             type();
         }
+                      const page1Content =
+        `За этими цифрами — наша история...<wait><br><br>
+        Каждое число хранит маленькие воспоминания:<br><br>
 
-               const page1Content =
-            `За этими цифрами — наша история...<wait>
+        <number>20</number> 🌙<wait><br>
+        День, когда мы впервые встретились.<wait><br><br>
 
-        Каждое число хранит маленькие воспоминания:
+        <number>05</number> 💫<wait><br>
+        День, когда я понял, что люблю тебя,<br>
+        и что моё сердце теперь твоё навсегда.<wait><br><br>
 
-        <number>20</number> 🌙<wait>
-        День, когда мы впервые встретились.<wait>
+        <number>10</number> 💖<wait><br>
+        День, когда я впервые сказал тебе,
+        что люблю,<wait><br>
+        а ты сначала удивилась и сказала: "А не рано ли?"<wait><br>
+        Но именно с этого момента всё стало по-настоящему.<wait><br><br>
 
-        <number>05</number> 💫<wait>
-        День, когда я понял, что люблю тебя,
-        и что моё сердце теперь твоё навсегда.<wait>
+        Сегодня твой день, и я хочу сказать:<wait><br>
+        Ты делаешь мою жизнь ярче, теплее и счастливее.<wait><br>
+        С днём рождения, моя любимая! 💕<wait><br><br>
 
-        <number>10</number> 💖<wait>
-        День, когда я впервые сказал тебе, что люблю,<wait>
-        а ты сначала удивилась и сказала: "А не рано ли?"<wait>
-        Но именно с этого момента всё стало по-настоящему.<wait>
+        Готова продолжить? 💫`;
 
-        Сегодня твой день, и я хочу сказать:<wait>
-        Ты делаешь мою жизнь ярче, теплее и счастливее.<wait>
-        С днём рождения, моя любимая! 💕<wait>
-
-         Готова продолжить? 💫`;
 
         // Показ первой страницы с анимацией
-        function showPage1WithAnimation() {
+             function showPage1WithAnimation() {
             const page1 = document.getElementById('page1');
             const typedText = document.getElementById('typedText');
             const nextButton = document.getElementById('next1');
@@ -810,16 +679,88 @@ document.getElementById("next4").addEventListener('click', () => {
             // Скрываем кнопку пока текст печатается
             nextButton.style.display = 'none';
 
+            // Фикс для Telegram: принудительно устанавливаем размеры
+            const card = page1.querySelector('.congrats-card');
+            if (card) {
+                card.style.maxHeight = '80vh';
+                card.style.overflow = 'hidden';
+            }
+
+            typedText.style.cssText = `
+                max-height: 50vh;
+                overflow-y: auto;
+                overflow-x: hidden;
+                text-align: left;
+                line-height: 1.5;
+                padding: 1rem;
+                margin: 0.5rem 0;
+                background: rgba(255, 255, 255, 0.25);
+                border-radius: 10px;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+            `;
+
             // Запускаем печать текста
             typeWriter(page1Content, typedText, 30, () => {
                 // Когда текст напечатан, показываем кнопку
                 setTimeout(() => {
                     nextButton.style.display = 'block';
                     nextButton.style.animation = 'fadeIn 0.5s ease';
+
+                    // Фикс для Telegram: пересчитываем высоту
+                    setTimeout(() => {
+                        typedText.style.height = 'auto';
+                        const textHeight = typedText.scrollHeight;
+                        typedText.style.maxHeight = Math.min(textHeight, 300) + 'px';
+                    }, 100);
                 }, 500);
             });
         }
+                // Определяем, что мы в Telegram Web App
+        function isTelegramWebApp() {
+            return window.Telegram && window.Telegram.WebApp;
+        }
 
+        // Применяем фиксы для Telegram
+        function applyTelegramFixes() {
+            if (!isTelegramWebApp()) return;
+
+            // Добавляем класс для специфичных стилей
+            document.documentElement.classList.add('telegram-webapp');
+
+            // Фиксируем высоту body
+            document.body.style.height = '100dvh';
+            document.body.style.minHeight = '100dvh';
+            document.body.style.overflow = 'hidden';
+
+            // Фикс для viewport
+            const metaViewport = document.querySelector('meta[name="viewport"]');
+            if (metaViewport) {
+                metaViewport.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
+            }
+
+            // Фикс для скролла
+            const containers = document.querySelectorAll('.qualities-thoughts-container, .future-letter, #typedText');
+            containers.forEach(container => {
+                container.style.webkitOverflowScrolling = 'touch';
+                container.style.overflowScrolling = 'touch';
+            });
+
+            console.log('Telegram Web App fixes applied');
+        }
+
+        // Запускаем фиксы при загрузке
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', applyTelegramFixes);
+        } else {
+            applyTelegramFixes();
+        }
+
+        // Также запускаем при инициализации Telegram
+        if (window.Telegram && window.Telegram.WebApp) {
+            Telegram.WebApp.ready();
+            setTimeout(applyTelegramFixes, 100);
+        }
             // Добавляем пульсацию когда готов к свайпу
             kitten.classList.add('ready-pulse');
 
