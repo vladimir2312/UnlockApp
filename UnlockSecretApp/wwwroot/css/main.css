@@ -1,66 +1,70 @@
-﻿/* === TELEGRAM MINI APP STYLES === */
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+﻿
+/* ===========================
+   GLOBAL RESET
+   =========================== */
 
-/* === RESET & BASE STYLES === */
 * {
-    box-sizing: border-box;
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
 }
 
 html, body {
-    height: 100dvh;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(160deg,#f7fbff 0%,#fef7fb 50%,#f3f9ff 100%);
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(160deg,#f7fbff 0%,#fef7fb 50%,#f3f9ff 100%);
-    color: #4b1f5e;
-    overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-/* === BACKGROUND === */
+/* ===========================
+   BACKGROUND
+   =========================== */
+
 .background {
     position: fixed;
     inset: 0;
     background: url('/images/background.jpg') center/cover no-repeat;
-    filter: blur(12px) brightness(0.7);
+    filter: brightness(0.7);
     z-index: 0;
 }
 
-/* === MAIN CONTAINER === */
-#container.glass {
+/* ===========================
+   MAIN CONTAINER
+   =========================== */
+
+#container {
     position: relative;
-    z-index: 2;
+    z-index: 10;
     width: 92%;
     max-width: 420px;
-    padding: 2rem;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.55);
+    padding: 2rem 1.5rem 2.5rem;
+    border-radius: 22px;
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(18px);
     border: 1px solid rgba(255,255,255,0.35);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    gap: 1.4rem;
 }
 
-/* === TYPOGRAPHY === */
-h1, h2, h3, .congrats-title, .title,
-.quality-title, .letter-section-title .section-text {
+.title {
     font-family: 'Great Vibes', cursive;
+    font-size: 2rem;
+    color: #7c2a8d;
 }
 
-/* === INPUT STYLES === */
+/* ===========================
+   CODE INPUT
+   =========================== */
+
 .inputs {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 12px;
     margin: 1.5rem 0;
-    height: 65px;
 }
 
 input.code {
@@ -68,140 +72,104 @@ input.code {
     height: 55px;
     border-radius: 12px;
     border: 2px solid rgba(180,180,200,0.4);
-    background: rgba(255,245,255,0.9);
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: #7c2a8d;
+    font-size: 1.6rem;
+    font-weight: 700;
     text-align: center;
-    padding: 0;
-    margin: 0;
-    line-height: 55px;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    -webkit-appearance: none;
-    -moz-appearance: textfield;
-    appearance: none;
-    box-sizing: border-box;
-    display: inline-block;
-    vertical-align: middle;
-    transition: all 0.2s ease;
+    background: rgba(255,255,255,0.85);
+    transition: 0.2s ease;
 }
-
-    /* Remove number input arrows */
-    input.code::-webkit-outer-spin-button,
-    input.code::-webkit-inner-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    input.code[type=number] {
-        -moz-appearance: textfield;
-    }
 
     input.code:focus {
         outline: none;
-        border-color: rgba(200,120,255,0.9);
         background: rgba(255,240,250,0.95);
-        transform: scale(1.05);
-        position: relative;
-        z-index: 2;
+        transform: scale(1.08);
+        border-color: rgba(200,120,255,0.7);
     }
 
-/* === KITTEN SWIPE STYLES === */
+/* ===========================
+   KITTEN SWIPE
+   =========================== */
+
 #kitten {
+    position: relative;
     width: 150px;
-    height: 60px;
-    margin: 0.6rem auto;
+    height: 55px;
+    margin: 1rem auto 0;
     border-radius: 36px;
-    background: rgba(255,255,255,0.35);
-    border: 1px solid rgba(255,255,255,0.35);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    background: rgba(255,255,255,0.3);
+    border: 1px solid rgba(255,255,255,0.4);
     display: flex;
     align-items: center;
-    position: relative;
-    overflow: hidden;
     cursor: pointer;
-    transition: box-shadow 0.3s ease;
+    overflow: hidden;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
 }
-
-    #kitten:hover {
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    }
 
     #kitten .swipe-bar {
         position: absolute;
-        left: 0;
-        top: 0;
         height: 100%;
         width: 0%;
-        background: linear-gradient(90deg, rgba(255,200,235,0.4), rgba(200,180,255,0.4));
-        border-radius: 36px;
+        left: 0;
+        background: linear-gradient(90deg, rgba(255,200,235,0.5), rgba(200,180,255,0.4));
         transition: width 0.15s ease;
     }
 
     #kitten .kitten-inner {
-        font-size: 2.2rem;
-        color: #ff6fa3;
         position: absolute;
         left: 10px;
+        font-size: 2.2rem;
         top: 50%;
         transform: translateY(-50%);
-        transition: left 0.15s ease-out;
+        transition: left 0.15s ease;
     }
 
     #kitten .arrow {
         position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 1.5rem;
+        right: 12px;
+        font-size: 1.4rem;
         color: rgba(124,42,141,0.5);
+        animation: pulse 1.6s infinite;
     }
 
-/* === SWIPE EFFECTS === */
 .sparkle-effect, .glow-effect {
     position: absolute;
     pointer-events: none;
-    border-radius: 36px;
-    transition: opacity 0.3s ease;
 }
 
 .sparkle-effect {
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
     opacity: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.6), transparent 70%);
+    transition: opacity 0.25s ease;
 }
 
 .glow-effect {
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    width: 0;
+    width: 0%;
     height: 80%;
-    background: linear-gradient(90deg, rgba(255,105,180,0.3) 0%, rgba(147,112,219,0.2) 50%, transparent 100%);
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(90deg, rgba(255,105,180,0.3), rgba(147,112,219,0.3));
     border-radius: 20px;
-    filter: blur(5px);
+    filter: blur(6px);
     transition: width 0.2s ease;
 }
 
-#glowTrail {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
-    width: 0px;
-    height: 45px;
-    border-radius: 25px;
-    pointer-events: none;
-    opacity: 0;
-    background: radial-gradient(circle at left, rgba(255, 200, 240, 0.6), rgba(190, 160, 255, 0.15), transparent);
-    filter: blur(14px);
-    transition: width 0.15s ease-out, opacity 0.15s ease-out;
+/* ===========================
+   MESSAGE UNDER KITTEN
+   =========================== */
+
+#message {
+    margin-top: 0.4rem;
+    color: rgba(124,42,141,0.8);
+    font-size: 0.95rem;
+    min-height: 1.2rem;
 }
 
-/* === OVERLAY STYLES === */
+/* ===========================
+   OVERLAY PAGES (1–4)
+   =========================== */
+
 .overlay {
     position: fixed;
     inset: 0;
@@ -213,7 +181,8 @@ input.code {
     opacity: 0;
     pointer-events: none;
     transform: scale(0.95);
-    transition: opacity 0.5s ease, transform 0.5s ease;
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    z-index: 20;
 }
 
     .overlay.show {
@@ -227,122 +196,55 @@ input.code {
     }
 
 .congrats-card {
-    width: min(92%,640px);
+    width: min(92%, 600px);
     padding: 2rem;
-    border-radius: 18px;
-    background: rgba(255,255,255,0.65);
-    border: 1px solid rgba(255,255,255,0.35);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.12);
-    text-align: center;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255,255,255,0.4);
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 1rem;
-}
-
-.congrats-title {
-    font-size: 2rem;
-    color: #7e2fa0;
-    font-weight: 800;
-}
-
-/* === TEXT STYLES (все тексты одинаковые) === */
-#message,
-.quality-description,
-.personal-thought,
-.letter-section-content,
-.gallery-caption,
-.future-letter,
-.letter-line,
-.letter-final,
-.congrats-card p,
-.congrats-card div:not(.congrats-title) {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    font-weight: 400;
-    line-height: 1.6;
-    color: #4b1f5e;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
-    max-width: 100%;
-}
-
-/* Конкретно для сообщения под котенком */
-#message {
-    font-size: 0.95rem;
-    color: rgba(124, 42, 141, 0.8);
-    min-height: 1.5rem;
-    margin-top: 0.5rem;
     text-align: center;
-    padding: 0 0.5rem;
 }
 
-/* === TYPING ANIMATION STYLES === */
-.typing-container {
-    min-height: 120px;
+/* ===========================
+   PAGE 1 — TYPING TEXT
+   =========================== */
+
+#typedText {
     font-size: 1.1rem;
-    line-height: 1.6;
     text-align: left;
-    color: #4b1f5e;
-    padding: 1.2rem;
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 12px;
-    margin: 1rem 0;
-    max-height: 250px;
-    overflow-y: auto;
+    white-space: pre-wrap;
+    line-height: 1.6;
 }
 
 .typed-cursor {
     display: inline-block;
-    background-color: #ff69b4;
-    margin-left: 2px;
     width: 2px;
+    background: #ff69b4;
     animation: blink 1s infinite;
 }
 
-.highlight-number {
-    color: #ff69b4;
-    font-weight: bold;
-    font-size: 1.2em;
-}
+/* ===========================
+   PAGE 2 — QUALITIES
+   =========================== */
 
-/* === PAGE 2 STYLES === */
 .qualities-thoughts-container {
-    min-height: 200px;
     max-height: 50vh;
     overflow-y: auto;
-    padding: 10px 5px 10px 10px;
-    margin: 10px 0;
-    width: 100%;
-    scrollbar-width: thin;
+    padding-right: 6px;
 }
 
-    .qualities-thoughts-container::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .qualities-thoughts-container::-webkit-scrollbar-track {
-        background: rgba(255,255,255,0.2);
-        border-radius: 3px;
-    }
-
-    .qualities-thoughts-container::-webkit-scrollbar-thumb {
-        background: rgba(255,105,180,0.5);
-        border-radius: 3px;
-    }
-
 .quality-thought-item {
-    margin: 1rem 0;
-    padding: 1rem;
     background: rgba(255,255,255,0.4);
+    padding: 1rem;
     border-radius: 15px;
-    border-left: 4px solid;
+    margin-bottom: 1rem;
+    border-left: 4px solid #ff69b4;
     opacity: 0;
-    transform: translateX(-30px);
-    transition: all 0.6s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    width: 100%;
-    box-sizing: border-box;
+    transform: translateX(-20px);
+    transition: 0.6s ease;
 }
 
     .quality-thought-item.visible {
@@ -350,320 +252,122 @@ input.code {
         transform: translateX(0);
     }
 
-    .quality-thought-item:nth-child(1) {
-        border-left-color: #ff69b4;
-    }
+/* ===========================
+   PAGE 3 — LETTER
+   =========================== */
 
-    .quality-thought-item:nth-child(2) {
-        border-left-color: #9370db;
-    }
-
-    .quality-thought-item:nth-child(3) {
-        border-left-color: #20b2aa;
-    }
-
-    .quality-thought-item:nth-child(4) {
-        border-left-color: #ffa500;
-    }
-
-.quality-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 0.8rem;
-}
-
-.quality-emoji {
-    font-size: 2rem;
-    margin-right: 1rem;
-}
-
-.quality-title {
-    font-weight: bold;
-    color: #7c2a8d;
-    font-size: 1.1rem;
-}
-
-.quality-description {
-    font-size: 1rem;
-    margin-bottom: 0.8rem;
-    color: #5a2a6e;
-    line-height: 1.7;
-    text-align: justify;
-    text-indent: 1.5em;
-}
-
-.personal-thought {
-    padding: 0.8rem;
-    background: rgba(255,255,255,0.3);
-    border-radius: 10px;
-    border-left: 3px solid rgba(255,105,180,0.5);
-    font-style: italic;
-    color: #5a2a6e;
-    line-height: 1.5;
-    font-size: 0.95rem;
-    margin-top: 0.5rem;
-    text-align: justify;
-}
-
-.scroll-indicator {
-    text-align: center;
-    color: rgba(124,42,141,0.6);
-    font-size: 0.9rem;
-    margin-bottom: 0.5rem;
-    animation: bounce 2s infinite;
-}
-
-/* === PAGE 3 LETTER STYLES === */
 .future-letter {
-    min-height: 300px;
-    max-height: 50vh;
     overflow-y: auto;
-    text-align: left;
-    line-height: 1.8;
+    max-height: 50vh;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 15px;
+    background: rgba(255,255,255,0.45);
+    border-radius: 14px;
     border-left: 4px solid #ff69b4;
-    width: 100%;
-    box-sizing: border-box;
 }
 
-    .future-letter::-webkit-scrollbar {
-        width: 6px;
-    }
-
-    .future-letter::-webkit-scrollbar-track {
-        background: rgba(255,255,255,0.2);
-        border-radius: 3px;
-    }
-
-    .future-letter::-webkit-scrollbar-thumb {
-        background: rgba(255,105,180,0.5);
-        border-radius: 3px;
-    }
-
-/* Стили для раскрывающихся писем */
 .letter-section {
-    margin: 1rem 0;
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(255,255,255,0.25);
     border-radius: 12px;
-    border-left: 4px solid #ff69b4;
-    overflow: hidden;
-    transition: all 0.3s ease;
+    margin-bottom: 1rem;
 }
 
 .letter-section-title {
-    padding: 1rem 1.2rem;
+    padding: 1rem;
     font-weight: 600;
-    color: #7c2a8d;
-    cursor: pointer;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    transition: background 0.3s ease;
-}
-
-    .letter-section-title:hover {
-        background: rgba(255, 255, 255, 0.15);
-    }
-
-.section-emoji {
-    font-size: 1.3rem;
-    margin-right: 0.8rem;
-}
-
-.section-text {
-    flex-grow: 1;
-    font-size: 1.4rem;
-}
-
-.section-arrow {
-    font-size: 0.9rem;
-    color: #ff69b4;
-    transition: transform 0.3s ease;
+    cursor: pointer;
 }
 
 .letter-section-content {
-    padding: 0 1.2rem 1.2rem;
-    line-height: 1.7;
-    font-size: 1rem;
-    border-top: 1px solid rgba(255, 105, 180, 0.2);
-    margin-top: 0.5rem;
-    padding-top: 1rem;
-    text-align: justify;
-    text-indent: 1.5em;
-}
-
-.letter-final {
-    text-align: center;
-    margin-top: 2rem;
-    font-style: italic;
-    color: #ff69b4;
-    animation: pulse 2s infinite;
     padding: 1rem;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
+    display: none;
 }
 
-/* === PAGE 4 GALLERY STYLES === */
+/* ===========================
+   PAGE 4 — GALLERY
+   =========================== */
+
 .gallery-container {
-    position: relative;
     width: 100%;
-    max-width: 400px;
-    height: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 1rem 0;
-}
-
-.gallery-slide {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    max-width: 380px;
 }
 
 .gallery-image {
     width: 100%;
-    height: 250px;
+    height: 200px;
     object-fit: cover;
-    border-radius: 15px;
+    border-radius: 12px;
     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 .gallery-caption {
     margin-top: 1rem;
-    padding: 0.8rem;
-    background: rgba(255,255,255,0.3);
-    border-radius: 10px;
-    text-align: center;
     font-style: italic;
-    color: #5a2a6e;
+    background: rgba(255,255,255,0.4);
     border-left: 3px solid #ff69b4;
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    font-size: 0.95rem;
-    max-width: 100%;
-    word-wrap: break-word;
-    line-height: 1.5;
+    padding: 0.7rem;
+    border-radius: 10px;
 }
 
-.gallery-arrow {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255,255,255,0.8);
-    border: none;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
+/* ===========================
+   BUTTONS
+   =========================== */
 
-    .gallery-arrow:hover {
-        background: rgba(255,255,255,1);
-        transform: translateY(-50%) scale(1.1);
-    }
-
-.gallery-arrow-prev {
-    left: -20px;
-}
-
-.gallery-arrow-next {
-    right: -20px;
-}
-
-.gallery-indicator {
-    margin: 1rem 0;
-    font-size: 1rem;
-    color: #7c2a8d;
-    font-weight: bold;
-}
-
-/* === BUTTON STYLES === */
-.btn, .btn-next {
-    margin-top: 10px;
+.btn-next {
     padding: 0.8rem 1.5rem;
     border-radius: 12px;
-    background: linear-gradient(180deg,#ffe0f0 0%,#fff0ff 100%);
-    border: 1px solid rgba(200,120,255,0.2);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
-    font-weight: 600;
-    color: #7c2a8d;
+    border: none;
+    background: linear-gradient(180deg,#ffe0f0,#fff0ff);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     cursor: pointer;
-    transition: transform 0.2s ease;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    font-size: 1rem;
-    width: auto;
-    min-width: 120px;
-    max-width: 200px;
-    margin: 10px auto 0;
-    white-space: nowrap;
+    color: #7c2a8d;
+    font-weight: 600;
+    transition: 0.2s;
 }
 
     .btn-next:hover {
         transform: scale(1.05);
     }
 
-/* === ANIMATIONS === */
-@keyframes shake {
-    0%, 100% {
-        transform: translateX(0);
-    }
+/* ===========================
+   SNOW (OPTIONAL)
+   =========================== */
 
-    25% {
-        transform: translateX(-5px);
-    }
+.snowflake {
+    position: fixed;
+    top: -10px;
+    width: 6px;
+    height: 6px;
+    background: white;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: fall 5s linear forwards;
+}
 
-    75% {
-        transform: translateX(5px);
+@keyframes fall {
+    to {
+        transform: translateY(120vh);
+        opacity: 0;
     }
 }
 
-@keyframes fadeOutScale {
-    to {
+/* ===========================
+   ANIMATIONS
+   =========================== */
+
+@keyframes blink {
+    0%,50% {
+        opacity: 1;
+    }
+
+    51%,100% {
         opacity: 0;
-        transform: scale(0.8);
     }
 }
 
 @keyframes pulse {
-    0%, 100% {
-        opacity: 0.7;
-    }
-
-    50% {
-        opacity: 1;
-    }
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-@keyframes heartBeat {
-    0%, 100% {
+    0%,100% {
         transform: scale(1);
     }
 
@@ -672,14 +376,8 @@ input.code {
     }
 }
 
-@keyframes blink {
-    0%, 50% {
-        opacity: 1;
-    }
-
-    51%, 100% {
-        opacity: 0;
-    }
+.success-glow {
+    animation: successGlow 1s ease;
 }
 
 @keyframes successGlow {
@@ -687,396 +385,39 @@ input.code {
         box-shadow: 0 0 0 0 rgba(255,105,180,0.4);
     }
 
-    70% {
-        box-shadow: 0 0 0 15px rgba(255,105,180,0);
-    }
-
     100% {
-        box-shadow: 0 0 0 0 rgba(255,105,180,0);
+        box-shadow: 0 0 0 25px rgba(255,105,180,0);
     }
-}
-
-@keyframes floatParticle {
-    0% {
-        transform: translate(0, 0) scale(1);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translate(var(--tx), var(--ty)) scale(0);
-        opacity: 0;
-    }
-}
-
-@keyframes readyPulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.02);
-    }
-}
-
-@keyframes waveEffect {
-    0% {
-        transform: translate(-50%, -50%) scale(0.5);
-        opacity: 1;
-    }
-
-    100% {
-        transform: translate(-50%, -50%) scale(1.5);
-        opacity: 0;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-5px);
-    }
-}
-
-@keyframes slideInFromRight {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideInFromLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-/* === ANIMATION CLASSES === */
-.shake {
-    animation: shake 0.5s ease;
-}
-
-.fade-out-scale {
-    animation: fadeOutScale 0.5s ease forwards;
-}
-
-.arrow {
-    animation: pulse 1.2s infinite;
-}
-
-.hearts {
-    animation: float 3s ease-in-out infinite;
-}
-
-.heart-beat {
-    animation: heartBeat 2s ease-in-out infinite;
-}
-
-.ready-pulse {
-    animation: readyPulse 2s ease-in-out infinite;
-}
-
-.success-glow {
-    animation: successGlow 1s ease;
-}
-
-.particle {
-    position: fixed;
-    width: 6px;
-    height: 6px;
-    background: #ff69b4;
-    border-radius: 50%;
-    pointer-events: none;
-    animation: floatParticle 0.8s ease-out forwards;
-    z-index: 10;
-}
-
-.wave {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 30px;
-    height: 30px;
-    background: radial-gradient(circle, rgba(255,105,180,0.3) 0%, transparent 70%);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    animation: waveEffect 0.4s ease-out;
-    pointer-events: none;
-    z-index: 5;
 }
 
 .slide-next {
-    animation: slideInFromRight 0.5s ease;
+    animation: slideNext 0.5s ease;
 }
 
 .slide-prev {
-    animation: slideInFromLeft 0.5s ease;
+    animation: slidePrev 0.5s ease;
 }
 
-/* === RESPONSIVE ADJUSTMENTS === */
-@media (max-width: 420px) {
-    #container.glass {
-        padding: 1.5rem;
-        gap: 1rem;
+@keyframes slideNext {
+    from {
+        opacity: 0;
+        transform: translateX(40px);
     }
 
-    .inputs {
-        gap: 8px;
-        height: 60px;
-    }
-
-    input.code {
-        width: 50px;
-        height: 50px;
-        font-size: 1.6rem;
-        line-height: 50px;
-    }
-
-    .congrats-card {
-        padding: 1.5rem;
-    }
-
-    .congrats-title, .title {
-        font-size: 1.8rem;
-    }
-
-    .typing-container {
-        font-size: 1rem;
-        padding: 1rem;
-    }
-
-    .quality-thought-item {
-        margin: 0.8rem 0;
-        padding: 0.8rem;
-    }
-
-    .quality-description,
-    .personal-thought,
-    .letter-section-content {
-        font-size: 0.9rem;
-        line-height: 1.5;
-        text-indent: 1em;
-    }
-
-    .gallery-container {
-        height: 250px;
-    }
-
-    .gallery-image {
-        height: 200px;
-    }
-
-    .gallery-arrow-prev {
-        left: -10px;
-    }
-
-    .gallery-arrow-next {
-        right: -10px;
-    }
-
-    #message {
-        font-size: 0.85rem;
-        padding: 0 0.3rem;
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }
 
-@media (max-width: 360px) {
-    .inputs {
-        gap: 6px;
+@keyframes slidePrev {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
     }
 
-    input.code {
-        width: 45px;
-        height: 45px;
-        font-size: 1.4rem;
-        line-height: 45px;
-    }
-
-    .congrats-title, .title {
-        font-size: 1.6rem;
-    }
-}
-
-/* === iOS FIXES === */
-@supports (-webkit-touch-callout: none) {
-    input.code {
-        line-height: 55px;
-        height: 55px;
-    }
-
-    .qualities-thoughts-container,
-    .future-letter {
-        -webkit-overflow-scrolling: touch;
-    }
-}
-
-/* === SCROLLBAR STYLES === */
-.typing-container::-webkit-scrollbar,
-.qualities-thoughts-container::-webkit-scrollbar,
-.future-letter::-webkit-scrollbar {
-    width: 6px;
-}
-
-.typing-container::-webkit-scrollbar-track,
-.qualities-thoughts-container::-webkit-scrollbar-track,
-.future-letter::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.2);
-    border-radius: 3px;
-}
-
-.typing-container::-webkit-scrollbar-thumb,
-.qualities-thoughts-container::-webkit-scrollbar-thumb,
-.future-letter::-webkit-scrollbar-thumb {
-    background: rgba(255,105,180,0.5);
-    border-radius: 3px;
-}
-/* === ВЫРАВНИВАНИЕ ЗАГОЛОВКА ПО ЦЕНТРУ === */
-#container {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-    width: 100% !important;
-}
-
-.title {
-    text-align: center !important;
-    width: 100% !important;
-    margin: 0 auto 1.5rem !important;
-    display: block !important;
-}
-
-.inputs {
-    justify-content: center !important;
-    width: 100% !important;
-    display: flex !important;
-    margin: 1.5rem auto !important;
-}
-
-#kitten {
-    margin: 1rem auto !important;
-}
-
-#message {
-    text-align: center !important;
-    width: 100% !important;
-    margin: 0.5rem auto 0 !important;
-}
-.gallery-image {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    background: rgba(255,255,255,0.1); /* Фон пока грузится фото */
-}
-
-/* Для мобильных */
-@media (max-width: 420px) {
-    .gallery-image {
-        height: 200px;
-    }
-}
-/* === PAGE 4 GALLERY STYLES === */
-.gallery-container {
-    position: relative;
-    width: 100%;
-    max-width: 400px;
-    height: auto; /* Измените на auto */
-    display: flex;
-    flex-direction: column; /* Добавьте */
-    align-items: center;
-    justify-content: center;
-    margin: 1rem 0;
-    min-height: 280px; /* Добавьте минимальную высоту */
-}
-
-.gallery-slide {
-    position: relative;
-    width: 100%;
-    height: auto; /* Измените на auto */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.gallery-image {
-    width: 100%;
-    height: 200px; /* Уменьшите высоту с 250px */
-    object-fit: cover; /* Или используйте contain */
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.gallery-caption {
-    margin-top: 1rem;
-    padding: 0.8rem;
-    background: rgba(255,255,255,0.3);
-    border-radius: 10px;
-    text-align: center;
-    font-style: italic;
-    color: #5a2a6e;
-    border-left: 3px solid #ff69b4;
-    min-height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    font-size: 0.95rem;
-    max-width: 100%;
-    word-wrap: break-word;
-    line-height: 1.5;
-}
-
-/* Для маленьких экранов */
-@media (max-width: 420px) {
-    .gallery-container {
-        height: auto;
-        min-height: 250px;
-    }
-
-    .gallery-image {
-        height: 180px; /* Еще меньше для мобильных */
-    }
-
-    .gallery-caption {
-        font-size: 0.9rem;
-        padding: 0.7rem;
-        min-height: 55px;
-    }
-}
-
-@media (max-width: 360px) {
-    .gallery-image {
-        height: 160px;
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }
