@@ -94,15 +94,25 @@
             
         </div>
 
-        <div id="kitten" title="Свайпни вправо">
-            <div class="swipe-bar"></div>
-            <div class="kitten-inner">🐳</div>
-            <div class="arrow"></div>
-            <!-- Эффекты -->
-            <div class="sparkle-effect"></div>
-            <div class="glow-effect"></div>
-        </div>
+        <!-- НОВАЯ ЗОНА СВАЙПА -->
+        <div class="swipe-area">
+            <div id="kitten" title="Свайпни вправо">
+                <div class="swipe-bar"></div>
+                <div class="kitten-inner">🐳</div>
+                <div class="arrow">➡️</div>
+                <!-- Эффекты -->
+                <div class="sparkle-effect"></div>
+                <div class="glow-effect"></div>
+            </div>
 
+            <!-- Добавляем подсказки -->
+            <div class="swipe-instructions">
+                <span class="instruction-dot active"></span>
+                <span class="instruction-dot"></span>
+                <span class="instruction-dot"></span>
+                <span class="instruction-dot"></span>
+            </div>
+        </div>
 
 
         <div id="message">Свайпни китёнка вправо, чтобы увидеть сюрприз</div>
@@ -677,67 +687,116 @@ document.getElementById("next4").addEventListener('click', () => {
             });
 
             // ----------- SWIPE HANDLING -------------
-            let startX = 0;
-            let isSwiping = false;
-            let animationFrameId = null;
+                   // =========== УЛУЧШЕННЫЙ SWIPE ДЛЯ МОБИЛЬНЫХ ===========
+        let startX = 0;
+        let isSwiping = false;
+        let swipeArea = kitten; // Теперь свайпать можно по всей зоне
 
-            const handleSwipeMove = (e) => {
-                if (!isSwiping || startX === 0) return;
+        // Создаём более удобную зону свайпа
+        const swipeContainer = document.createElement('div');
+        swipeContainer.className = 'swipe-touch-zone';
+        swipeContainer.style.cssText = `
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            z-index: 5;
+        `;
+        kitten.appendChild(swipeContainer);
 
-                const dx = Math.max(0, e.clientX - startX);
-                const progress = Math.min(100, dx / 1.5);
+        // Добавляем визуальный индикатор прогресса
+        const progressIndicator = document.createElement('div');
+        progressIndicator.className = 'swipe-progress-indicator';
+        progressIndicator.innerHTML = '<div class="progress-fill"></div><div class="progress-text">0%</div>';
+        document.querySelector('.swipe-area').appendChild(progressIndicator);
 
-                // Используем requestAnimationFrame для плавности
-                if (animationFrameId) {
-                    cancelAnimationFrame(animationFrameId);
+        // Функция для обновления прогресса
+        function updateSwipeProgress(progress) {
+            progressIndicator.querySelector('.progress-fill').style.width = progress + '%';
+            progressIndicator.querySelector('.progress-text').textContent = Math.round(progress) + '%';
+
+            // Изменяем стрелку
+            const arrow = kitten.querySelector('.arrow');
+            if (progress > 80) {
+                arrow.textContent = '🎉';
+                arrow.style.transform = 'translateY(-50%) scale(1.3)';
+            } else if (progress > 50) {
+                arrow.textContent = '👉';
+                arrow.style.transform = 'translateY(-50%) scale(1.1)';
+            } else {
+                arrow.textContent = '➡️';
+                arrow.style.transform = 'translateY(-50%) scale(1)';
+            }
+        }
+
+        // Оптимизированный обработчик touch событий
+        function handleTouchStart(e) {
+            e.preventDefault();
+            startX = e.touches ? e.touches[0].clientX : e.clientX;
+            isSwiping = true;
+
+            // Визуальная обратная связь
+            kitten.style.transform = 'scale(0.98)';
+            kitten.style.transition = 'transform 0.1s';
+
+            // Показываем индикатор прогресса
+            progressIndicator.style.opacity = '1';
+
+            // Вибрация (если поддерживается)
+            if (navigator.vibrate) navigator.vibrate(10);
+        }
+
+        function handleTouchMove(e) {
+            if (!isSwiping) return;
+            e.preventDefault();
+
+            const currentX = e.touches ? e.touches[0].clientX : e.clientX;
+            const dx = Math.max(0, currentX - startX);
+            const progress = Math.min(100, dx / 1.5);
+
+            // Плавная анимация через transform
+            requestAnimationFrame(() => {
+                // Движение китёнка с плавностью
+                kittenInner.style.transform = `translateX(${Math.min(dx / 1.5, 120)}px) translateY(-50%)`;
+
+                // Заполнение полосы
+                swipeBar.style.width = progress + '%';
+
+                // Эффекты
+                glowEffect.style.width = progress + '%';
+                sparkleEffect.style.opacity = Math.min(progress / 100, 0.7);
+
+                // Обновляем индикатор
+                updateSwipeProgress(progress);
+
+                // Эффекты при сильном свайпе
+                if (progress > 70 && progress < 95) {
+                    kittenInner.style.animation = 'heartBeat 0.3s ease';
+                    createParticlesAroundKitten();
                 }
-
-                animationFrameId = requestAnimationFrame(() => {
-                    // заполнение полосы
-                    swipeBar.style.width = progress + '%';
-
-                    // движение китёнка
-                    kittenInner.style.left = Math.min(dx / 1.5, 120) + 'px';
-
-                    // эффект свечения
-                    glowEffect.style.width = progress + '%';
-                    sparkleEffect.style.opacity = Math.min(progress / 100, 0.7);
-
-                    // вибрация при сильном свайпе
-                    if (progress > 70 && progress % 20 < 5) {
-                        createParticlesAroundKitten();
-                    }
-                });
-            };
-
-            kitten.addEventListener('pointerdown', e => {
-                startX = e.clientX;
-                isSwiping = true;
-                kitten.setPointerCapture(e.pointerId);
-                kitten.style.cursor = 'grabbing';
-                kitten.classList.remove('ready-pulse');
-
-                // Эффект при начале свайпа
-                createWave(e.clientX, e.clientY);
-
-                // Добавляем обработчик движения
-                kitten.addEventListener('pointermove', handleSwipeMove);
             });
+        }
 
-            kitten.addEventListener('pointerup', (e) => {
-                if (!isSwiping) return;
+        function handleTouchEnd(e) {
+            if (!isSwiping) return;
 
-                // Убираем обработчик движения
-                kitten.removeEventListener('pointermove', handleSwipeMove);
+            const endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+            const dx = endX - startX;
+            const progress = Math.min(100, dx / 1.5);
 
-                if (animationFrameId) {
-                    cancelAnimationFrame(animationFrameId);
-                    animationFrameId = null;
-                }
+            // Возвращаем нормальный размер
+            kitten.style.transform = 'scale(1)';
+            kitten.style.transition = 'transform 0.3s';
 
-                const dx = e.clientX - startX;
+            // Скрываем индикатор прогресса
+            progressIndicator.style.opacity = '0';
+            progressIndicator.style.transition = 'opacity 0.5s';
 
-                if (dx > 100) {
+            if (progress >= 80) {
+                // Успешный свайп
+                kitten.classList.add('success-swipe');
+                setTimeout(() => {
                     const userCode = inputs.map(inp => inp.value.padStart(2, '0'));
 
                     if (!userCode.every((v, i) => v === correctCode[i])) {
@@ -745,28 +804,66 @@ document.getElementById("next4").addEventListener('click', () => {
                     } else {
                         correctCodeAnimation();
                     }
-                } else {
-                    // Не дотянул - плавный возврат
-                    resetSwipeWithAnimation();
-                }
 
-                isSwiping = false;
-                startX = 0;
-            });
+                    kitten.classList.remove('success-swipe');
+                }, 300);
+            } else {
+                // Не дотянул - анимированный возврат
+                resetSwipeWithAnimation(progress);
+            }
 
-            // Обработчик отмены свайпа (например, выход за пределы)
-            kitten.addEventListener('pointercancel', () => {
-                if (isSwiping) {
-                    kitten.removeEventListener('pointermove', handleSwipeMove);
-                    if (animationFrameId) {
-                        cancelAnimationFrame(animationFrameId);
-                        animationFrameId = null;
-                    }
-                    resetSwipeWithAnimation();
-                    isSwiping = false;
-                    startX = 0;
-                }
-            });
+            isSwiping = false;
+            startX = 0;
+
+            // Отключаем анимацию сердца
+            kittenInner.style.animation = '';
+        }
+
+        // Добавляем все обработчики
+        ['touchstart', 'mousedown'].forEach(eventType => {
+            swipeContainer.addEventListener(eventType, handleTouchStart);
+        });
+
+        ['touchmove', 'mousemove'].forEach(eventType => {
+            swipeContainer.addEventListener(eventType, handleTouchStart);
+            document.addEventListener(eventType, handleTouchMove);
+        });
+
+        ['touchend', 'mouseup', 'touchcancel', 'mouseleave'].forEach(eventType => {
+            document.addEventListener(eventType, handleTouchEnd);
+        });
+
+        // Предотвращаем скролл страницы при свайпе
+        document.addEventListener('touchmove', function(e) {
+            if (isSwiping) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Обновлённая функция сброса
+        function resetSwipeWithAnimation(progress = 0) {
+            const duration = 300 + progress; // Чем дальше свайпнули, тем дольше возврат
+
+            kittenInner.style.transition = `transform ${duration}ms cubic-bezier(0.34, 1.56, 0.64, 1)`;
+            swipeBar.style.transition = `width ${duration}ms ease-out`;
+            glowEffect.style.transition = `width ${duration}ms ease-out`;
+            sparkleEffect.style.transition = `opacity ${duration}ms ease-out`;
+
+            kittenInner.style.transform = 'translateX(0) translateY(-50%)';
+            swipeBar.style.width = '0%';
+            glowEffect.style.width = '0%';
+            sparkleEffect.style.opacity = '0';
+
+            updateSwipeProgress(0);
+
+            setTimeout(() => {
+                kittenInner.style.transition = '';
+                swipeBar.style.transition = '';
+                glowEffect.style.transition = '';
+                sparkleEffect.style.transition = '';
+                kitten.classList.add('ready-pulse');
+            }, duration);
+        }
 
             // ----------- ANIMATIONS -----------
 
