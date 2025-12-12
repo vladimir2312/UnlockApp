@@ -1723,3 +1723,141 @@ input.code {
         font-size: 16px !important;
     }
 }
+/* Анимация пульсации печати */
+@keyframes sealPulse {
+    0% {
+        box-shadow: 0 4px 15px rgba(135, 62, 66, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 4px 25px rgba(135, 62, 66, 0.6), 0 0 0 8px rgba(135, 62, 66, 0.1);
+    }
+
+    100% {
+        box-shadow: 0 4px 15px rgba(135, 62, 66, 0.3);
+    }
+}
+
+/* Анимация нажатия на печать */
+@keyframes pressSeal {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/* Эффект разлома печати */
+@keyframes sealBreak {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+
+    20% {
+        transform: translate(-50%, -50%) scale(1.1);
+    }
+
+    40% {
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    60% {
+        transform: translate(-50%, -50%) scale(1.05) rotate(-5deg);
+        opacity: 0.8;
+    }
+
+    80% {
+        transform: translate(-50%, -50%) scale(0.98) rotate(5deg);
+        opacity: 0.6;
+    }
+
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+    }
+}
+
+/* Анимация открытия конверта */
+@keyframes openEnvelope {
+    0% {
+        transform: perspective(400px) rotateX(0deg);
+        opacity: 1;
+    }
+
+    50% {
+        transform: perspective(400px) rotateX(45deg);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: perspective(400px) rotateX(90deg);
+        opacity: 0;
+    }
+}
+
+/* Анимация появления письма */
+@keyframes fadeInLetter {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Стили для трещин */
+.crack-line {
+    position: absolute;
+    background: linear-gradient(to right, transparent, #fff, transparent);
+    width: 40px;
+    height: 2px;
+    border-radius: 1px;
+    filter: drop-shadow(0 0 2px rgba(0,0,0,0.3));
+    animation: crackAppear 0.5s ease-out forwards;
+}
+
+@keyframes crackAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(0deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(var(--rotate));
+    }
+}
+
+/* Стили для частиц воска */
+.wax-particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: radial-gradient(circle, #873e42, #6a2f32);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1000;
+    animation: flyAway 1s ease-out forwards;
+}
+
+@keyframes flyAway {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+    }
+}
