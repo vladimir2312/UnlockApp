@@ -353,7 +353,7 @@
             const sparkleEffect = kitten.querySelector('.sparkle-effect');
             const glowEffect = kitten.querySelector('.glow-effect');
             const message = document.getElementById('message');
-            const correctCode = ['20','05','10'];
+            const correctCode = ['20','25','05'];
             // Добавляем после showPage3WithAnimation()
 
                     function createSnow() {
@@ -408,7 +408,22 @@ function showPage4WithAnimation() {
 
                    function showGalleryImage(index, direction = 'next') {
             const data = galleryData[index];
+                    document.querySelectorAll('.gallery-image').forEach(img => {
+            img.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.05)';
+                this.style.transition = 'transform 0.5s ease, filter 0.5s ease';
+                this.style.filter = 'brightness(1.1) saturate(1.1)';
 
+                // Лёгкое движение
+                this.style.animation = 'gentleFloat 3s ease-in-out infinite';
+            });
+
+            img.addEventListener('mouseleave', function() {
+                this.style.transform = 'scale(1)';
+                this.style.filter = 'brightness(1) saturate(1)';
+                this.style.animation = '';
+            });
+        });
             // Добавляем класс анимации
             galleryImage.classList.add(direction === 'next' ? 'slide-next' : 'slide-prev');
             galleryCaption.classList.add(direction === 'next' ? 'slide-next' : 'slide-prev');
@@ -1138,7 +1153,7 @@ document.getElementById("next4").addEventListener('click', () => {
         const page1Content = [
             {
                 type: 'text',
-                content: 'За этими цифрами — наша история...',
+                content: 'Это не совсем обычные числа...',
                 delay: 500,
                 className: 'text-line waiting'
             },
@@ -1160,7 +1175,7 @@ document.getElementById("next4").addEventListener('click', () => {
                 type: 'number',
                 number: '20',
                 emoji: '🌙',
-                text: 'День, когда мы впервые встретились.',
+                text: 'День, когда мы начали общаться.',
                 delay: 600
             },
             {
@@ -1170,9 +1185,9 @@ document.getElementById("next4").addEventListener('click', () => {
             // Число 05
             {
                 type: 'number',
-                number: '05',
+                number: '25',
                 emoji: '💫',
-                text: 'День, когда я понял, что люблю тебя, и что моё сердце теперь твоё навсегда.',
+                text: 'День, когда мы впервые встретились.',
                 delay: 600
             },
             {
@@ -1182,11 +1197,9 @@ document.getElementById("next4").addEventListener('click', () => {
             // Число 10
             {
                 type: 'number',
-                number: '10',
+                number: '05',
                 emoji: '💖',
-                text: `День, когда я впервые сказал тебе, что люблю,
-        а ты сначала удивилась и сказала: "А не рано ли?"
-        Но именно с этого момента всё стало по-настоящему.`,
+                        text: `День, когда я понял, что люблю тебя, и что моё сердце теперь твоё навсегда.`,
                 delay: 800
             },
             {

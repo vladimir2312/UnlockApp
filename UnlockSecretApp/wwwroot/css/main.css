@@ -1861,3 +1861,46 @@ input.code {
         opacity: 0;
     }
 }
+.background {
+    animation: subtleParallax 20s infinite alternate ease-in-out;
+}
+
+@keyframes subtleParallax {
+    0% {
+        transform: scale(1.1) translateY(0px);
+    }
+
+    100% {
+        transform: scale(1.15) translateY(-20px);
+    }
+}
+/* Каждая страница имеет свой градиентный фон */
+#page1 .congrats-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,240,245,0.7));
+}
+
+#page2 .congrats-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(245,240,255,0.7));
+}
+
+#page3 .congrats-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,245,250,0.7));
+}
+
+#page4 .congrats-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(240,245,255,0.7));
+}
+
+/* Плавная смена фона при переходе */
+.overlay {
+    transition: opacity 0.8s ease, transform 0.8s ease, background 0.8s ease !important;
+}
+@keyframes gentleFloat {
+    0%, 100% {
+        transform: scale(1.05) translateY(0);
+    }
+
+    50% {
+        transform: scale(1.05) translateY(-5px);
+    }
+}
