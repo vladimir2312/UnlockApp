@@ -15,6 +15,38 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/main.css" />
     <style>
+        /* Страница 1 */
+        .typed-text-container, .text-line, .number-text, .congrats-title {
+            color: #873e42 !important;
+        }
+
+        /* Страница 2 */
+        .quality-description, .personal-thought, .quality-title {
+            color: #873e42 !important;
+        }
+
+        /* Страница 3 */
+        .letter-section-content, .letter-section-title {
+            color: #873e42 !important;
+        }
+
+        /* Страница 4 */
+        .gallery-caption, .gallery-indicator {
+            color: #873e42 !important;
+        }
+
+        /* Кнопки */
+        .btn-next, .btn-text {
+            color: #873e42 !important;
+        }
+        /* === ПРИНУДИТЕЛЬНЫЙ ЦВЕТ ВСЕГО ТЕКСТА === */
+        body * {
+            color: #873e42 !important;
+        }
+        /* Основной экран */
+        #message, .title, input.code {
+            color: #873e42 !important;
+        }
         /* ТОЛЬКО специфические стили для Index.cshtml */
         html, body {
             height: 100dvh;
@@ -24,7 +56,7 @@
             justify-content: center;
             overflow: hidden;
             background: linear-gradient(160deg,#f7fbff 0%,#fef7fb 50%,#f3f9ff 100%);
-            color: #2499ff;
+            color: #873e42;
         }
 
         .background {
@@ -69,14 +101,14 @@
         .title {
             font-family: 'Great Vibes', cursive;
             font-size: 2.2rem;
-            color: #2499ff;
+            color: #873e42;
         }
 
         .congrats-title {
             font-family: 'Great Vibes', cursive;
             font-size: 2rem;
             font-weight: 800;
-            color: #2499ff;
+            color: #873e42;
         }
     </style>
 </head>
@@ -167,7 +199,7 @@
 
     <div id="page4" class="overlay hidden">
         <div class="congrats-card glass">
-            <h2>📸 Наши моменты</h2>
+            <h2>📸 Моменты</h2>
 
             <!-- Галерея -->
             <div class="gallery-container">
